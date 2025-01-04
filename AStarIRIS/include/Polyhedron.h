@@ -39,8 +39,8 @@ public:
     virtual double closestPoint(const Eigen::VectorXd& p_in, Eigen::VectorXd& p_out);
     virtual double closestPoint(const Eigen::VectorXd& p_in);
     virtual double closestPointExpandingEllipsoid(Ellipsoid& ellipsoid, Eigen::VectorXd& p_out);
-    virtual bool isInside(const Eigen::VectorXd& p);
-    virtual bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi);
+    virtual bool isInside(const Eigen::VectorXd& p, const double &tol= 1.e-4);
+    virtual bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol= 1.e-4);
     virtual Ellipsoid inscribedEllipsoid();
     void computeInscribedEllipsoid();
     virtual Circle inscribedCircle();

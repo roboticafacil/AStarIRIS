@@ -37,14 +37,14 @@ double Point::closestPoint(const Eigen::VectorXd& p_in)
 	return this->distance(p_in);
 }
 
-bool Point::isInside(const Eigen::VectorXd& p)
+bool Point::isInside(const Eigen::VectorXd& p, const double &tol)
 {
-	return (this->p-p).norm()<1e-7;
+	return (this->p-p).norm()<=tol;
 }
 
-bool Point::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi)
+bool Point::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
 {
-	return ((ai.dot(p) - bi*ai.norm())<=0.);
+	return ((ai.dot(p) - bi*ai.norm())<=tol);
 }
 
 Eigen::VectorXd Point::getCentroid()

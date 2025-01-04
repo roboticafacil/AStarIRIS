@@ -37,9 +37,10 @@ void PolyhedronV::print()
     std::cout << this->v << std::endl;
 }
 
-bool PolyhedronV::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi)
+bool PolyhedronV::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
 {
-    return (((ai.transpose() * this->v - bi * Eigen::VectorXd::Ones(1, this->v.cols()))).array() <= 0.).any();
+    bool isInside = (((ai.transpose() * this->v).array() - bi) <=tol).any();
+    return isInside;
 }
 
 double PolyhedronV::closestVertex(const Eigen::VectorXd& p_in, Eigen::VectorXd& p_out)

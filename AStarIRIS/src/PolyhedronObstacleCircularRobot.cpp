@@ -37,13 +37,13 @@ double PolyhedronObstacleCircularRobot::closestPoint(const Eigen::VectorXd& p_in
     return this->closestPoint(p_in, p_out);
 }
 
-bool PolyhedronObstacleCircularRobot::isInside(const Eigen::VectorXd& p)
+bool PolyhedronObstacleCircularRobot::isInside(const Eigen::VectorXd& p, const double &tol)
 {
     //First check if point is contained inside the outer polyhedron
-    if (((this->A * p - (this->b.array()+this->r).matrix()).array()<=0.).all())
+    if (((this->A * p - (this->b.array()+this->r).matrix()).array()<=tol).all())
     {
         //Now, check if it is inside the inner polyhedron (i.e.: assuming r=0)
-        if (Polyhedron::isInside(p))
+        if (Polyhedron::isInside(p,tol))
             return true;
         else
         {
@@ -51,11 +51,11 @@ bool PolyhedronObstacleCircularRobot::isInside(const Eigen::VectorXd& p)
             //{
                 for (int i = 0; i < v.cols(); i++)
                 {
-                    if ((this->v.col(i) - p).norm() <= this->r)
+                    if ((this->v.col(i) - p).norm() <= (this->r+tol))
                         return true;
                 }
                 //If we reach this point is because it might be on the sides (between the inner and outer polyhedron)
-                return this->closestPoint(p) < 1e-3;
+                return this->closestPoint(p) < tol;
             //}
             //else
             //    return this->closestPoint(p) < 1e-3;
@@ -66,21 +66,21 @@ bool PolyhedronObstacleCircularRobot::isInside(const Eigen::VectorXd& p)
 
 }
 
-bool PolyhedronObstacleCircularRobot::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi)
+bool PolyhedronObstacleCircularRobot::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
 {
     
-    double maxVal = (ai.transpose() * this->v - bi*Eigen::VectorXd::Ones(1, this->v.cols())).maxCoeff();
+    double maxVal = ((ai.transpose() * this->v).array() - bi).maxCoeff();
     //Check first if it the outer polyhedron is inside
-    if (maxVal<=this->r)
+    if (maxVal<=(this->r+tol))
     {
         //Now, check if it the inner polyhedron is inside
-        if (maxVal<=0.)
+        if (maxVal<=tol)
         {
             return true;
         }
         else
         {
-            return Polyhedron::isInsideSeparatingHyperplane(ai,bi);
+            return Polyhedron::isInsideSeparatingHyperplane(ai,bi,tol);
         }
     }
     else

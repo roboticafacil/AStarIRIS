@@ -13,8 +13,8 @@ public:
     PolyhedronObstacleCircularRobot(const PolyhedronObstacleCircularRobot& polyhedronCircularRobot);
     double closestPoint(const Eigen::VectorXd& p_in, Eigen::VectorXd& p_out);
     double closestPoint(const Eigen::VectorXd& p_in);
-    bool isInside(const Eigen::VectorXd& p);
-    bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi);
+    bool isInside(const Eigen::VectorXd& p, const double &tol= 1.e-4);
+    bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol= 1.e-4);
     Ellipsoid inscribedEllipsoid();
     Circle inscribedCircle();
     Eigen::VectorXd getCentroid();

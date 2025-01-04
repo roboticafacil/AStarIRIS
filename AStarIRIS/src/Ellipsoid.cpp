@@ -96,17 +96,17 @@ double Ellipsoid::closestPointExpandingEllipsoid(Ellipsoid& ellipsoid, Eigen::Ve
     return (*this->alphaExpandingEllipsoid->level())[0];
 }
 
-bool Ellipsoid::isInside(const Eigen::VectorXd& p)
+bool Ellipsoid::isInside(const Eigen::VectorXd& p, const double &tol)
 {
-    return ((this->getCInv()*(this->centroid - p)).norm()<=1.);
+    return ((this->getCInv()*(this->centroid - p)).norm()<=(1.+tol));
 }
 
-bool Ellipsoid::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi)
+bool Ellipsoid::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
 {
     this->allocateIsInsideSeparatingHyperplaneSolver();
     std::shared_ptr<ndarray<double, 2>> ai_ptr = Eigen2NdArray(Eigen::MatrixXd(ai.transpose()));
     if (!this->MIsInsideSeparatingHyperplane->hasConstraint("hyperplane"))
-        this->MIsInsideSeparatingHyperplane->constraint("hyperplane", Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi), Domain::lessThan(0.0));
+        this->MIsInsideSeparatingHyperplane->constraint("hyperplane", Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi), Domain::lessThan(tol));
     else
         this->MIsInsideSeparatingHyperplane->getConstraint("hyperplane")->update(Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi));
     this->MIsInsideSeparatingHyperplane->solve();

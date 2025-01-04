@@ -77,14 +77,14 @@ double Circle::closestPoint(const Eigen::VectorXd& p_in)
 	return this->closestPoint(p_in, p_out);
 }
 
-bool Circle::isInside(const Eigen::VectorXd& p)
+bool Circle::isInside(const Eigen::VectorXd& p, const double &tol)
 {
-	return (((this->centroid-p)).norm() <= this->radius);
+	return (((this->centroid-p)).norm() <= (this->radius+tol));
 }
 
-bool Circle::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi)
+bool Circle::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
 {
-	return ((ai.dot(this->centroid) - bi - this->radius) <=0.);
+	return ((ai.dot(this->centroid) - bi - this->radius) <=tol);
 }
 
 Eigen::VectorXd Circle::getCentroid()

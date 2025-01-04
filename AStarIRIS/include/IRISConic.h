@@ -4,6 +4,7 @@
 #include "Node.h"
 #include "CObsConic.h"
 #include "GCS.h"
+#include "EGCS.h"
 
 typedef struct
 {
@@ -22,23 +23,30 @@ typedef struct
 	int n;
 	double tolConvexSetConvergence;
 	double shrinkFactor;
-	int maxCount;
+	int maxTrials;
+	double tol;
 }IRISParams_t;
 
 class IRISConic
 {
 public:
-	GCS* gcs;
-	CObsConic* cObs;
-	IRISConic(CObsConic* cObs, GCS* gcs, const IRISParams_t& params);
+	GCS gcs;
+	
+	
+	//IRISConic(CObsConic* cObs, GCS* gcs, EGCS* egcs, const IRISParams_t& params);
+	IRISConic(CObsConic& cObs, const IRISParams_t& params);
 	void addConvexSets(const Eigen::VectorXd& q);
-	static IRISParams_t getDefaultParams();
-	void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron* polyhedron, std::vector<IRISNeighbour_t>& neighbours);
+	static IRISParams_t getDefaultIRISParams();
+	void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron, std::vector<IRISNeighbour_t>& neighbours);
 	void generateGCS();
-	Eigen::VectorXd generateRandomSeed(int& count);
+	Eigen::VectorXd generateRandomSeed(int& trials);
+	//void addStartNode(const Eigen::VectorXd& q);
 public:
 	IRISParams_t params;
-private:
+protected:
+	void computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<IRISNeighbour_t>& neighbours);
+protected:
+	CObsConic* _cObs;
 	
 };
 #endif

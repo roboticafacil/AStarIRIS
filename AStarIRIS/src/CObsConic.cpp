@@ -16,12 +16,12 @@ void CObsConic::addObject(ConicSet* object)
 	numObjects++;
 }
 
-bool CObsConic::isFree(const Eigen::VectorXd& q)
+bool CObsConic::isFree(const Eigen::VectorXd& q, const double &tol)
 {
 	for (std::vector<ConicSet*>::iterator it = conicObjects.begin(); it != conicObjects.end(); it++)
 	{
 		ConicSet* conicSet = *it;
-		if (conicSet->isInside(q))
+		if (conicSet->isInside(q,tol))
 			return false;
 	}
 	return true;

@@ -144,22 +144,22 @@ void Polyhedron::update(const Eigen::MatrixXd& A, const Eigen::VectorXd& b)
             this->MIsInsideSeparatingHyperplane->constraint("linear", Expr::sub(Expr::mul(A_ptr, this->xIsInsideSeparatingHyperplane), b_ptr), Domain::lessThan(0.0));
     }*/
 }
-bool Polyhedron::isInside(const Eigen::VectorXd& q)
+bool Polyhedron::isInside(const Eigen::VectorXd& q, const double &tol)
 {
     //std::cout << this->A << std::endl;
     //std::cout << this->b << std::endl;
     //std::cout << q << std::endl;
     //bool res = ((this->A * q - this->b).array() <= 0.).all();
     //std::cout << res << std::endl;
-    return ((this->A * q - this->b).array()<=0.).all();
+    return ((this->A * q - this->b).array()<=tol).all();
 }
 
-bool Polyhedron::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi)
+bool Polyhedron::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
 {
     this->allocateIsInsideSeparatingHyperplaneSolver();
     std::shared_ptr<ndarray<double, 2>> ai_ptr = Eigen2NdArray(Eigen::MatrixXd(ai.transpose()));
     if (!this->MIsInsideSeparatingHyperplane->hasConstraint("hyperplane"))
-        this->MIsInsideSeparatingHyperplane->constraint("hyperplane", Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi), Domain::lessThan(0.0));
+        this->MIsInsideSeparatingHyperplane->constraint("hyperplane", Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi), Domain::lessThan(tol));
     else
         this->MIsInsideSeparatingHyperplane->getConstraint("hyperplane")->update(Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi));
     this->MIsInsideSeparatingHyperplane->solve();

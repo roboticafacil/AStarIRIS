@@ -29,8 +29,8 @@ public:
     virtual double closestPoint(const Eigen::VectorXd& p_in, Eigen::VectorXd& p_out) = 0;
     virtual double closestPoint(const Eigen::VectorXd& p_in)=0;
     virtual double closestPointExpandingEllipsoid(Ellipsoid& ellipsoid, Eigen::VectorXd& p_out) = 0;
-    virtual bool isInside(const Eigen::VectorXd& p)=0;
-    virtual bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi) = 0;
+    virtual bool isInside(const Eigen::VectorXd& p, const double &tol=0.)=0;
+    virtual bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol=0.) = 0;
     virtual Eigen::VectorXd getCentroid() = 0;
     virtual Eigen::MatrixXd getBoundingBox() = 0;
 };

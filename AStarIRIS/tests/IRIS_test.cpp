@@ -57,25 +57,25 @@ int addConvexSets_test(Eigen::Vector<double, 2>& q)
 	std::cout << q << std::endl;
 	Range* range = Range::getInstance();
 	range->setRange(2, -10., 10.);
-	GCS gcs;
 	CObsConic cObs = getCObsPolyhedronV();
-	IRISParams_t& IRISParams = IRISConic::getDefaultParams();
+	IRISParams_t& IRISParams = IRISConic::getDefaultIRISParams();
 	IRISParams.n = 2;
-	IRISConic irisConic = IRISConic(&cObs, &gcs, IRISParams);
+	IRISConic irisConic = IRISConic(cObs, IRISParams);
 	irisConic.addConvexSets(q);
-	std::vector<int> nodeKeys = gcs.getNodeKeys();
+	std::vector<int> nodeKeys = irisConic.gcs.getNodeKeys();
 	std::cout << "Results" << std::endl;
-	for (int i = 0; i < gcs.numNodes; i++)
+	for (int i = 0; i < irisConic.gcs.numNodes; i++)
 	{
 		std::cout << "Convex set " << nodeKeys[i] << std::endl;
-		Node* node = gcs.getNode(nodeKeys[i]);
+		Node* node = irisConic.gcs.getNode(nodeKeys[i]);
 		PolyhedronNode* polyNode = (PolyhedronNode*)node->getNodeData();
 		polyNode->polyhedron.print();
 	}
-	std::cout << "Graph" << std::endl;
-	gcs.print();
+	std::cout << "Graph of convex sets" << std::endl;
+	irisConic.gcs.print();
 	return 0;
 }
+
 
 int addConvexSetsCircularRobot_test(Eigen::Vector<double, 2>& q)
 {
@@ -85,38 +85,37 @@ int addConvexSetsCircularRobot_test(Eigen::Vector<double, 2>& q)
 	Range* range = Range::getInstance();
 	range->setRange(2, -10., 10.);
 	double radius = 0.3;
-	GCS gcs;
 	CObsConic cObs = getCObsCircularRobot(radius);
-	IRISParams_t& IRISParams = IRISConic::getDefaultParams();
+	IRISParams_t& IRISParams = IRISConic::getDefaultIRISParams();
 	IRISParams.n = 2;
-	IRISConic irisConic = IRISConic(&cObs, &gcs, IRISParams);
+	IRISConic irisConic = IRISConic(cObs, IRISParams);
 	irisConic.addConvexSets(q);
-	std::vector<int> nodeKeys = gcs.getNodeKeys();
+	std::vector<int> nodeKeys = irisConic.gcs.getNodeKeys();
 	std::cout << "Results" << std::endl;
-	for (int i = 0; i < gcs.numNodes; i++)
+	for (int i = 0; i < irisConic.gcs.numNodes; i++)
 	{
 		std::cout << "Convex set " << nodeKeys[i] << std::endl;
-		Node* node = gcs.getNode(nodeKeys[i]);
+		Node* node = irisConic.gcs.getNode(nodeKeys[i]);
 		PolyhedronNode* polyNode = (PolyhedronNode*)node->getNodeData();
 		polyNode->polyhedron.print();
 	}
-	std::cout << "Graph" << std::endl;
-	gcs.print();
+	std::cout << "Graph of convex sets" << std::endl;
+	irisConic.gcs.print();
 	return 0;
 }
 
-int IRIS_test(const double & shrinkFactor, const int &maxCount)
+int IRIS_test(const double & shrinkFactor, const int &maxTrials, const double &tol)
 {
 	std::cout << "Generate GCS PolyhedronV test" << std::endl;
 	Range* range = Range::getInstance();
 	range->setRange(2, -10., 10.);
-	GCS gcs;
 	CObsConic cObs = getCObsPolyhedronV();
-	IRISParams_t& IRISParams = IRISConic::getDefaultParams();
+	IRISParams_t& IRISParams = IRISConic::getDefaultIRISParams();
 	IRISParams.n = 2;
 	IRISParams.shrinkFactor = shrinkFactor;
-	IRISParams.maxCount = maxCount;
-	IRISConic irisConic = IRISConic(&cObs, &gcs, IRISParams);
+	IRISParams.maxTrials = maxTrials;
+	IRISParams.tol = tol;
+	IRISConic irisConic = IRISConic(cObs, IRISParams);
 	std::chrono::duration<double, std::milli> ms_double;
 	std::chrono::steady_clock::time_point t1;
 	std::chrono::steady_clock::time_point t2;
@@ -125,17 +124,17 @@ int IRIS_test(const double & shrinkFactor, const int &maxCount)
 	t2 = std::chrono::high_resolution_clock::now();
 	ms_double = t2 - t1;
 	std::cout << "Total time " << ms_double.count() << " ms" << std::endl;
-	std::vector<int> nodeKeys = gcs.getNodeKeys();
+	std::vector<int> nodeKeys = irisConic.gcs.getNodeKeys();
 	std::cout << "Results" << std::endl;
-	for (int i = 0; i < gcs.numNodes; i++)
+	for (int i = 0; i < irisConic.gcs.numNodes; i++)
 	{
 		std::cout << "Convex set " << nodeKeys[i] << std::endl;
-		Node* node = gcs.getNode(nodeKeys[i]);
+		Node* node = irisConic.gcs.getNode(nodeKeys[i]);
 		PolyhedronNode* polyNode = (PolyhedronNode*)node->getNodeData();
 		polyNode->polyhedron.print();
 	}
-	std::cout << "Graph" << std::endl;
-	gcs.print();
+	std::cout << "Graph of convex sets" << std::endl;
+	irisConic.gcs.print();
 	return 0;
 }
 
@@ -143,6 +142,8 @@ int main(int argc, char** argv)
 {
 	addConvexSets_test(Eigen::Vector<double, 2>({0.,0.}));
 	addConvexSets_test(Eigen::Vector<double, 2>({5.,-4.9}));
-	addConvexSetsCircularRobot_test(Eigen::Vector<double, 2>({ 0.,0. })); //Este todavía no funciona bien!!
-	IRIS_test(0.25,99);
+	//addConvexSets_test(Eigen::Vector<double, 2>({0.,0.}), Eigen::Vector<double, 2>({ 4.,-8. }), Eigen::Vector<double, 2>({4.5,-5.}));
+	//addConvexSets_test(Eigen::Vector<double, 2>({ 5.,-4.9 }), Eigen::Vector<double, 2>({4.,-8.}), Eigen::Vector<double, 2>({ 4.5,-6.}));
+	//addConvexSetsCircularRobot_test(Eigen::Vector<double, 2>({ 0.,0. })); //Este todavía no funciona bien!!
+	IRIS_test(1.,999,1e-3);
 }

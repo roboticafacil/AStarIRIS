@@ -48,6 +48,12 @@ std::pair< std::shared_ptr<ndarray<double, 2>>, std::shared_ptr<ndarray<double, 
 	return std::make_pair(this->A_ptr, this->b_ptr);
 }
 
+void Range::getConstraints(Eigen::MatrixXd& A, Eigen::VectorXd& b)
+{
+	A = this->A;
+	b = this->b;
+}
+
 Range::Range(): _lb(-1.0), _ub(1.0) //, Polyhedron(0)
 {
 }

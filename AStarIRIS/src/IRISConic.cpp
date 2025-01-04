@@ -4,25 +4,30 @@
 #include "IRISConic.h"
 
 
-IRISConic::IRISConic(CObsConic* cObs, GCS* gcs, const IRISParams_t& params): gcs(gcs), cObs(cObs), params(params)
+IRISConic::IRISConic(CObsConic& cObs, const IRISParams_t& params): _cObs(&cObs), params(params)
 {	
 }
 
 void IRISConic::generateGCS()
 {
-	int count = 0;
-	while (count < params.maxCount)
+	int trials = 0;
+	while (trials < params.maxTrials)
 	{
-		Eigen::VectorXd seed = this->generateRandomSeed(count);
+		//if (gcs->numNodes >= 26)
+		//	std::cout << "Start debugging" << std::endl;
+		Eigen::VectorXd seed = this->generateRandomSeed(trials);
 		//std::cout << "Seed" << std::endl;
 		//std::cout << seed << std::endl;
-		if (count >= params.maxCount)
+		if (trials >= params.maxTrials)
 			break;
+		
 		addConvexSets(seed);
+		//if (gcs->numNodes >= 27)
+		//	break;
 	}
 }
 
-Eigen::VectorXd IRISConic::generateRandomSeed(int& count)
+Eigen::VectorXd IRISConic::generateRandomSeed(int& trials)
 {
 	Range* range = Range::getInstance();
 	std::pair<double, double> bounds = range->getBounds();
@@ -32,16 +37,16 @@ Eigen::VectorXd IRISConic::generateRandomSeed(int& count)
 		seed = Eigen::VectorXd::Random(params.n, 1);
 		seed = (seed + Eigen::VectorXd::Constant(params.n, 1, 1.)) * (bounds.second - bounds.first) / 2.;
 		seed = (seed + Eigen::VectorXd::Constant(params.n, 1, bounds.first));
-		if (!gcs->contains(seed))
+		if (!this->gcs.contains(seed,params.tol))
 		{
-			if (cObs->isFree(seed))
+			if (this->_cObs->isFree(seed,params.tol))
 			{
-				count = 0;
+				trials = 0;
 				return seed;
 			}
 		}
-		count++;
-		if (count >= params.maxCount)
+		trials++;
+		if (trials >= params.maxTrials)
 			break;
 	}
 }
@@ -51,59 +56,50 @@ void IRISConic::addConvexSets(const Eigen::VectorXd& q)
 	Ellipsoid ellipsoid(Eigen::MatrixXd::Identity(q.rows(), q.rows()), q);
 	Polyhedron* convexSet = new Polyhedron(q.rows());
 	std::vector<IRISNeighbour_t> neighbours;
-	std::vector<int> newNodeKeys;
-	//convexSet.allocateClosestPointEllipsoidSolver();
-	//convexSet.allocateInscribedEllipsoidSolver();
 	while(true)
 	{
-		while (true)
-		{
-			separatingHyperplanes(ellipsoid,convexSet, neighbours);
-			//convexSet->print();
-			Ellipsoid newEllipsoid = convexSet->inscribedEllipsoid();
-			//newEllipsoid.print();
-			double detC = ellipsoid.C.determinant();
-			double detNewC = newEllipsoid.C.determinant();
-			if (((detNewC - detC) / detC) < params.tolConvexSetConvergence)
-				break;
-			ellipsoid = newEllipsoid;
-		}
+		this->computeConvexSet(ellipsoid, *convexSet, neighbours);
+		//Add the convexSet to GCS
 		Eigen::VectorXd bShrinked = (1.-params.shrinkFactor)*convexSet->b + params.shrinkFactor * (convexSet->A*ellipsoid.getCentroid());
-		int nodeKey=gcs->addNode(new PolyhedronNode(convexSet->A, convexSet->b,bShrinked));
-		newNodeKeys.push_back(nodeKey);
-		for (std::vector<IRISNeighbour_t>::iterator it = neighbours.begin(); it != neighbours.end(); it++)
-		{
-			gcs->addEdge(nodeKey,it->nodeKey);
-			gcs->addEdge(it->nodeKey,nodeKey);
-		}
+		int nodeKey=this->gcs.addNode(new PolyhedronNode(convexSet->A, convexSet->b,bShrinked));
+		//Check if the original seed is inside the generated convex set. If not, repeat
 		if (convexSet->isInside(q))
 			break;
 		ellipsoid = Ellipsoid(Eigen::MatrixXd::Identity(q.rows(), q.rows()), q);
 	}
 	//convexSet->print();
-	//Now they have generated, we can treat them as obstacles for nexts calls
-	/*for (std::vector<int>::iterator it = newNodeKeys.begin(); it != newNodeKeys.end(); it++)
-	{
-		Node* node = gcs->getNode(*it);
-		PolyhedronNode* polyNode=(PolyhedronNode*)node->getNodeData();
-		polyNode->useShrinked = false;
-	}*/
 }
 
-void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron* polyhedron, std::vector<IRISNeighbour_t>& neighbours)
+void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<IRISNeighbour_t>& neighbours)
+{
+	while (true)
+	{
+		separatingHyperplanes(ellipsoid, convexSet, neighbours);
+		//convexSet->print();
+		Ellipsoid newEllipsoid = convexSet.inscribedEllipsoid();
+		//newEllipsoid.print();
+		double detC = ellipsoid.C.determinant();
+		double detNewC = newEllipsoid.C.determinant();
+		if (((detNewC - detC) / detC) < params.tolConvexSetConvergence)
+			break;
+		ellipsoid = newEllipsoid;
+	}
+}
+
+void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron, std::vector<IRISNeighbour_t>& neighbours)
 {
 	neighbours.clear();
 	Eigen::VectorXd centroid = ellipsoid.getCentroid();
 	int n = centroid.rows();
-	std::vector<Node*> nodes = gcs->getNodes();
-	std::vector<int> nodeKeys = gcs->getNodeKeys();
+	std::vector<Node*> nodes = gcs.getNodes();
+	std::vector<int> nodeKeys = gcs.getNodeKeys();
 	std::vector<ConicSet*> objects;
 	std::vector<int> objectsIdx;
 	std::vector<double> distances;
 	std::vector<Eigen::VectorXd> closestPoints;
 	std::vector<int> graphNodeKeys;
 	int idx = 0;
-	for (std::vector<ConicSet*>::iterator it = cObs->conicObjects.begin(); it != cObs->conicObjects.end(); it++)
+	for (std::vector<ConicSet*>::iterator it = _cObs->conicObjects.begin(); it != _cObs->conicObjects.end(); it++)
 	{
 		ConicSet* p = *it;
 		Eigen::VectorXd p_out(n);
@@ -183,10 +179,12 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron* polyhedr
 		for (std::vector<ConicSet*>::iterator it=objects.begin();it!=objects.end();)
 		{
 			ConicSet* c = *it;
-			if (!c->isInsideSeparatingHyperplane(ai, bi))
+			bool isInside = c->isInsideSeparatingHyperplane(ai, bi,params.tol);
+			//std::cout << "Object " << *itIdx << "is inside?" << isInside << std::endl;
+			int j = std::distance(objects.begin(), it); 
+			if (!isInside)
 			{
 				//std::cout << "Original object removed by separating hyperplane " << *itIdx << std::endl;
-				int j = std::distance(objects.begin(), it);
 				objects.erase(objects.begin() + j);
 				objectsIdx.erase(objectsIdx.begin() + j);
 				distances.erase(distances.begin() + j);
@@ -194,20 +192,35 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron* polyhedr
 				graphNodeKeys.erase(graphNodeKeys.begin() + j);
 			}
 			else
+			{
 				it++; //Increase the iterator if not removed
+				itIdx++;
+			}
 			//std::cout << it._Ptr << std::endl;
 			//std::cout << objects.end()._Ptr << std::endl;
 			if (it._Ptr == objects.end()._Ptr)
 				break;
-			itIdx++;
+			
 		}
 	}
-	polyhedron->update(A,b);
+	polyhedron.update(A,b);
 }
 
-IRISParams_t IRISConic::getDefaultParams()
+IRISParams_t IRISConic::getDefaultIRISParams()
 {
-	IRISParams_t params = {2,1e-2,0.25,99};
+	IRISParams_t params = {2,1e-2,0.25,999,1e-3};
 	return params;
 }
+
+/*void IRISConic::addStartNode(const Eigen::VectorXd& q)
+{
+	this->addConvexSets(q);
+	int startKeyGCS = this->gcs.findConvexSet(q);
+	PolyhedronNode* startNodeGCS = (PolyhedronNode*)this->gcs.getNode(startKeyGCS)->getNodeData();
+	for (int i = 0; i < startNodeGCS->polyhedron.A.rows(); i++)
+	{
+		Eigen::VectorXd ai = Eigen::VectorXd(startNodeGCS->polyhedron.A.row(i));
+		double bi = startNodeGCS->polyhedron.b(i);
+	}
+}*/
 

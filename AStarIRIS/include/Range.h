@@ -11,6 +11,7 @@ public:
     void setRange(const int& n,const double& lb, const double& ub);
     std::pair<double,double> getBounds();
     std::pair<std::shared_ptr<ndarray<double, 2>>,std::shared_ptr<ndarray<double, 1>>> getConstraints();
+    void getConstraints(Eigen::MatrixXd& A, Eigen::VectorXd &b);
 protected:
     Range();
     static Range* _range;

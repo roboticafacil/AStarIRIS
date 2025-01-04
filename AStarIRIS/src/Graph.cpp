@@ -21,6 +21,22 @@
     {
     }
 
+    Graph& Graph::operator=(Graph& other)
+    {
+        this->numEdges = other.numEdges;
+        this->numNodes = other.numNodes;
+        this->nodes.clear();
+        NodeMap::iterator it = this->nodes.begin();
+        for (NodeMap::iterator itOther = other.nodes.begin(); itOther != other.nodes.end(); ++itOther)
+        {
+            this->nodes[itOther->first] = itOther->second;
+        }
+        this->nodes = other.nodes;
+        this->edges = other.edges;
+        this->nodeKeys = other.nodeKeys;
+        return *this;
+    }
+
     void Graph::print()
     {
         printNodes();
@@ -116,7 +132,15 @@
 
     int Graph::addNode(const Node* node)
     {
-        int key = this->nodes.size();
+        //int key = this->nodes.size();
+        int key;
+        if (this->nodeKeys.size() > 0)
+        {
+            std::vector<int>::iterator it = this->nodeKeys.end() - 1;
+            key = (*it) + 1;
+        }
+        else
+            key = 0;
         this->nodes[key] = (Node*)node;
         this->nodeKeys.push_back(key);
         this->numNodes++;
@@ -166,7 +190,7 @@
                 ++edgeIt;
             }
             //Now deletes that node
-            this->nodes.erase(key);
+            this->nodes.erase(it);
             this->numNodes--;
         }
         return false;
@@ -178,6 +202,12 @@
         NodeMap::iterator itTo = this->nodes.find(keyTo);
         if ((itFrom != this->nodes.end()) && (itTo != this->nodes.end()))
         {
+            //Avoid adding duplicates
+            for (std::vector<std::pair<int, int>>::iterator it = this->edges.begin(); it != this->edges.end(); it++)
+            {
+                if ((it->first == keyFrom) && (it->second == keyTo))
+                    return false;
+            }
             Edge edge = std::make_pair(keyFrom, keyTo);
             this->edges.push_back(edge);
             this->numEdges++;

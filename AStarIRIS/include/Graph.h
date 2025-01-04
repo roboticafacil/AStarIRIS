@@ -24,9 +24,10 @@ public:
     Graph();
     //Copy constructor
     Graph(Graph* graph);
-    void print();
-    void printNodes();
-    void printEdges();
+    Graph& operator=(Graph& other);
+    virtual void print();
+    virtual void printNodes();
+    virtual void printEdges();
     std::vector<int> getNodeKeys();
     Node* getNode(const int& key);
     std::vector<Node*> getNodes();

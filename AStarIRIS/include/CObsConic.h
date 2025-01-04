@@ -14,7 +14,7 @@ public:
 	CObsConic();
 	CObsConic(CObsConic* cObs);
 	void addObject(ConicSet* object);
-	bool isFree(const Eigen::VectorXd& q);
+	bool isFree(const Eigen::VectorXd& q, const double &tol);
 	/*void addObject(Point* point);
 	void addObject(Circle* circle);
 	void addObject(Ellipsoid* ellipsoid);
