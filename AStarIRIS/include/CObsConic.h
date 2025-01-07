@@ -15,17 +15,8 @@ public:
 	CObsConic(CObsConic* cObs);
 	void addObject(ConicSet* object);
 	bool isFree(const Eigen::VectorXd& q, const double &tol);
-	/*void addObject(Point* point);
-	void addObject(Circle* circle);
-	void addObject(Ellipsoid* ellipsoid);
-	void addObject(Polyhedron* polyhedron);
-	void addObject(PolyhedronObstacleCircularRobot* polyhedronCircularRobot);*/
+	void print(std::ostream& out);
 	int numObjects=0;
-	/*std::vector<Point*> points;
-	std::vector<Circle*> circles;
-	std::vector<Ellipsoid*> ellipsoids;
-	std::vector<Polyhedron*> polyhedra;
-	std::vector<PolyhedronObstacleCircularRobot*> polyhedraCircularRobot;*/
 	std::vector<ConicSet*> conicObjects;	
 };
 #endif

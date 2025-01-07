@@ -17,13 +17,27 @@ Ellipsoid::Ellipsoid(const Eigen::MatrixXd& C, const Eigen::VectorXd& centroid):
     centroid_ptr = Eigen2NdArray(this->centroid);
 }
 
-Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid): ConicSet(ellipsoid), C(ellipsoid.C), Cinv(ellipsoid.Cinv), inverseComputed(ellipsoid.inverseComputed)
+Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid): ConicSet(ellipsoid), C(ellipsoid.C), Cinv(ellipsoid.Cinv), inverseComputed(ellipsoid.inverseComputed), centroid_ptr(ellipsoid.centroid_ptr), Cinv_ptr(ellipsoid.Cinv_ptr)
 {
 }
 
 Ellipsoid::~Ellipsoid()
 {
-    //auto _M = finally([&]() { M->dispose(); });
+    if (solverAllocated)
+    {
+        this->M->dispose();
+        solverAllocated = false;
+    }
+    if (solverIsInsideSeparatingHyperplaneAllocated)
+    {
+        this->MIsInsideSeparatingHyperplane->dispose();
+        solverIsInsideSeparatingHyperplaneAllocated = false;
+    }
+    if (solverExpandingEllipsoidAllocated)
+    {
+        this->MExpandingEllipsoid->dispose();
+        solverExpandingEllipsoidAllocated = false;
+    }
 }
 
 Ellipsoid& Ellipsoid::operator=(const Ellipsoid& other) {

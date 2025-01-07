@@ -277,6 +277,12 @@
             return Edge(-1,1);
     }
 
+    void Graph::setEdges(const std::vector<Edge>& edges)
+    {
+        this->edges = edges;
+        this->numEdges = this->edges.size();
+    }
+
     std::vector<Node*> Graph::getOutNeighbours(const int& key)
     {
         std::vector<Node*> _nodes;

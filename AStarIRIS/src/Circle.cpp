@@ -21,6 +21,11 @@ Circle::Circle(const Eigen::VectorXd& center, const double& radius): radius(radi
 Circle::~Circle()
 {
 	//auto _M = finally([&]() { M->dispose(); });
+	if (solverExpandingEllipsoidAllocated)
+	{
+		this->MExpandingEllipsoid->dispose();
+		solverExpandingEllipsoidAllocated = false;
+	}
 }
 
 Circle& Circle::operator=(const Circle& other) {

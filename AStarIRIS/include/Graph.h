@@ -48,5 +48,6 @@ public:
     std::vector<int> getInNeighbourKeys(const int& key);
     std::vector<int> getNeighbourKeys(const int& key);
     Edge getEdge(const int &edgeIdx);
+    void setEdges(const std::vector<Edge>& edges);
 };
 #endif

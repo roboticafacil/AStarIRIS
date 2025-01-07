@@ -27,33 +27,18 @@ bool CObsConic::isFree(const Eigen::VectorXd& q, const double &tol)
 	return true;
 }
 
-/*
-void CObsConic::addObject(Point* point)
+void CObsConic::print(std::ostream& out)
 {
-	points.push_back(point);
-	this->addObject(point);
+	for (int i = 0; i < this->conicObjects.size(); i++)
+	{
+		ConicSet* conicSet = this->conicObjects[i];
+		if (dynamic_cast<Polyhedron*>(conicSet) != NULL)
+		{
+			Polyhedron* poly = (Polyhedron*)conicSet;
+			poly->print(out, "A", "b",true);
+			out << "AObs{" << i + 1 << "}=-A;" << std::endl;
+			out << "bObs{" << i + 1 << "}=-b;" << std::endl;
+			out << "colObs{" << i + 1 << "}='r';" << std::endl;
+		}
+	}
 }
-
-void CObsConic::addObject(Circle* circle)
-{
-	circles.push_back(circle);
-	this->addObject(circle);
-}
-
-void CObsConic::addObject(Ellipsoid* ellipsoid)
-{
-	ellipsoids.push_back(ellipsoid);
-	this->addObject(ellipsoid);
-}
-
-void CObsConic::addObject(Polyhedron* polyhedron)
-{
-	polyhedra.push_back(polyhedron);
-	this->addObject(polyhedron);
-}
-
-void CObsConic::addObject(PolyhedronObstacleCircularRobot* polyhedronCircularRobot)
-{
-	polyhedraCircularRobot.push_back(polyhedronCircularRobot);
-	this->addObject(polyhedronCircularRobot);
-}*/

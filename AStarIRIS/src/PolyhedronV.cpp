@@ -29,12 +29,41 @@ PolyhedronV::PolyhedronV(const PolyhedronV& polyhedron) : Polyhedron(polyhedron)
 }
 PolyhedronV::~PolyhedronV()
 {
+    if (solverClosestPointEllipsoidQPAllocated)
+    {
+        solverClosestPointEllipsoidQPAllocated = false;
+        this->MClosestPointEllipsoidQP->dispose();
+    }
     //auto _MclosestPoint = finally([&]() { MclosestPoint->dispose(); });
 }
 
 void PolyhedronV::print()
 {
     std::cout << this->v << std::endl;
+}
+
+std::ostream& PolyhedronV::print(std::ostream& out, const std::string& vName)
+{
+    out << vName << "=[";
+    for (int i = 0; i < this->v.rows(); i++)
+    {
+        for (int j = 0; j < this->v.cols(); j++)
+        {
+            if (j < (this->v.cols() - 1))
+                out << this->v(i, j) << " ";
+            else
+                out << this->v(i, j);
+        }
+        if (i < (this->v.rows() - 1))
+            out << ";";
+    }
+    out << "];" << std::endl;
+    return out;
+}
+
+std::ostream& PolyhedronV::print(std::ostream& out, const std::string& Aname, const std::string& bname)
+{
+    return Polyhedron::print(out, Aname, bname,false);
 }
 
 bool PolyhedronV::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
@@ -121,4 +150,20 @@ Eigen::MatrixXd PolyhedronV::getBoundingBox()
         this->bbComputed = true;
     }
     return this->bb;
+}
+
+void PolyhedronV::getFilled2DPolyhedron(std::vector<double>& x, std::vector<double>& y)
+{
+    if (this->v.rows() == 2)
+    {
+        x.clear();
+        y.clear();
+        for (int i = 0; i < this->v.cols(); i++)
+        {
+            x.push_back(v(0, i));
+            y.push_back(v(1, i));
+        }
+    }
+    else
+        std::cout << "This method is intended to be used with 2D polyhedra" << std::endl;
 }

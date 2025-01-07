@@ -14,6 +14,7 @@ typedef struct
 typedef struct
 {
 	int nodeKey;
+	int idx;
 	Eigen::VectorXd ai;
 	double bi;
 }IRISNeighbour_t;
@@ -31,8 +32,6 @@ class IRISConic
 {
 public:
 	GCS gcs;
-	
-	
 	//IRISConic(CObsConic* cObs, GCS* gcs, EGCS* egcs, const IRISParams_t& params);
 	IRISConic(CObsConic& cObs, const IRISParams_t& params);
 	void addConvexSets(const Eigen::VectorXd& q);

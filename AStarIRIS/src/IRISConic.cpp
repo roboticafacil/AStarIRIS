@@ -21,9 +21,7 @@ void IRISConic::generateGCS()
 		if (trials >= params.maxTrials)
 			break;
 		
-		addConvexSets(seed);
-		//if (gcs->numNodes >= 27)
-		//	break;
+		addConvexSets(seed);  //When we call this function, we allocate memory of the generated convexSets. Where we should delete them?
 	}
 }
 
@@ -53,6 +51,7 @@ Eigen::VectorXd IRISConic::generateRandomSeed(int& trials)
 
 void IRISConic::addConvexSets(const Eigen::VectorXd& q)
 {
+	//Warning, convexSet is not removed from memory!!
 	Ellipsoid ellipsoid(Eigen::MatrixXd::Identity(q.rows(), q.rows()), q);
 	Polyhedron* convexSet = new Polyhedron(q.rows());
 	std::vector<IRISNeighbour_t> neighbours;
@@ -81,8 +80,22 @@ void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, st
 		double detC = ellipsoid.C.determinant();
 		double detNewC = newEllipsoid.C.determinant();
 		if (((detNewC - detC) / detC) < params.tolConvexSetConvergence)
+		{
+			ellipsoid = newEllipsoid;
 			break;
+		}
 		ellipsoid = newEllipsoid;
+	}
+	std::vector<int> removedConstraints=convexSet.removeRepeatedConstraints();
+	for (std::vector<int>::iterator it1 = removedConstraints.begin(); it1 != removedConstraints.end(); it1++)
+	{
+		for (std::vector<IRISNeighbour_t>::iterator it = neighbours.begin(); it != neighbours.end();)
+		{
+			if (it->idx == *it1)
+				neighbours.erase(it);
+			else
+				it++;
+		}
 	}
 }
 
@@ -165,6 +178,7 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 			neighbour.nodeKey = graphNodeKeys[ii];
 			neighbour.ai = ai;
 			neighbour.bi = bi;
+			neighbour.idx = A.rows() - 1;
 			neighbours.push_back(neighbour);
 		}
 

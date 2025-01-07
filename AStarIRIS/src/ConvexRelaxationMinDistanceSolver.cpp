@@ -1,25 +1,97 @@
-#include "ConvexRelaxationMinDistance.h"
+#include "ConvexRelaxationMinDistanceSolver.h"
 #include "Graph.h"
 #include "PolyhedronNode.h"
 #include "PointNode.h"
 #include "fusion.h"
 #include <vector>
 #include "EigenNdArray.h"
+#include <random>
 
-ConvexRelaxationMinDistance::ConvexRelaxationMinDistance(const Graph& g, const int &startKey, const int &targetKey): ConvexRelaxation(g,startKey,targetKey)
+ConvexRelaxationMinDistanceSolver::ConvexRelaxationMinDistanceSolver(const Graph& g, const int &startKey, const int &targetKey): ConvexRelaxationSolver(g,startKey,targetKey)
 {
-	PointNode* qs = (PointNode*) this->g.getNode(startKey);
-	Eigen::MatrixXd qsEigen(qs->point.p);
-	this->n = qs->point.p.rows();
-	qstart = Eigen2NdArray(qsEigen);
-	PointNode* qt = (PointNode*)this->g.getNode(targetKey);
-	Eigen::MatrixXd qtEigen(qt->point.p);
-	qtarget = Eigen2NdArray(qtEigen);
 }
 
-void ConvexRelaxationMinDistance::setTask()
+void ConvexRelaxationMinDistanceSolver::computeFeasibleSolution(const int& maxIters)
+{
+	int iters = 0;
+	this->feasibleSolution.cost = (double)std::numeric_limits<double>::infinity();
+	Path_t OptimalPath;
+	while (iters < maxIters)
+	{
+		Path_t path=this->getMCPath();
+		int nEdges = path.edgeKeys.size();
+		int nVertex = path.nodeKeys.size();
+		Model::t MPath = new Model("ConvexRelaxationMinDistance");
+		auto _M = finally([&]() { MPath->dispose(); });
+		Variable::t lPath = MPath->variable("l", nEdges, Domain::greaterThan(0.0));
+		Variable::t xPath = MPath->variable("x", Set::make(this->n, nVertex), Domain::unbounded());
+
+		//std::cout << "Vertex" << std::endl;
+		//std::cout << nVertex << std::endl;
+		//std::cout << "Edges" << std::endl;
+		//std::cout << nEdges << std::endl;
+		//std::cout << "nodes keys ";
+		//for (std::vector<int>::iterator it = this->optimalPath.nodeKeys.begin(); it != this->optimalPath.nodeKeys.end(); it++)
+		//	std::cout << *it << " ";
+		//std::cout << std::endl;
+		//std::cout << "edge keys ";
+		//for (std::vector<int>::iterator it = this->optimalPath.edgeKeys.begin(); it != this->optimalPath.edgeKeys.end(); it++)
+		//	std::cout << *it << " ";
+		//std::cout << std::endl;
+
+		Expression::t x_expr = xPath->slice(new_array_ptr<int, 1>({ 0,0 }), new_array_ptr<int, 1>({ n,nVertex - 1 }))->transpose();
+		Expression::t xp_expr = xPath->slice(new_array_ptr<int, 1>({ 0,1 }), new_array_ptr<int, 1>({ n,nVertex }))->transpose();
+		MPath->constraint(Expr::hstack(lPath, Expr::sub(x_expr, xp_expr)), Domain::inQCone());
+
+		for (int i = 0; i < nVertex; i++)
+		{
+			if ((path.nodeKeys[i] != startKey) && (path.nodeKeys[i] != targetKey))
+			{
+				PolyhedronNode* uNode = (PolyhedronNode*)this->g.getNode(path.nodeKeys[i]);
+				Expression::t x_expr = xPath->slice(new_array_ptr<int, 1>({ 0,i }), new_array_ptr<int, 1>({ n,i + 1 }));
+				std::shared_ptr<ndarray<double, 2>> A_ptr = Eigen2NdArray(uNode->polyhedron.A);
+				//std::shared_ptr<ndarray<double, 2>> b_ptr = Eigen2NdArray(Eigen::MatrixXd(uNode->polyhedron.b));
+				std::shared_ptr<ndarray<double, 1>> b_ptr = Eigen2NdArray(uNode->polyhedron.b);
+				MPath->constraint(Expr::sub(Expr::mul(A_ptr, x_expr), b_ptr), Domain::lessThan(0.0));
+			}
+			else if (path.nodeKeys[i] == startKey)
+			{
+				Expression::t x_expr = xPath->slice(new_array_ptr<int, 1>({ 0,i }), new_array_ptr<int, 1>({ n,i + 1 }));
+				MPath->constraint(Expr::sub(x_expr, this->qstart), Domain::equalsTo(0.0));
+			}
+			else if (path.nodeKeys[i] == targetKey)
+			{
+				Expression::t x_expr = xPath->slice(new_array_ptr<int, 1>({ 0,i }), new_array_ptr<int, 1>({ n,i + 1 }));
+				MPath->constraint(Expr::sub(x_expr, this->qtarget), Domain::equalsTo(0.0));
+			}
+		}
+		MPath->objective(ObjectiveSense::Minimize, Expr::sum(lPath));
+		MPath->writeTask("dump.ptf");
+		MPath->solve();
+		this->feasibleSolution.status = MPath->getPrimalSolutionStatus();
+		if (feasibleSolution.status == SolutionStatus::Optimal) {
+			if (MPath->primalObjValue() < this->feasibleSolution.cost)
+			{
+				Eigen::VectorXd xvec = Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(MPath->getVariable("x")->level()->begin(), this->n * nVertex));
+				this->feasibleSolution.x = xvec.reshaped(nVertex, this->n).eval();
+				this->feasibleSolution.cost = MPath->primalObjValue();
+				this->optimalPath = path;
+			}
+		}
+		else
+		{
+			std::cout << "Another solution status" << std::endl;
+			std::cout << "Solution status: " << this->M->getPrimalSolutionStatus() << std::endl;
+			//break;
+		}		
+		iters++;
+	}
+}
+
+void ConvexRelaxationMinDistanceSolver::setTask()
 {
 		this->M = new Model("ConvexRelaxationMinDistance");
+		this->solverAllocated = true;
 		this->l = this->M->variable("l", this->nE, Domain::greaterThan(0.0));
 		this->z = this->M->variable("z", Set::make(this->n, this->nE), Domain::unbounded());
 		this->p = this->M->variable("p", Set::make(this->n, this->nE), Domain::unbounded());

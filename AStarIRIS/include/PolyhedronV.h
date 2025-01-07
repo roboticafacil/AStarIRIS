@@ -30,12 +30,15 @@ public:
     PolyhedronV(const PolyhedronV& polyhedron);
     ~PolyhedronV();
     void print();
+    std::ostream& print(std::ostream& out, const std::string& AName, const std::string& bName);
+    std::ostream& print(std::ostream& out, const std::string& vName);
     double closestVertex(const Eigen::VectorXd& p_in, Eigen::VectorXd& p_out);
     virtual double closestPointExpandingEllipsoid(Ellipsoid& ellipsoid, Eigen::VectorXd& p_out);
     virtual bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol=1.e-4);
     bool hasVertices();
     virtual void allocateClosestPointEllipsoidSolver();
     virtual Eigen::MatrixXd getBoundingBox();
+    void getFilled2DPolyhedron(std::vector<double>& x, std::vector<double>& y);
 protected:
     Model::t MClosestPointEllipsoidQP;
     Variable::t xClosestPointEllipsoidQP;

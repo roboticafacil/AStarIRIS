@@ -39,11 +39,15 @@ bool PolyhedronTerminalNode::generateRandomSeed(Eigen::VectorXd& seed, const dou
 	Eigen::VectorXd brange;
 	range->getConstraints(Arange, brange);
 	int trials = 0;
+	Ellipsoid ellipsoid = this->polyhedron.inscribedEllipsoid();
 	while (!contained_Ajbj)
 	{
 		seed = Eigen::VectorXd::Random(n, 1);
-		seed = (seed + Eigen::VectorXd::Constant(n, 1, 1.)) * (bounds.second - bounds.first) / 2.;
-		seed = (seed + Eigen::VectorXd::Constant(n, 1, bounds.first));
+		//Generate a random seend inside the inscribed ellipsoid
+		seed.normalize();
+		seed=ellipsoid.C*seed+ellipsoid.getCentroid();
+		//seed = (seed + Eigen::VectorXd::Constant(n, 1, 1.)) * (bounds.second - bounds.first) / 2.;
+		//seed = (seed + Eigen::VectorXd::Constant(n, 1, bounds.first));
 		//Project the random seed onto the constraint
 		//std::cout << "A=" << this->polyhedron.A << std::endl;
 		//std::cout << "b=" << this->polyhedron.b << std::endl;
@@ -53,7 +57,8 @@ bool PolyhedronTerminalNode::generateRandomSeed(Eigen::VectorXd& seed, const dou
 		//std::cout << "Aj=" << this->Aj << std::endl;
 		//std::cout << "bj=" << this->bj << std::endl;
 		//std::cout << "seed= " << seed << std::endl;
-		seed(col) = (this->bi+(2.*tol)-this->ai_col.dot(seed(cols))) / this->aipivot;
+		//seed(col) = (this->bi+(2.*tol)-this->ai_col.dot(seed(cols))) / this->aipivot;
+		//seed(col) = (this->bi -(tol/0.5) - this->ai_col.dot(seed(cols))) / this->aipivot;
 		bool cond1 = ((Aj * seed - bj).array() <= 0.).all();
 		bool cond2 = ((Arange * seed - brange).array() <= 0.).all();
 		//std::cout << "projected seed= " << seed << std::endl;
@@ -66,7 +71,7 @@ bool PolyhedronTerminalNode::generateRandomSeed(Eigen::VectorXd& seed, const dou
 		trials++;
 		if (trials >= maxTrials)
 		{
-			std::cout << "Warning: maximum number of trials reached in PolyhedronTerminalNode::generateRandomSeed() " << std::endl;
+			//std::cout << "Warning: maximum number of trials reached in PolyhedronTerminalNode::generateRandomSeed() " << std::endl;
 			break;
 		}
 	}
