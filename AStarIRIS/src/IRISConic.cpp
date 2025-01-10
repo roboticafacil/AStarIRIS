@@ -54,13 +54,18 @@ void IRISConic::addConvexSets(const Eigen::VectorXd& q)
 	//Warning, convexSet is not removed from memory!!
 	Ellipsoid ellipsoid(Eigen::MatrixXd::Identity(q.rows(), q.rows()), q);
 	Polyhedron* convexSet = new Polyhedron(q.rows());
-	std::vector<IRISNeighbour_t> neighbours;
+	//std::vector<IRISNeighbour_t> neighbours;
+	std::vector<int> neighbourKeys;
 	while(true)
 	{
-		this->computeConvexSet(ellipsoid, *convexSet, neighbours);
+		this->computeConvexSet(ellipsoid, *convexSet, neighbourKeys);
 		//Add the convexSet to GCS
 		Eigen::VectorXd bShrinked = (1.-params.shrinkFactor)*convexSet->b + params.shrinkFactor * (convexSet->A*ellipsoid.getCentroid());
 		int nodeKey=this->gcs.addNode(new PolyhedronNode(convexSet->A, convexSet->b,bShrinked));
+		for (std::vector<int>::iterator it = neighbourKeys.begin(); it != neighbourKeys.end(); it++)
+		{
+			this->gcs.addEdge(nodeKey, *it);
+		}
 		//Check if the original seed is inside the generated convex set. If not, repeat
 		if (convexSet->isInside(q))
 			break;
@@ -69,7 +74,7 @@ void IRISConic::addConvexSets(const Eigen::VectorXd& q)
 	//convexSet->print();
 }
 
-void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<IRISNeighbour_t>& neighbours)
+/*void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<IRISNeighbour_t>& neighbours)
 {
 	while (true)
 	{
@@ -79,14 +84,14 @@ void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, st
 		//newEllipsoid.print();
 		double detC = ellipsoid.C.determinant();
 		double detNewC = newEllipsoid.C.determinant();
-		if (((detNewC - detC) / detC) < params.tolConvexSetConvergence)
+		if (abs((detNewC - detC) / detC) < params.tolConvexSetConvergence)
 		{
 			ellipsoid = newEllipsoid;
 			break;
 		}
 		ellipsoid = newEllipsoid;
 	}
-	std::vector<int> removedConstraints=convexSet.removeRepeatedConstraints();
+	std::vector<int> removedConstraints = convexSet.removeRepeatedConstraints();
 	for (std::vector<int>::iterator it1 = removedConstraints.begin(); it1 != removedConstraints.end(); it1++)
 	{
 		for (std::vector<IRISNeighbour_t>::iterator it = neighbours.begin(); it != neighbours.end();)
@@ -96,10 +101,157 @@ void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, st
 			else
 				it++;
 		}
+}*/
+
+void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<int>& neighbourKeys)
+{
+	while (true)
+	{
+		separatingHyperplanes(ellipsoid, convexSet);
+		//convexSet->print();
+		Ellipsoid newEllipsoid = convexSet.inscribedEllipsoid();
+		//newEllipsoid.print();
+		double detC = ellipsoid.C.determinant();
+		double detNewC = newEllipsoid.C.determinant();
+		if (abs((detNewC - detC) / detC) < params.tolConvexSetConvergence)
+		{
+			ellipsoid = newEllipsoid;
+			break;
+		}
+		ellipsoid = newEllipsoid;
+	}
+	convexSet.removeRepeatedConstraints();
+	neighbourKeys.clear();
+	std::vector<int> nodeKeys = this->gcs.getNodeKeys();
+	for (std::vector<int>::iterator itNode = nodeKeys.begin(); itNode != nodeKeys.end(); itNode++)
+	{
+		Node* existingNode = this->gcs.getNode(*itNode);
+		PolyhedronNode* existingPolyNode = (PolyhedronNode*)existingNode;
+		bool neighbour = true;
+		for (int i = 0; i < existingPolyNode->polyhedron.A.rows(); i++)
+		{
+			if (!existingPolyNode->polyhedron.isInsideSeparatingHyperplane(convexSet.A.row(i), convexSet.b(i), 0.0))
+			{
+				neighbour = false;
+				break;
+			}
+		}
+		if (neighbour)
+			neighbourKeys.push_back(*itNode);
 	}
 }
 
-void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron, std::vector<IRISNeighbour_t>& neighbours)
+void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron)
+{
+	Eigen::VectorXd centroid = ellipsoid.getCentroid();
+	int n = centroid.rows();
+	std::vector<Node*> nodes = gcs.getNodes();
+	std::vector<int> nodeKeys = gcs.getNodeKeys();
+	std::vector<ConicSet*> objects;
+	std::vector<int> objectsIdx;
+	std::vector<double> distances;
+	std::vector<Eigen::VectorXd> closestPoints;
+	int idx = 0;
+	for (std::vector<ConicSet*>::iterator it = _cObs->conicObjects.begin(); it != _cObs->conicObjects.end(); it++)
+	{
+		ConicSet* p = *it;
+		Eigen::VectorXd p_out(n);
+		double d = p->closestPointExpandingEllipsoid(ellipsoid, p_out);
+		objects.push_back(p);
+		objectsIdx.push_back(idx++);
+		distances.push_back(d);
+		closestPoints.push_back(p_out);
+	}
+	int i = 0;
+	for (std::vector<Node*>::iterator it = nodes.begin(); it != nodes.end(); it++)
+	{
+		Node* node = *it;
+		PolyhedronNode* poly = (PolyhedronNode*)node->getNodeData();
+		Eigen::VectorXd p_out(n);
+		double d;
+		if (poly->useShrinked)
+		{
+			d = poly->shrinkedPolyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
+			objects.push_back(&poly->shrinkedPolyhedron);
+		}
+		else
+		{
+			d = poly->polyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
+			objects.push_back(&poly->polyhedron);
+		}
+		objectsIdx.push_back(idx++);
+		distances.push_back(d);
+		closestPoints.push_back(p_out);
+		i++;
+	}
+	Eigen::MatrixXd A(0, n);
+	Eigen::VectorXd b(0);
+	while (!objects.empty())
+	{
+		std::vector<double>::iterator min_dist_it = std::min_element(distances.begin(), distances.end());
+		double min_dist = *min_dist_it; //Min distance
+		int ii = std::distance(distances.begin(), min_dist_it); //Index of the element with the minimum distance
+		//std::cout << "Closest object " << objectsIdx[ii] << std::endl;
+		//std::cout << "Closest object distance " << min_dist << std::endl;
+		Eigen::VectorXd x = closestPoints[ii];
+		//std::cout << "Closest object point" << std::endl;
+		//std::cout << x << std::endl;
+		Eigen::VectorXd ai(n);
+		double bi;
+		ellipsoid.tangentHyperplane(x, ai, bi);
+		//std::cout << "Closest object separting hyperplane " << std::endl;
+		//std::cout << "ai=";
+		//std::cout << ai << std::endl;
+		//std::cout << "bi=";
+		//std::cout << bi << std::endl;
+		//Append the hyperplane to the inequalities constraints
+		A.conservativeResize(A.rows() + 1, A.cols());
+		A.row(A.rows() - 1) = ai.transpose();
+		b.conservativeResize(b.rows() + 1);
+		b(b.rows() - 1) = bi;
+
+		//Delete the object from the lists
+		objects.erase(objects.begin() + ii);
+		objectsIdx.erase(objectsIdx.begin() + ii);
+		distances.erase(distances.begin() + ii);
+		closestPoints.erase(closestPoints.begin() + ii);
+		//Remove objects that are outside the separating hyperplane
+		std::vector<int>::iterator itIdx = objectsIdx.begin();
+		for (std::vector<ConicSet*>::iterator it = objects.begin(); it != objects.end();)
+		{
+			ConicSet* c = *it;
+			//bool isInside = c->isInsideSeparatingHyperplane(ai, bi,params.tol);
+			bool isInside = true;
+			for (int k = 0; k < A.rows(); k++)
+			{
+				isInside &= (c->isInsideSeparatingHyperplane(A.row(k), b(k), params.tol));
+			}
+			//std::cout << "Object " << *itIdx << "is inside?" << isInside << std::endl;
+			int j = std::distance(objects.begin(), it);
+			if (!isInside)
+			{
+				//std::cout << "Original object removed by separating hyperplane " << *itIdx << std::endl;
+				objects.erase(objects.begin() + j);
+				objectsIdx.erase(objectsIdx.begin() + j);
+				distances.erase(distances.begin() + j);
+				closestPoints.erase(closestPoints.begin() + j);
+			}
+			else
+			{
+				it++; //Increase the iterator if not removed
+				itIdx++;
+			}
+			//std::cout << it._Ptr << std::endl;
+			//std::cout << objects.end()._Ptr << std::endl;
+			if (it._Ptr == objects.end()._Ptr)
+				break;
+
+		}
+	}
+	polyhedron.update(A, b);
+}
+
+/*void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron, std::vector<IRISNeighbour_t>& neighbours)
 {
 	neighbours.clear();
 	Eigen::VectorXd centroid = ellipsoid.getCentroid();
@@ -153,19 +305,19 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 		std::vector<double>::iterator min_dist_it = std::min_element(distances.begin(), distances.end());
 		double min_dist=*min_dist_it; //Min distance
 		int ii = std::distance(distances.begin(),min_dist_it); //Index of the element with the minimum distance
-		//std::cout << "Closest object " << objectsIdx[ii] << std::endl;
-		//std::cout << "Closest object distance " << min_dist << std::endl;
+		std::cout << "Closest object " << objectsIdx[ii] << std::endl;
+		std::cout << "Closest object distance " << min_dist << std::endl;
 		Eigen::VectorXd x = closestPoints[ii];
-		//std::cout << "Closest object point" << std::endl;
-		//std::cout << x << std::endl;
+		std::cout << "Closest object point" << std::endl;
+		std::cout << x << std::endl;
 		Eigen::VectorXd ai(n);
 		double bi;
 		ellipsoid.tangentHyperplane(x, ai, bi);
-		//std::cout << "Closest object separting hyperplane " << std::endl;
-		//std::cout << "ai=";
-		//std::cout << ai << std::endl;
-		//std::cout << "bi=";
-		//std::cout << bi << std::endl;
+		std::cout << "Closest object separting hyperplane " << std::endl;
+		std::cout << "ai=";
+		std::cout << ai << std::endl;
+		std::cout << "bi=";
+		std::cout << bi << std::endl;
 		//Append the hyperplane to the inequalities constraints
 		A.conservativeResize(A.rows() + 1, A.cols());
 		A.row(A.rows()-1) = ai.transpose();
@@ -193,8 +345,13 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 		for (std::vector<ConicSet*>::iterator it=objects.begin();it!=objects.end();)
 		{
 			ConicSet* c = *it;
-			bool isInside = c->isInsideSeparatingHyperplane(ai, bi,params.tol);
-			//std::cout << "Object " << *itIdx << "is inside?" << isInside << std::endl;
+			//bool isInside = c->isInsideSeparatingHyperplane(ai, bi,params.tol);
+			bool isInside = true;
+			for (int k = 0; k < A.rows(); k++)
+			{
+				isInside&=(c->isInsideSeparatingHyperplane(A.row(k),b(k), params.tol));
+			}
+			std::cout << "Object " << *itIdx << "is inside?" << isInside << std::endl;
 			int j = std::distance(objects.begin(), it); 
 			if (!isInside)
 			{
@@ -218,7 +375,7 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 		}
 	}
 	polyhedron.update(A,b);
-}
+}*/
 
 IRISParams_t IRISConic::getDefaultIRISParams()
 {

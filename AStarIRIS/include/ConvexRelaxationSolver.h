@@ -36,7 +36,7 @@ public:
 	virtual void setTask()=0;
 	void solve();
 	Path_t getGreedyPath();
-	Path_t getMCPath();
+	bool getMCPath(Path_t& path);
 protected:
 	virtual void computeFeasibleSolution(const int &maxIters=1) = 0;
 };

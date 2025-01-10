@@ -43,7 +43,7 @@ void MCIRISConic::do_MCRelaxedSolver()
 		}
 	}
 	//Phase 2
-	EGCS simplifiedGraphPhase1 = this->getGraphWithoutTerminalConnections();
+	NavGraph simplifiedGraphPhase1 = this->getGraphWithoutTerminalConnections();
 	ConvexRelaxationMinDistanceSolver feasibleSolverPhase1(simplifiedGraphPhase1, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
 	feasibleSolverPhase1.setTask();
 	feasibleSolverPhase1.solve();
@@ -66,7 +66,7 @@ void MCIRISConic::do_MCRelaxedSolver()
 				std::cout << "Terminal node to expand " << previousLastNodeKey << std::endl;
 				this->expandTerminalNode(previousLastNodeKey);
 			}
-			EGCS simplifiedGraph = this->getGraphWithoutTerminalConnections();
+			NavGraph simplifiedGraph = this->getGraphWithoutTerminalConnections();
 			ConvexRelaxationMinDistanceSolver feasibleSolver(simplifiedGraph, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
 			feasibleSolver.setTask();
 			feasibleSolver.solve();

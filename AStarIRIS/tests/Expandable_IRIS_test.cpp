@@ -4,7 +4,7 @@
 #include "PolyhedronV.h"
 #include "PolyhedronObstacleCircularRobot.h"
 #include "GCS.h"
-#include "EGCS.h"
+#include "NavGraph.h"
 #include "CObsConic.h"
 #include "IRISConic.h"
 #include "ExpandableIRISConic.h"

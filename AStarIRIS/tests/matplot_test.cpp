@@ -6,7 +6,7 @@
 #include "PolyhedronV.h"
 //#include "PolyhedronObstacleCircularRobot.h"
 #include "GCS.h"
-#include "EGCS.h"
+#include "NavGraph.h"
 #include "CObsConic.h"
 #include "IRISConic.h"
 #include "AStarIRISConic.h"
@@ -108,7 +108,7 @@ int drawConvexSets_test()
 	std::cout << "Creating a convex set from qstart " << std::endl;
 	std::cout << qstart << std::endl;
 	irisConic.buildNavGraph(qstart, qtarget);
-	irisConic.doPhase1_RelaxedSolver();
+	irisConic.do_RelaxedSolver();
 	std::vector<Node*> nodes=irisConic.gcs.getNodes();
 	for (std::vector<Node*>::iterator it=nodes.begin();it!=nodes.end();it++)
 	{

@@ -12,50 +12,115 @@ ConvexRelaxationSolver::ConvexRelaxationSolver(const Graph& g, const int& startK
 {
 }
 
-Path_t ConvexRelaxationSolver::getMCPath()
+bool ConvexRelaxationSolver::getMCPath(Path_t & path)
 {
-	//Evitar ciclos en grafos!!
 	int nextKey = startKey;
-	Path_t MCPath;
+	//Path_t MCPath;
 	std::random_device rd;
-	std::mt19937 rng(rd());
+
+	path.nodeKeys.clear();
+	path.edgeKeys.clear();
+	
+	int iters = 0;
 	while (nextKey != targetKey)
 	{
-		MCPath.nodeKeys.push_back(nextKey);
+		path.nodeKeys.push_back(nextKey);
 		std::vector<int> outEdges = this->g.findOutEdges(nextKey);
-		int selected_edge;
-		bool found = true;
-		while (found)
+		std::vector<double> weights;
+		for (std::vector<int>::iterator it = outEdges.begin(); it != outEdges.end(); it++)
 		{
-			std::vector<double> weights;
-			for (std::vector<int>::iterator it = outEdges.begin(); it != outEdges.end(); it++)
-			{
-				weights.push_back(this->relaxedSolution.y(*it));
-			}
-			std::discrete_distribution<int> dist(weights.begin(), weights.end());
-			int val = dist(rng);
-			selected_edge = outEdges[dist(rng)];
-			int current_key = this->g.getEdge(selected_edge).second;
-			found = false;
-			for (std::vector<int>::iterator itNodeKey = MCPath.nodeKeys.begin(); itNodeKey != MCPath.nodeKeys.end(); itNodeKey++)
-			{
-				if (*itNodeKey == current_key)
-				{
-					found = true;
-					break;
-				}
-			}
+			weights.push_back(this->relaxedSolution.y(*it));
 		}
+		std::discrete_distribution<int> dist(weights.begin(), weights.end());
+
+		
+		int selected_edge;
+		//bool found = true;
+		
+		//while (found)
+		//{
+			std::mt19937 rng(rd());
+			selected_edge = outEdges[dist(rng)];
+			nextKey = this->g.getEdge(selected_edge).second;
+			std::vector<int>::iterator it=std::find(path.nodeKeys.begin(), path.nodeKeys.end(), nextKey);
+			if (it < path.nodeKeys.end())
+				return false;
+
+			//found = false;
+			/*for (std::vector<int>::iterator itNodeKey = path.nodeKeys.begin(); itNodeKey != path.nodeKeys.end(); itNodeKey++)
+			{
+				if (*itNodeKey == nextKey)
+				{
+
+					int nodesToDelete = path.nodeKeys.end() - (itNodeKey + 1);
+					//std::cout << nodesToDelete << std::endl;
+					path.nodeKeys.erase(itNodeKey + 1, path.nodeKeys.end());
+					path.edgeKeys.erase(path.edgeKeys.end() - nodesToDelete, path.edgeKeys.end());
+
+					found = true;
+					
+
+
+					//This is not working because redirecting it to another path might not reach the target
+					//while (*itNodeKey == nextKey)
+					//{
+					//	selected_edge = dist(rng);
+					//	nextKey = this->g.getEdge(selected_edge).second;
+					//	
+					//}
+					//selected_edge = this->g.getEdge(selected_edge).second;
+					//break;
+				}
+			}*/
+		//}
 		nextKey = this->g.getEdge(selected_edge).second;
-		MCPath.edgeKeys.push_back(selected_edge);
+		path.edgeKeys.push_back(selected_edge);
 	}
-	MCPath.nodeKeys.push_back(nextKey);
-	return MCPath;
+	path.nodeKeys.push_back(nextKey);
+	//for (std::vector<int>::iterator it1 = MCPath.nodeKeys.begin(); it1 != MCPath.nodeKeys.end(); it1++)
+	//	std::cout << *it1 << std::endl;
+	return true;
 }
 
 Path_t ConvexRelaxationSolver::getGreedyPath()
 {	
-	int nextKey = startKey;
+	int nextKey = targetKey;
+	Path_t greedyPath;
+	while (nextKey != startKey)
+	{
+		greedyPath.nodeKeys.insert(greedyPath.nodeKeys.begin(),nextKey);
+		std::vector<int> inEdges = this->g.findInEdges(nextKey);
+		double max_y = 0.;
+		int best_edge = -1;
+		for (std::vector<int>::iterator it = inEdges.begin(); it != inEdges.end(); it++)
+		{
+			double current_y = this->relaxedSolution.y(*it);
+
+			if (current_y > max_y)
+			{
+				int current_key = this->g.getEdge(*it).first;
+				bool not_found = true;
+				for (std::vector<int>::iterator itNodeKey = greedyPath.nodeKeys.begin(); itNodeKey != greedyPath.nodeKeys.end(); itNodeKey++)
+				{
+					if (*itNodeKey == current_key)
+					{
+						not_found = false;
+						break;
+					}
+				}
+				if (not_found)
+				{
+					max_y = current_y;
+					best_edge = *it;
+				}
+			}
+		}
+		nextKey = this->g.getEdge(best_edge).first;
+		greedyPath.edgeKeys.insert(greedyPath.edgeKeys.begin(),best_edge);
+	}
+	greedyPath.nodeKeys.insert(greedyPath.nodeKeys.begin(),nextKey);
+
+	/*int nextKey = startKey;
 	Path_t greedyPath;
 	while (nextKey != targetKey)
 	{
@@ -90,6 +155,7 @@ Path_t ConvexRelaxationSolver::getGreedyPath()
 		greedyPath.edgeKeys.push_back(best_edge);
 	}
 	greedyPath.nodeKeys.push_back(nextKey);
+	*/
 	return greedyPath;
 }
 

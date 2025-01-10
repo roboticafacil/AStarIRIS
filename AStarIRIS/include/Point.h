@@ -10,6 +10,7 @@ public:
 	Point(const Eigen::VectorXd& p);
 	Point(const Point& point);
 	void print();
+	std::ostream& print(std::ostream& out, const std::string& pointName);
 	double distance(const Eigen::VectorXd& point);
 	double closestPoint(const Eigen::VectorXd& p_in, Eigen::VectorXd& p_out);
 	double closestPoint(const Eigen::VectorXd& p_in);

@@ -22,8 +22,10 @@ public:
 public:
 	AStarIRISConic(CObsConic& cObs, const AStarIRISParams_t& params);
 	static AStarIRISParams_t getDefaultAStarIRISParams();
-	void doPhase1_RelaxedSolver();
-	void doPhase1_MIPSolver();
+	void do_RelaxedSolver();
+	void do_RelaxedSolver(std::ostream& out);
+	void do_MIPSolver();
+	void do_MIPSolver(std::ostream& out);
 	AStarIRISParams_t params;
 };
 #endif

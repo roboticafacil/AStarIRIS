@@ -17,6 +17,19 @@ void Point::print()
 	std::cout << "p=" << this->p << std::endl;
 }
 
+std::ostream& Point::print(std::ostream& out, const std::string& pointName)
+{
+	out << pointName << "=[";
+	for (int i = 0; i < this->p.rows(); i++)
+	{
+		if (i < (this->p.rows() - 1))
+			out << this->p(i) << ";";
+		else
+			out << this->p(i);
+	}
+	out << "];" << std::endl;
+	return out;
+}
 double Point::distance(const Eigen::VectorXd& point)
 {
 	return (p - point).norm();

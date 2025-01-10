@@ -25,6 +25,7 @@ public:
 	MIPSol_t MIPSolution;
 	MinDistanceSolver(const Graph& g, const int& startKey, const int& targetKey);
 	void setTask();
+	void computeFeasibleSolution(const int& maxIters = 1);
 private:
 	Variable::t l;
 	Variable::t z;
@@ -33,7 +34,5 @@ private:
 	//Variable::t v;
 public:
 	void solve();
-private:
-	void computeFeasibleSolution(const int &maxIters=1);
 };
 #endif

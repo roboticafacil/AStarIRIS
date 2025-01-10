@@ -18,7 +18,7 @@ typedef struct
 class ExpandableIRISConic : public IRISConic
 {
 public:
-	EGCS navGraph;
+	NavGraph navGraph;
 	int qStartNodeNavGraphKey;
 	int qTargetNodeNavGraphKey;
 public:
@@ -31,11 +31,11 @@ public:
 	void expandTerminalNode(const int& terminalNodeKey);
 	Eigen::VectorXd generateRandomSeedInTerminalNode();
 	static ExpandableIRISParams_t getDefaultExpandableIRISParams();
-	EGCS getGraphWithoutTerminalConnections();
+	NavGraph getGraphWithoutTerminalConnections();
 	void removeNode(const int key);
 protected:
-	std::map<std::pair<int, int>, int> egcs2gcs;
-	std::vector<std::pair<int, int>> terminalEGCSNodeKeys;
+	std::map<std::pair<int, int>, int> navGraph2gcs;
+	std::vector<std::pair<int, int>> terminalNodeKeys;
 	PointNode* qStartNode;
 	PointNode* qTargetNode;
 	ExpandableIRISParams_t params;

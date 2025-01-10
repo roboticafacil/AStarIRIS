@@ -1,6 +1,7 @@
 #include "ConvexRelaxationMinDistanceSolver.h"
 #include "Graph.h"
 #include "PolyhedronNode.h"
+#include "PolyhedronTerminalNode.h"
 #include "PointNode.h"
 #include "fusion.h"
 #include <vector>
@@ -16,9 +17,16 @@ void ConvexRelaxationMinDistanceSolver::computeFeasibleSolution(const int& maxIt
 	int iters = 0;
 	this->feasibleSolution.cost = (double)std::numeric_limits<double>::infinity();
 	Path_t OptimalPath;
+	Path_t path;
 	while (iters < maxIters)
 	{
-		Path_t path=this->getMCPath();
+		if (!this->getMCPath(path))
+		{
+			//std::cout << "MCPath returned an invalid path" << std::endl;
+			continue;
+		}
+		int terminalNodeKey = path.nodeKeys[path.nodeKeys.size() - 2];
+		Node* node = this->g.getNode(terminalNodeKey);
 		int nEdges = path.edgeKeys.size();
 		int nVertex = path.nodeKeys.size();
 		Model::t MPath = new Model("ConvexRelaxationMinDistance");
@@ -66,7 +74,7 @@ void ConvexRelaxationMinDistanceSolver::computeFeasibleSolution(const int& maxIt
 			}
 		}
 		MPath->objective(ObjectiveSense::Minimize, Expr::sum(lPath));
-		MPath->writeTask("dump.ptf");
+		//MPath->writeTask("dump.ptf");
 		MPath->solve();
 		this->feasibleSolution.status = MPath->getPrimalSolutionStatus();
 		if (feasibleSolution.status == SolutionStatus::Optimal) {

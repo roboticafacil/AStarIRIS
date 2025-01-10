@@ -110,7 +110,10 @@ bool Polyhedron::isInside(const Eigen::VectorXd& q, const double &tol)
 bool Polyhedron::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
 {
     this->allocateIsInsideSeparatingHyperplaneSolver();
+    //if ((ai.rows() != 2))
+    //    std::cout << "Something is wrong" << std::endl;
     std::shared_ptr<ndarray<double, 2>> ai_ptr = Eigen2NdArray(Eigen::MatrixXd(ai.transpose()));
+    //std::shared_ptr<ndarray<double, 2>> ai_ptr = Eigen2NdArray(Eigen::MatrixXd(ai));
     if (!this->MIsInsideSeparatingHyperplane->hasConstraint("hyperplane"))
         this->MIsInsideSeparatingHyperplane->constraint("hyperplane", Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi), Domain::lessThan(tol));
     else

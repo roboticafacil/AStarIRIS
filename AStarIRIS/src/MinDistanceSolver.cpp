@@ -188,5 +188,5 @@ void MinDistanceSolver::solve()
 		std::cout << "Another solution status" << std::endl;
 		std::cout << "Solution status: " << this->M->getPrimalSolutionStatus() << std::endl;
 	}
-	this->computeFeasibleSolution();
+	//this->computeFeasibleSolution();
 }

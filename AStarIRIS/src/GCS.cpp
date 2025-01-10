@@ -22,9 +22,14 @@ void GCS::print()
 	this->printEdges();
 }
 
-void GCS::print(std::ostream& out)
+void GCS::print(std::ostream& out, const int &num)
 {
 	int i = 1;
+	out << "AGCS" << num << "=cell(0);" << std::endl;
+	out << "bGCS" << num << "=cell(0);" << std::endl;
+	out << "colGCS" << num << "=cell(0);" << std::endl;
+	out << "centroidGCS" << num << "=cell(0);" << std::endl;
+	out << "nameGCS" << num << "=cell(0);" << std::endl;
 	for (NodeMap::iterator it = this->nodes.begin(); it != this->nodes.end(); it++)
 	{
 		Node* node = it->second;
@@ -32,11 +37,11 @@ void GCS::print(std::ostream& out)
 		{
 			PolyhedronNode* polyNode = (PolyhedronNode*)node;
 			polyNode->polyhedron.print(out, "A", "b",true);
-			out << "AGCS{" << i << "}=-A;" << std::endl;
-			out << "bGCS{" << i << "}=-b;" << std::endl;
-			out << "colGCS{" << i << "}=[0.5 0.5 0.5];" << std::endl;
-			out << "centroidGCS{" << i << "}=mean(con2vert(A,b),2);" << std::endl;
-			out << "nameGCS{" << i << "}='"<< i <<"';" << std::endl;
+			out << "AGCS" << num << "{" << i << "} = -A; " << std::endl;
+			out << "bGCS" << num << "{" << i << "}=-b;" << std::endl;
+			out << "colGCS" << num << "{" << i << "}=[0.5 0.5 0.5];" << std::endl;
+			out << "centroidGCS" << num << "{" << i << "}=mean(con2vert(A,b),2);" << std::endl;
+			out << "nameGCS" << num << "{" << i << "}='"<< i <<"';" << std::endl;
 			i++;
 		}
 	}

@@ -4,7 +4,7 @@
 #include "PolyhedronV.h"
 #include "PolyhedronObstacleCircularRobot.h"
 #include "GCS.h"
-#include "EGCS.h"
+#include "NavGraph.h"
 #include "CObsConic.h"
 #include "IRISConic.h"
 #include "MCIRISConic.h"
@@ -55,34 +55,34 @@ CObsConic getCObsPolyhedronV_16_obstacles()
 	Eigen::Matrix<double, 2, 5> v5({ {-20., -18., -10., -8., -10},{-5., -3., -18., -16., -10.} });
 	PolyhedronV* o5 = new PolyhedronV(v5);
 	cObs.addObject(o5);
-	Eigen::Matrix<double, 2, 5> v6({ {0., 15., 15., 0.},{-16., -16., -13., -13.} });
+	Eigen::Matrix<double, 2, 4> v6({ {0., 15., 15., 0.},{-16., -16., -13., -13.} });
 	PolyhedronV* o6 = new PolyhedronV(v6);
 	cObs.addObject(o6);
-	Eigen::Matrix<double, 2, 5> v7({ {-6., -5., -5., -7.},{-11., -11., -10., -10.} });
+	Eigen::Matrix<double, 2, 4> v7({ {-6., -5., -5., -7.},{-11., -11., -10., -10.} });
 	PolyhedronV* o7 = new PolyhedronV(v7);
 	cObs.addObject(o7);
-	Eigen::Matrix<double, 2, 5> v8({ {15., 16., 16., 15.},{-10., -10., -5., -5.} });
+	Eigen::Matrix<double, 2, 4> v8({ {15., 16., 16., 15.},{-10., -10., -5., -5.} });
 	PolyhedronV* o8 = new PolyhedronV(v8);
 	cObs.addObject(o8);
-	Eigen::Matrix<double, 2, 5> v9({ {12., 13., 13., 12.},{3., 5., 15., 15.} });
+	Eigen::Matrix<double, 2, 4> v9({ {12., 13., 13., 12.},{3., 5., 15., 15.} });
 	PolyhedronV* o9 = new PolyhedronV(v9);
 	cObs.addObject(o9);
-	Eigen::Matrix<double, 2, 5> v10({ {-12., -13., -13., -12.},{3., 5., 15., 15.} });
+	Eigen::Matrix<double, 2, 4> v10({ {-12., -13., -13., -12.},{3., 5., 15., 15.} });
 	PolyhedronV* o10 = new PolyhedronV(v10);
 	cObs.addObject(o10);
-	Eigen::Matrix<double, 2, 5> v11({ {-5., 5., 5., - 5.},{9., 9., 10., 10.} });
+	Eigen::Matrix<double, 2, 4> v11({ {-5., 5., 5., -5.},{9., 9., 10., 10.} });
 	PolyhedronV* o11 = new PolyhedronV(v11);
 	cObs.addObject(o11);
-	Eigen::Matrix<double, 2, 5> v12({ {9., 10., 10., 9.},{-5, -5., 2., 2.} });
+	Eigen::Matrix<double, 2, 4> v12({ {9., 10., 10., 9.},{-5, -5., 2., 2.} });
 	PolyhedronV* o12 = new PolyhedronV(v12);
 	cObs.addObject(o12);
-	Eigen::Matrix<double, 2, 5> v13({ {-7., -8., -8., -9.},{6., 7., 5., 6.} });
+	Eigen::Matrix<double, 2, 4> v13({ {-7., -8., -8., -9.},{6., 7., 5., 6.} });
 	PolyhedronV* o13 = new PolyhedronV(v13);
 	cObs.addObject(o13);
-	Eigen::Matrix<double, 2, 5> v14({ {-12., -13., -13., -14.},{-1., 0., -2., -1.} });
+	Eigen::Matrix<double, 2, 4> v14({ {-12., -13., -13., -14.},{-1., 0., -2., -1.} });
 	PolyhedronV* o14 = new PolyhedronV(v14);
 	cObs.addObject(o14);
-	Eigen::Matrix<double, 2, 5> v15({ {0., 8., 8., 0.},{12., 12., 13., 13.} });
+	Eigen::Matrix<double, 2, 4> v15({ {0., 8., 8., 0.},{12., 12., 13., 13.} });
 	PolyhedronV* o15 = new PolyhedronV(v15);
 	cObs.addObject(o14);
 	return cObs;
