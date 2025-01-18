@@ -1,0 +1,161 @@
+\doxysection{Circle Class Reference}
+\hypertarget{class_circle}{}\label{class_circle}\index{Circle@{Circle}}
+Inheritance diagram for Circle\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_circle}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_circle_a371bc6e6759955f5f107fbe9f17fb74f}\label{class_circle_a371bc6e6759955f5f107fbe9f17fb74f} 
+{\bfseries Circle} (const int \&n)
+\item 
+\Hypertarget{class_circle_a1828e49a0e8127059e907c5660afa815}\label{class_circle_a1828e49a0e8127059e907c5660afa815} 
+{\bfseries Circle} (const \mbox{\hyperlink{class_circle}{Circle}} \&circle)
+\item 
+\Hypertarget{class_circle_a15626dfd2c96c15eff006f68c4e5c4a5}\label{class_circle_a15626dfd2c96c15eff006f68c4e5c4a5} 
+{\bfseries Circle} (const Eigen\+::\+Vector\+Xd \&center, const double \&radius)
+\item 
+\Hypertarget{class_circle_aada35d0dcd950c3be40ea330b696c1d5}\label{class_circle_aada35d0dcd950c3be40ea330b696c1d5} 
+\mbox{\hyperlink{class_circle}{Circle}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_circle}{Circle}} \&other)
+\item 
+double \mbox{\hyperlink{class_circle_a2bf09e9c6602c9f8f2fdb844b1e23c17}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+double \mbox{\hyperlink{class_circle_acbd92023eb81ef3642302162619ee84a}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in)
+\item 
+double \mbox{\hyperlink{class_circle_a397b9b738f1d89688853c28365327e79}{closest\+Point\+Expanding\+Ellipsoid}} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+bool \mbox{\hyperlink{class_circle_a871f563ec984e0bdf2c59bd71e2d998c}{is\+Inside}} (const Eigen\+::\+Vector\+Xd \&p, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_circle_ab36be9737866df58a066468173ad9411}{is\+Inside\+Separating\+Hyperplane}} (const Eigen\+::\+Vector\+Xd \&ai, const double \&bi, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_circle_a98236d7a7dc0ef4803adb16817dfc6eb}{is\+Inside\+Separating\+Hyperplanes}} (const Eigen\+::\+Matrix\+Xd \&A, const Eigen\+::\+Vector\+Xd \&b, const double \&tol=1.e-\/4)
+\item 
+Eigen\+::\+Vector\+Xd \mbox{\hyperlink{class_circle_af900e872bbb05a63ca88e5e45368ca52}{get\+Centroid}} ()
+\item 
+Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{class_circle_aa21a46ae918b12694227a5e28c903c30}{get\+Bounding\+Box}} ()
+\item 
+\Hypertarget{class_circle_a2ca632d55ee23f2068fac550ed87a90e}\label{class_circle_a2ca632d55ee23f2068fac550ed87a90e} 
+void {\bfseries allocate\+Closest\+Point\+Ellipsoid\+Solver} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Conic\+Set} (const int \&n)
+\item 
+{\bfseries Conic\+Set} (const \mbox{\hyperlink{class_conic_set}{Conic\+Set}} \&conic\+Set)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_circle_a5a0212ba705f57d762bd6b202e3d10ed}\label{class_circle_a5a0212ba705f57d762bd6b202e3d10ed} 
+double {\bfseries radius}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+const int {\bfseries n}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries centroid\+Computed} =false
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries centroid}
+\item 
+bool {\bfseries bb\+Computed} = false
+\item 
+Eigen\+::\+Matrix\+Xd {\bfseries bb}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_circle_acbd92023eb81ef3642302162619ee84a}\index{Circle@{Circle}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_circle_acbd92023eb81ef3642302162619ee84a} 
+double Circle\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_circle_a2bf09e9c6602c9f8f2fdb844b1e23c17}\index{Circle@{Circle}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_circle_a2bf09e9c6602c9f8f2fdb844b1e23c17} 
+double Circle\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_circle_a397b9b738f1d89688853c28365327e79}\index{Circle@{Circle}!closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}}
+\index{closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{closestPointExpandingEllipsoid()}{closestPointExpandingEllipsoid()}}
+{\footnotesize\ttfamily \label{class_circle_a397b9b738f1d89688853c28365327e79} 
+double Circle\+::closest\+Point\+Expanding\+Ellipsoid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&}]{ellipsoid}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_circle_aa21a46ae918b12694227a5e28c903c30}\index{Circle@{Circle}!getBoundingBox@{getBoundingBox}}
+\index{getBoundingBox@{getBoundingBox}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{getBoundingBox()}{getBoundingBox()}}
+{\footnotesize\ttfamily \label{class_circle_aa21a46ae918b12694227a5e28c903c30} 
+Eigen\+::\+Matrix\+Xd Circle\+::get\+Bounding\+Box (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_circle_af900e872bbb05a63ca88e5e45368ca52}\index{Circle@{Circle}!getCentroid@{getCentroid}}
+\index{getCentroid@{getCentroid}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{getCentroid()}{getCentroid()}}
+{\footnotesize\ttfamily \label{class_circle_af900e872bbb05a63ca88e5e45368ca52} 
+Eigen\+::\+Vector\+Xd Circle\+::get\+Centroid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_circle_a871f563ec984e0bdf2c59bd71e2d998c}\index{Circle@{Circle}!isInside@{isInside}}
+\index{isInside@{isInside}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{isInside()}{isInside()}}
+{\footnotesize\ttfamily \label{class_circle_a871f563ec984e0bdf2c59bd71e2d998c} 
+bool Circle\+::is\+Inside (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_circle_ab36be9737866df58a066468173ad9411}\index{Circle@{Circle}!isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}}
+\index{isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplane()}{isInsideSeparatingHyperplane()}}
+{\footnotesize\ttfamily \label{class_circle_ab36be9737866df58a066468173ad9411} 
+bool Circle\+::is\+Inside\+Separating\+Hyperplane (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{ai}{, }\item[{const double \&}]{bi}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_circle_a98236d7a7dc0ef4803adb16817dfc6eb}\index{Circle@{Circle}!isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}}
+\index{isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}!Circle@{Circle}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplanes()}{isInsideSeparatingHyperplanes()}}
+{\footnotesize\ttfamily \label{class_circle_a98236d7a7dc0ef4803adb16817dfc6eb} 
+bool Circle\+::is\+Inside\+Separating\+Hyperplanes (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xd \&}]{A}{, }\item[{const Eigen\+::\+Vector\+Xd \&}]{b}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Circle.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Circle.\+cpp\end{DoxyCompactItemize}

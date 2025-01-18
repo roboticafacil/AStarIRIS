@@ -1,0 +1,128 @@
+\doxysection{Convex\+Relaxation\+Solver Class Reference}
+\hypertarget{class_convex_relaxation_solver}{}\label{class_convex_relaxation_solver}\index{ConvexRelaxationSolver@{ConvexRelaxationSolver}}
+Inheritance diagram for Convex\+Relaxation\+Solver\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_convex_relaxation_solver}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_convex_relaxation_solver_aef8eb9a7f4e8672276a577214791276f}\label{class_convex_relaxation_solver_aef8eb9a7f4e8672276a577214791276f} 
+{\bfseries Convex\+Relaxation\+Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+virtual void \mbox{\hyperlink{class_convex_relaxation_solver_aa069d590ab08c495e18959219d8e2e56}{set\+Task}} ()=0
+\item 
+void \mbox{\hyperlink{class_convex_relaxation_solver_abe7537641e56d3a3c8f16f632e16c7db}{solve}} ()
+\item 
+\Hypertarget{class_convex_relaxation_solver_adabf19110445ab68cfdbc33c02b570c1}\label{class_convex_relaxation_solver_adabf19110445ab68cfdbc33c02b570c1} 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries get\+Greedy\+Path} ()
+\item 
+\Hypertarget{class_convex_relaxation_solver_aa5bac9d1e65010ec11e8826feb0d4107}\label{class_convex_relaxation_solver_aa5bac9d1e65010ec11e8826feb0d4107} 
+bool {\bfseries get\+MCPath} (\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} \&path)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+void {\bfseries set\+Graph} (\mbox{\hyperlink{class_graph}{Graph}} \&g)
+\item 
+bool {\bfseries optimal\+Path\+Contains\+Terminal\+Nodes} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_convex_relaxation_solver_a4b2eceb29753b78f27c4cb9293ab4d3d}\label{class_convex_relaxation_solver_a4b2eceb29753b78f27c4cb9293ab4d3d} 
+\mbox{\hyperlink{struct_convex_relaxation_sol__t}{Convex\+Relaxation\+Sol\+\_\+t}} {\bfseries relaxed\+Solution}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_feasible_sol__t}{Feasible\+Sol\+\_\+t}} {\bfseries feasible\+Solution}
+\item 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries optimal\+Path}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_convex_relaxation_solver_a79a4cab5848cd6b9fb9f64d14c936ea7}{compute\+Feasible\+Solution}} (const int \&max\+Iters=1)=0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_convex_relaxation_solver_ab9f49837f789542e4fbf3428ace4c107}\label{class_convex_relaxation_solver_ab9f49837f789542e4fbf3428ace4c107} 
+Variable\+::t {\bfseries l}
+\item 
+\Hypertarget{class_convex_relaxation_solver_aebb980522e608cde24ee4d0257c6429b}\label{class_convex_relaxation_solver_aebb980522e608cde24ee4d0257c6429b} 
+Variable\+::t {\bfseries z}
+\item 
+\Hypertarget{class_convex_relaxation_solver_a25d1637135e736098e9895c163726ce4}\label{class_convex_relaxation_solver_a25d1637135e736098e9895c163726ce4} 
+Variable\+::t {\bfseries p}
+\item 
+\Hypertarget{class_convex_relaxation_solver_a6802c5862a5f1c40c4895f9038562eb0}\label{class_convex_relaxation_solver_a6802c5862a5f1c40c4895f9038562eb0} 
+Variable\+::t {\bfseries y}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_graph}{Graph}} {\bfseries g}
+\item 
+Model\+::t {\bfseries M}
+\item 
+int {\bfseries n}
+\item 
+int {\bfseries nE}
+\item 
+int {\bfseries nN}
+\item 
+int {\bfseries start\+Key}
+\item 
+int {\bfseries target\+Key}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qstart}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qtarget}
+\item 
+bool {\bfseries solver\+Allocated}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_convex_relaxation_solver_a79a4cab5848cd6b9fb9f64d14c936ea7}\index{ConvexRelaxationSolver@{ConvexRelaxationSolver}!computeFeasibleSolution@{computeFeasibleSolution}}
+\index{computeFeasibleSolution@{computeFeasibleSolution}!ConvexRelaxationSolver@{ConvexRelaxationSolver}}
+\doxysubsubsection{\texorpdfstring{computeFeasibleSolution()}{computeFeasibleSolution()}}
+{\footnotesize\ttfamily \label{class_convex_relaxation_solver_a79a4cab5848cd6b9fb9f64d14c936ea7} 
+virtual void Convex\+Relaxation\+Solver\+::compute\+Feasible\+Solution (\begin{DoxyParamCaption}\item[{const int \&}]{max\+Iters}{ = {\ttfamily 1}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_solver}{Solver}}.
+
+\Hypertarget{class_convex_relaxation_solver_aa069d590ab08c495e18959219d8e2e56}\index{ConvexRelaxationSolver@{ConvexRelaxationSolver}!setTask@{setTask}}
+\index{setTask@{setTask}!ConvexRelaxationSolver@{ConvexRelaxationSolver}}
+\doxysubsubsection{\texorpdfstring{setTask()}{setTask()}}
+{\footnotesize\ttfamily \label{class_convex_relaxation_solver_aa069d590ab08c495e18959219d8e2e56} 
+virtual void Convex\+Relaxation\+Solver\+::set\+Task (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_solver}{Solver}}.
+
+\Hypertarget{class_convex_relaxation_solver_abe7537641e56d3a3c8f16f632e16c7db}\index{ConvexRelaxationSolver@{ConvexRelaxationSolver}!solve@{solve}}
+\index{solve@{solve}!ConvexRelaxationSolver@{ConvexRelaxationSolver}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily \label{class_convex_relaxation_solver_abe7537641e56d3a3c8f16f632e16c7db} 
+void Convex\+Relaxation\+Solver\+::solve (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_solver}{Solver}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Convex\+Relaxation\+Solver.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Convex\+Relaxation\+Solver.\+cpp\end{DoxyCompactItemize}

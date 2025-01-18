@@ -4,7 +4,7 @@
 #include <list>
 #include "ConicSet.h"
 #include "Point.h"
-#include "Circle.h"
+#include "Sphere.h"
 #include "Polyhedron.h"
 #include "PolyhedronObstacleCircularRobot.h"
 

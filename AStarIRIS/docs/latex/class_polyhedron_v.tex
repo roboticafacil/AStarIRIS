@@ -1,0 +1,344 @@
+\doxysection{PolyhedronV Class Reference}
+\hypertarget{class_polyhedron_v}{}\label{class_polyhedron_v}\index{PolyhedronV@{PolyhedronV}}
+Inheritance diagram for PolyhedronV\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{class_polyhedron_v}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_polyhedron_v_ae4985ffb09b63bb0c94f2eabca6026b9}\label{class_polyhedron_v_ae4985ffb09b63bb0c94f2eabca6026b9} 
+{\bfseries PolyhedronV} (const int \&n)
+\item 
+\Hypertarget{class_polyhedron_v_a1dc6daeac962dc7a310c885500199aa7}\label{class_polyhedron_v_a1dc6daeac962dc7a310c885500199aa7} 
+{\bfseries PolyhedronV} (const Eigen\+::\+Matrix\+Xd \&v)
+\item 
+\Hypertarget{class_polyhedron_v_a6e4a7b49f6dcc0f1137acafefbf9c975}\label{class_polyhedron_v_a6e4a7b49f6dcc0f1137acafefbf9c975} 
+{\bfseries PolyhedronV} (const \mbox{\hyperlink{class_polyhedron_v}{PolyhedronV}} \&polyhedron)
+\item 
+void \mbox{\hyperlink{class_polyhedron_v_a07a7ca7f181d8abbd693fac6b23df53d}{print}} ()
+\item 
+\Hypertarget{class_polyhedron_v_a91638dfffa68bd4a971ad370e2510705}\label{class_polyhedron_v_a91638dfffa68bd4a971ad370e2510705} 
+void {\bfseries print\+AB} ()
+\item 
+\Hypertarget{class_polyhedron_v_ac830cbd2728ac2c4a4d20e0dbb7b849a}\label{class_polyhedron_v_ac830cbd2728ac2c4a4d20e0dbb7b849a} 
+std\+::ostream \& {\bfseries print} (std\+::ostream \&out, const std\+::string \&AName, const std\+::string \&b\+Name)
+\item 
+\Hypertarget{class_polyhedron_v_a409f6ecb2615350967aceba99ca7cd21}\label{class_polyhedron_v_a409f6ecb2615350967aceba99ca7cd21} 
+std\+::ostream \& {\bfseries print} (std\+::ostream \&out, const std\+::string \&v\+Name)
+\item 
+\Hypertarget{class_polyhedron_v_a9e181fa64aca12b0860d4f5222a1091d}\label{class_polyhedron_v_a9e181fa64aca12b0860d4f5222a1091d} 
+double {\bfseries closest\+Vertex} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+virtual double \mbox{\hyperlink{class_polyhedron_v_aaaece58b692401a3c93106cfe3e71c21}{closest\+Point\+Expanding\+Ellipsoid}} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+virtual bool \mbox{\hyperlink{class_polyhedron_v_a4883fb79af37200427dda08a04168cf4}{is\+Inside\+Separating\+Hyperplane}} (const Eigen\+::\+Vector\+Xd \&ai, const double \&bi, const double \&tol=1.e-\/4)
+\item 
+virtual bool \mbox{\hyperlink{class_polyhedron_v_ac050799a7cac251508cf55ab404add5a}{is\+Inside\+Separating\+Hyperplanes}} (const Eigen\+::\+Matrix\+Xd \&\mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}, const Eigen\+::\+Vector\+Xd \&\mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}}, const double \&tol=1.e-\/4)
+\item 
+\Hypertarget{class_polyhedron_v_a3754dbc1c557c17aebdfdfe42e7aaa20}\label{class_polyhedron_v_a3754dbc1c557c17aebdfdfe42e7aaa20} 
+bool {\bfseries has\+Vertices} ()
+\item 
+virtual void \mbox{\hyperlink{class_polyhedron_v_a4c275d6196c6576104afb60442856732}{allocate\+Closest\+Point\+Ellipsoid\+Solver}} ()
+\item 
+virtual Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{class_polyhedron_v_ab9f4fbc1444caa48bfe1267f83038069}{get\+Bounding\+Box}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_polyhedron}{Polyhedron}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}} (const int \&n)
+\item 
+\mbox{\hyperlink{class_polyhedron_ac620c35abc2f14019b2bfc86aa839d8b}{Polyhedron}} (const Eigen\+::\+Matrix\+Xd \&\mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}, const Eigen\+::\+Vector\+Xd \&\mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}})
+\item 
+\mbox{\hyperlink{class_polyhedron_a6a75082a4ec97a9190e7a6b74a6a0abb}{Polyhedron}} (const \mbox{\hyperlink{class_polyhedron}{Polyhedron}} \&polyhedron)
+\item 
+\mbox{\hyperlink{class_polyhedron_a8f8dd9f8f21a021f543461435076de8a}{\texorpdfstring{$\sim$}{\string~}\+Polyhedron}} ()
+\item 
+void \mbox{\hyperlink{class_polyhedron_a64bb9bc65a402435a12278a48289e52e}{update}} (const Eigen\+::\+Matrix\+Xd \&\mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}, const Eigen\+::\+Vector\+Xd \&\mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}})
+\item 
+std\+::ostream \& \mbox{\hyperlink{class_polyhedron_af9d4a0ac48dc1ede5ea6f47548e9d9c1}{print}} (std\+::ostream \&out, const std\+::string \&AName, const std\+::string \&b\+Name, const bool \&add\+Range\+Limits)
+\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{class_polyhedron_a451792f99512d897d58df2ce24a0ae38}{remove\+Repeated\+Constraints}} ()
+\item 
+virtual double \mbox{\hyperlink{class_polyhedron_a2858c3ced2705c3dcd0d450c56802a9e}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+virtual double \mbox{\hyperlink{class_polyhedron_a30a810c4d83d8edadc9db7d51f6b35d7}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in)
+\item 
+virtual bool \mbox{\hyperlink{class_polyhedron_a6838ac72e7cd0c43b37677a98d360d94}{is\+Inside}} (const Eigen\+::\+Vector\+Xd \&p, const double \&tol=1.e-\/4)
+\item 
+virtual \mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \mbox{\hyperlink{class_polyhedron_a2abe1049107e6d77b9010b1111fe5e9f}{inscribed\+Ellipsoid}} ()
+\item 
+virtual \mbox{\hyperlink{class_sphere}{Sphere}} \mbox{\hyperlink{class_polyhedron_a38fa31dd50d92533a4549d65ab6f849e}{inscribed\+Sphere}} ()
+\item 
+virtual Eigen\+::\+Vector\+Xd \mbox{\hyperlink{class_polyhedron_af6f95b937e548b16fc52a157a757c4ef}{get\+Centroid}} ()
+\item 
+bool \mbox{\hyperlink{class_polyhedron_a7cc766e1bd5c5991b4476a0045b2e253}{intersect}} (const Eigen\+::\+Matrix\+Xd \&\mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}, const Eigen\+::\+Vector\+Xd \&\mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}})
+\item 
+void \mbox{\hyperlink{class_polyhedron_a75b1a4b52a55777b6bb793b103c62b7a}{closest\+Constraint}} (const Eigen\+::\+Vector\+Xd \&p, Eigen\+::\+Vector\+Xd \&ai, double \&bi)
+\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{class_polyhedron_a20b811d32e0e2a7ab95a73612f69d301}{eq\+Constraints}} (const Eigen\+::\+Vector\+Xd \&p, const double \&tol=1.e-\/4)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Conic\+Set} (const int \&n)
+\item 
+{\bfseries Conic\+Set} (const \mbox{\hyperlink{class_conic_set}{Conic\+Set}} \&conic\+Set)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_polyhedron_v_a3fc934329da94b0104d4b15a93e404d4}\label{class_polyhedron_v_a3fc934329da94b0104d4b15a93e404d4} 
+Eigen\+::\+Matrix\+Xd {\bfseries v}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_polyhedron}{Polyhedron}}}
+\begin{DoxyCompactItemize}
+\item 
+Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}
+\item 
+Eigen\+::\+Vector\+Xd \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+const int {\bfseries n}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_polyhedron_v_a68ee6413800fe2d200359caf6201492d}\label{class_polyhedron_v_a68ee6413800fe2d200359caf6201492d} 
+Model\+::t {\bfseries MClosest\+Point\+Ellipsoid\+QP}
+\item 
+\Hypertarget{class_polyhedron_v_a3155900f001f7cf8512da8ae8052cbb3}\label{class_polyhedron_v_a3155900f001f7cf8512da8ae8052cbb3} 
+Variable\+::t {\bfseries x\+Closest\+Point\+Ellipsoid\+QP}
+\item 
+\Hypertarget{class_polyhedron_v_af226239771ef7ad23804f9fd681b4191}\label{class_polyhedron_v_af226239771ef7ad23804f9fd681b4191} 
+Variable\+::t {\bfseries w\+Closest\+Point\+Ellipsoid\+QP}
+\item 
+\Hypertarget{class_polyhedron_v_aac3f948cff284fbb305bffbc7a23ee19}\label{class_polyhedron_v_aac3f948cff284fbb305bffbc7a23ee19} 
+Variable\+::t {\bfseries alpha\+Closest\+Point\+Ellipsoid\+QP}
+\item 
+\Hypertarget{class_polyhedron_v_a878ec6ff9b8fe71ad8579519beb582ef}\label{class_polyhedron_v_a878ec6ff9b8fe71ad8579519beb582ef} 
+bool {\bfseries solver\+Closest\+Point\+Ellipsoid\+QPAllocated} = false
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_polyhedron}{Polyhedron}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries A\+\_\+ptr}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 1 $>$ $>$ {\bfseries b\+\_\+ptr}
+\item 
+Model\+::t {\bfseries MClosest\+Point}
+\item 
+Variable\+::t {\bfseries x\+Closest\+Point}
+\item 
+Variable\+::t {\bfseries l}
+\item 
+\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} {\bfseries ellipsoid}
+\item 
+bool {\bfseries computed\+Inscribed\+Ellipsoid} =false
+\item 
+\mbox{\hyperlink{class_sphere}{Sphere}} {\bfseries sphere}
+\item 
+bool {\bfseries computed\+Inscribed\+Sphere} =false
+\item 
+bool {\bfseries solver\+Closest\+Point\+Allocated} =false
+\item 
+Model\+::t {\bfseries MClosest\+Point\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries x\+Closest\+Point\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries w\+Closest\+Point\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries alpha\+Closest\+Point\+Ellipsoid}
+\item 
+bool {\bfseries solver\+Closest\+Point\+Ellipsoid\+Allocated} = false
+\item 
+Model\+::t {\bfseries MIs\+Inside\+Separating\+Hyperplane}
+\item 
+Variable\+::t {\bfseries x\+Is\+Inside\+Separating\+Hyperplane}
+\item 
+bool {\bfseries solver\+Is\+Inside\+Separating\+Hyperplane\+Allocated} = false
+\item 
+int {\bfseries num\+Is\+Inside\+Separating\+Hyperplanes} = 0
+\item 
+Model\+::t {\bfseries MInscribed\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries x\+Inscribed\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries CInscribed\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries t\+Inscribed\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries YInscribed\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries ZInscribed\+Ellipsoid}
+\item 
+Variable\+::t {\bfseries DZInscribed\+Ellipsoid}
+\item 
+bool {\bfseries solver\+Inscribed\+Ellipsoid\+Allocated} = false
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries centroid\+Computed} =false
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries centroid}
+\item 
+bool {\bfseries bb\+Computed} = false
+\item 
+Eigen\+::\+Matrix\+Xd {\bfseries bb}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{class_polyhedron}{Polyhedron}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_polyhedron_a3ffda8db043fb84e82e7655d90844c17}{vert2con}} (const Eigen\+::\+Matrix\+Xd \&v, Eigen\+::\+Matrix\+Xd \&A\+\_\+out, Eigen\+::\+Vector\+Xd \&b\+\_\+out)
+\item 
+static std\+::vector$<$ int $>$ \mbox{\hyperlink{class_polyhedron_af2e19926e45e0ec3de10eabbefa33a74}{remove\+Repeated\+Constraints}} (const Eigen\+::\+Matrix\+Xd \&\mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}, const Eigen\+::\+Vector\+Xd \&\mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}}, Eigen\+::\+Matrix\+Xd \&Aout, Eigen\+::\+Vector\+Xd \&bout)
+\item 
+static void \mbox{\hyperlink{class_polyhedron_a193ae75f29018e30b0de0ad103d3b471}{con2vert}} (const Eigen\+::\+Matrix\+Xd \&\mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}, const Eigen\+::\+Vector\+Xd \&\mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}}, Eigen\+::\+Matrix\+Xd \&v)
+\item 
+static double \mbox{\hyperlink{class_polyhedron_a3fa1250defbdacc5ac8936f01203ecd8}{inscribed\+Ellipsoid\+Volume}} (const Eigen\+::\+Matrix\+Xd \&\mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}}, const Eigen\+::\+Vector\+Xd \&\mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}})
+\item 
+static bool \mbox{\hyperlink{class_polyhedron_a6802059ac81a600aef3194dd2137ae50}{intersect}} (const \mbox{\hyperlink{class_polyhedron}{Polyhedron}} \&polyhedron1, const \mbox{\hyperlink{class_polyhedron}{Polyhedron}} \&polyhedron2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_polyhedron}{Polyhedron}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries allocate\+Closest\+Point\+Ellipsoid\+QPSolver} ()
+\item 
+void {\bfseries compute\+Inscribed\+Ellipsoid} ()
+\item 
+void {\bfseries compute\+Inscribed\+Sphere} ()
+\item 
+virtual void {\bfseries allocate\+Closest\+Point\+Solver} ()
+\item 
+virtual void {\bfseries allocate\+Is\+Inside\+Separating\+Hyperplane\+Solver} ()
+\item 
+void {\bfseries allocate\+Inscribed\+Ellipsoid\+Solver} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_polyhedron_v_a4c275d6196c6576104afb60442856732}\index{PolyhedronV@{PolyhedronV}!allocateClosestPointEllipsoidSolver@{allocateClosestPointEllipsoidSolver}}
+\index{allocateClosestPointEllipsoidSolver@{allocateClosestPointEllipsoidSolver}!PolyhedronV@{PolyhedronV}}
+\doxysubsubsection{\texorpdfstring{allocateClosestPointEllipsoidSolver()}{allocateClosestPointEllipsoidSolver()}}
+{\footnotesize\ttfamily \label{class_polyhedron_v_a4c275d6196c6576104afb60442856732} 
+void Polyhedron\+V\+::allocate\+Closest\+Point\+Ellipsoid\+Solver (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_polyhedron}{Polyhedron}}.
+
+\Hypertarget{class_polyhedron_v_aaaece58b692401a3c93106cfe3e71c21}\index{PolyhedronV@{PolyhedronV}!closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}}
+\index{closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}!PolyhedronV@{PolyhedronV}}
+\doxysubsubsection{\texorpdfstring{closestPointExpandingEllipsoid()}{closestPointExpandingEllipsoid()}}
+{\footnotesize\ttfamily \label{class_polyhedron_v_aaaece58b692401a3c93106cfe3e71c21} 
+double Polyhedron\+V\+::closest\+Point\+Expanding\+Ellipsoid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&}]{ellipsoid}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Computes the closest point $x^{*}$ of the polyhedron to a given ellipsoid $\mathcal{E}(C,d)=\{x=C\tilde{x}+d\ |\ \|\tilde{x}\|\leq 1\}$. The first time this function is called, the solver is allocated and can be used for cached computations for further queries. \begin{eqnarray*}x^{*}=\text{arg}\!\displaystyle\min_{x,\alpha} &\alpha\\ Ax&\leq b\\ \left[\begin{array}{c}\alpha\\ C^{-1}(x-d)\end{array}\right]\in&\mathcal{Q}^{n+1}\end{eqnarray*} being $\mathcal{Q}^{n}$ the domain of quadratic cones $\mathcal{Q}^{n}=\{x_1\geq\sqrt{x_2^2+\ldots+x_n^2}\}$. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em ellipsoid} & Input ellipsoid $\mathcal{E}(C,d)$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em p\+\_\+out} & Computed closest point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Distance of the closest point 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_polyhedron_a93e2241b8647902a67cc28b31fd0d7a7}{Polyhedron}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a078251158067bd04e65d646e90ee2bbd}{Polyhedron\+Obstacle\+Circular\+Robot}}.
+
+\Hypertarget{class_polyhedron_v_ab9f4fbc1444caa48bfe1267f83038069}\index{PolyhedronV@{PolyhedronV}!getBoundingBox@{getBoundingBox}}
+\index{getBoundingBox@{getBoundingBox}!PolyhedronV@{PolyhedronV}}
+\doxysubsubsection{\texorpdfstring{getBoundingBox()}{getBoundingBox()}}
+{\footnotesize\ttfamily \label{class_polyhedron_v_ab9f4fbc1444caa48bfe1267f83038069} 
+Eigen\+::\+Matrix\+Xd Polyhedron\+V\+::get\+Bounding\+Box (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Returns the bounding box of the polyhedron. The function is cached, meaning that the first time is called computes the bounding box, while subsequent calls will return the computed bounding box if the polyhedron is not changed. The bounding box is defined as a set of vertices. \begin{DoxyReturn}{Returns}
+Bounding box vertices with dimensions $n\times 2n$, being $n$ the dimension of the polyhedron 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_polyhedron_a6a7a7e2a110fb15235b3635d58c5a950}{Polyhedron}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_ab5056e188079342cc8d736cb427539aa}{Polyhedron\+Obstacle\+Circular\+Robot}}.
+
+\Hypertarget{class_polyhedron_v_a4883fb79af37200427dda08a04168cf4}\index{PolyhedronV@{PolyhedronV}!isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}}
+\index{isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}!PolyhedronV@{PolyhedronV}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplane()}{isInsideSeparatingHyperplane()}}
+{\footnotesize\ttfamily \label{class_polyhedron_v_a4883fb79af37200427dda08a04168cf4} 
+bool Polyhedron\+V\+::is\+Inside\+Separating\+Hyperplane (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{ai}{, }\item[{const double \&}]{bi}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Check if part of the polyhedron is inside a given separating hyperplane (defined by the normal vector $\tilde{a}_{i}$ and intercept $\tilde{b}_{i}$ and considering a tolerance $\delta$). This is equivalent to check if the following problem is feasible\+: \begin{eqnarray*}\displaystyle\min &\sum_{x} x\\ Ax-b&\leq 0\\ \tilde{a}_{i}x-\tilde{b}_{i}&\leq \delta\end{eqnarray*} 
+\begin{DoxyParams}{Parameters}
+{\em ai} & Normal vector of the separating hyperplane \\
+\hline
+{\em bi} & Intercept of the separating hyperplane \\
+\hline
+{\em tol} & Tolerance $\delta$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if part of the polyhedron is inside the given separating hyperplane 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_polyhedron_aa2721b0339d20c310a7fabc02ebd02b7}{Polyhedron}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a115bce61a7b997a9c958d67cf0370d83}{Polyhedron\+Obstacle\+Circular\+Robot}}.
+
+\Hypertarget{class_polyhedron_v_ac050799a7cac251508cf55ab404add5a}\index{PolyhedronV@{PolyhedronV}!isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}}
+\index{isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}!PolyhedronV@{PolyhedronV}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplanes()}{isInsideSeparatingHyperplanes()}}
+{\footnotesize\ttfamily \label{class_polyhedron_v_ac050799a7cac251508cf55ab404add5a} 
+bool Polyhedron\+V\+::is\+Inside\+Separating\+Hyperplanes (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xd \&}]{A}{, }\item[{const Eigen\+::\+Vector\+Xd \&}]{b}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Check if part of the polyhedron is inside a given set of separating hyperplanes (considering a tolerance $\delta$). Only the last constraint (last row of $A$ and $b$) is indeed considered. The function is cached so that it assumes that will be called every time a new separating hyperplane is added to the set. To reset the solver, you must call this function with an empty constraint set. This is equivalent to check if the following problem is feasible\+: \begin{eqnarray*}\displaystyle\min &\sum_{x} x\\ Ax-b&\leq 0\\ \tilde{A}x-\tilde{b}&\leq I\cdot\delta\end{eqnarray*} 
+\begin{DoxyParams}{Parameters}
+{\em A} & Constraints matrix of the separating hyperplanes \\
+\hline
+{\em b} & Constraints intercepts of the separating hyperplanes \\
+\hline
+{\em tol} & Tolerance $\delta$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if part of the polyhedron is inside the given separating hyperplane 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_polyhedron_ae1b119d29d1c4e947e4a093f2620391d}{Polyhedron}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a14e43cb17bf99b9c94e35862d22c74d0}{Polyhedron\+Obstacle\+Circular\+Robot}}.
+
+\Hypertarget{class_polyhedron_v_a07a7ca7f181d8abbd693fac6b23df53d}\index{PolyhedronV@{PolyhedronV}!print@{print}}
+\index{print@{print}!PolyhedronV@{PolyhedronV}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily \label{class_polyhedron_v_a07a7ca7f181d8abbd693fac6b23df53d} 
+void Polyhedron\+V\+::print (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Prints the polyhedron constraints on the console. 
+
+Reimplemented from \mbox{\hyperlink{class_polyhedron_a6e3e732370b0e478b213a6aa87998daf}{Polyhedron}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Polyhedron\+V.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Polyhedron\+V.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,30 @@
+\doxysection{Point.\+h}
+\hypertarget{_point_8h_source}{}\label{_point_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Point.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Point.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ POINT}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ POINT}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}ConicSet.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }Point\ :\ \textcolor{keyword}{public}\ ConicSet}
+\DoxyCodeLine{00007\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00009\ \ \ \ \ Eigen::VectorXd\ p;}
+\DoxyCodeLine{00010\ \ \ \ \ Point(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p);}
+\DoxyCodeLine{00011\ \ \ \ \ Point(\textcolor{keyword}{const}\ Point\&\ point);}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{void}\ print();}
+\DoxyCodeLine{00013\ \ \ \ \ std::ostream\&\ print(std::ostream\&\ out,\ \textcolor{keyword}{const}\ std::string\&\ pointName);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{double}\ distance(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ point);}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{double}\ closestPoint(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{double}\ closestPoint(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in);}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{double}\ closestPointExpandingEllipsoid(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{bool}\ isInside(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=\ 1.e-\/4);}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{bool}\ isInsideSeparatingHyperplane(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ ai,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ bi,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=1.e-\/4);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{bool}\ isInsideSeparatingHyperplanes(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ A,\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ b,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 1.e-\/4);}
+\DoxyCodeLine{00021\ \ \ \ \ Eigen::VectorXd\ getCentroid();}
+\DoxyCodeLine{00022\ \ \ \ \ Eigen::MatrixXd\ getBoundingBox();}
+\DoxyCodeLine{00023\ \};}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

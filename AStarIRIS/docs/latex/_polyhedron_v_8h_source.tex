@@ -1,0 +1,56 @@
+\doxysection{Polyhedron\+V.\+h}
+\hypertarget{_polyhedron_v_8h_source}{}\label{_polyhedron_v_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/PolyhedronV.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/PolyhedronV.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ POLYHEDRONV}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ POLYHEDRONV}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)Qhull.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullError.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullFacet.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullFacetList.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullVertex.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullSet.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullVertexSet.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}fusion.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ConicSet.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}Polyhedron.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}Ellipsoid.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}Sphere.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{using\ namespace\ }orgQhull;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{using\ namespace\ }mosek::fusion;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{using\ namespace\ }monty;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }PolyhedronV\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ Eigen::MatrixXd\ v;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ PolyhedronV(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ n);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//Polyhedron(const\ Eigen::MatrixXd\&\ v,\ const\ Eigen::MatrixXd\&\ A,\ const\ Eigen::VectorXd\&\ b,\ const\ Range\&\ range,\ const\ bool\ allocateSolver=false);}}
+\DoxyCodeLine{00029\ \ \ \ \ PolyhedronV(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ v);}
+\DoxyCodeLine{00030\ \ \ \ \ PolyhedronV(\textcolor{keyword}{const}\ PolyhedronV\&\ polyhedron);}
+\DoxyCodeLine{00031\ \ \ \ \ \string~PolyhedronV();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_polyhedron_v_a07a7ca7f181d8abbd693fac6b23df53d}{print}}();}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ printAB();}
+\DoxyCodeLine{00034\ \ \ \ \ std::ostream\&\ \mbox{\hyperlink{class_polyhedron_v_a07a7ca7f181d8abbd693fac6b23df53d}{print}}(std::ostream\&\ out,\ \textcolor{keyword}{const}\ std::string\&\ AName,\ \textcolor{keyword}{const}\ std::string\&\ bName);}
+\DoxyCodeLine{00035\ \ \ \ \ std::ostream\&\ \mbox{\hyperlink{class_polyhedron_v_a07a7ca7f181d8abbd693fac6b23df53d}{print}}(std::ostream\&\ out,\ \textcolor{keyword}{const}\ std::string\&\ vName);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{double}\ closestVertex(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_v_aaaece58b692401a3c93106cfe3e71c21}{closestPointExpandingEllipsoid}}(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_v_a4883fb79af37200427dda08a04168cf4}{isInsideSeparatingHyperplane}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ ai,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ bi,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=1.e-\/4);}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_v_ac050799a7cac251508cf55ab404add5a}{isInsideSeparatingHyperplanes}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}},\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 1.e-\/4);}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ hasVertices();}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ allocateClosestPointEllipsoidSolver();}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::MatrixXd\ \mbox{\hyperlink{class_polyhedron_v_ab9f4fbc1444caa48bfe1267f83038069}{getBoundingBox}}();}
+\DoxyCodeLine{00043\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00044\ \ \ \ \ Model::t\ MClosestPointEllipsoidQP;}
+\DoxyCodeLine{00045\ \ \ \ \ Variable::t\ xClosestPointEllipsoidQP;}
+\DoxyCodeLine{00046\ \ \ \ \ Variable::t\ wClosestPointEllipsoidQP;}
+\DoxyCodeLine{00047\ \ \ \ \ Variable::t\ alphaClosestPointEllipsoidQP;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ solverClosestPointEllipsoidQPAllocated\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

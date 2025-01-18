@@ -1,0 +1,41 @@
+\doxysection{Circle.\+h}
+\hypertarget{_circle_8h_source}{}\label{_circle_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Circle.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Circle.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CIRCLE}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CIRCLE}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}fusion.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}ConicSet.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{using\ namespace\ }mosek::fusion;}
+\DoxyCodeLine{00007\ \textcolor{keyword}{using\ namespace\ }monty;}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }Circle\ :\ \ \textcolor{keyword}{public}\ ConicSet}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{double}\ radius;}
+\DoxyCodeLine{00014\ \ \ \ \ Circle(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ n);}
+\DoxyCodeLine{00015\ \ \ \ \ Circle(\textcolor{keyword}{const}\ Circle\&\ circle);}
+\DoxyCodeLine{00016\ \ \ \ \ Circle(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ center,\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&radius);}
+\DoxyCodeLine{00017\ \ \ \ \ \string~Circle();}
+\DoxyCodeLine{00018\ \ \ \ \ Circle\&\ operator=(\textcolor{keyword}{const}\ Circle\&\ other);}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{double}\ closestPoint(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{double}\ closestPoint(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in);}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{double}\ closestPointExpandingEllipsoid(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{bool}\ isInside(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=1.e-\/4);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{bool}\ isInsideSeparatingHyperplane(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ ai,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ bi,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=1.e-\/4);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ isInsideSeparatingHyperplanes(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ A,\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ b,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 1.e-\/4);}
+\DoxyCodeLine{00025\ \ \ \ \ Eigen::VectorXd\ getCentroid();}
+\DoxyCodeLine{00026\ \ \ \ \ Eigen::MatrixXd\ getBoundingBox();}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ allocateClosestPointEllipsoidSolver();}
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ std::shared\_ptr<ndarray<double,\ 1>>\ c\_ptr;}
+\DoxyCodeLine{00030\ \ \ \ \ Model::t\ MExpandingEllipsoid;}
+\DoxyCodeLine{00031\ \ \ \ \ Variable::t\ xExpandingEllipsoid;}
+\DoxyCodeLine{00032\ \ \ \ \ Variable::t\ alphaExpandingEllipsoid;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{bool}\ solverExpandingEllipsoidAllocated\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00034\ \};}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

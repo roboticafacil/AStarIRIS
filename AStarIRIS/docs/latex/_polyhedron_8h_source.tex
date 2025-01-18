@@ -1,0 +1,114 @@
+\doxysection{Polyhedron.\+h}
+\hypertarget{_polyhedron_8h_source}{}\label{_polyhedron_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Polyhedron.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Polyhedron.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ POLYHEDRON}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ POLYHEDRON}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)Qhull.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullError.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullFacet.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullFacetList.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullVertex.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullSet.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}libqhullcpp\(\backslash\)QhullVertexSet.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}fusion.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ConicSet.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}Ellipsoid.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}Sphere.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <numbers>}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\#ifdef\ WITH\_MATPLOT}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\#include\ <cmath>}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\#include\ <matplot/matplot.h>}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\#endif\ }}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{using\ namespace\ }orgQhull;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{using\ namespace\ }mosek::fusion;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{using\ namespace\ }monty;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{comment}{//\#ifdef\ WITH\_MATPLOT}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//using\ namespace\ matplot;}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//\#endif}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_polyhedron}{Polyhedron}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ std::ostream\&\ operator<<(std::ostream\&\ out,\ \mbox{\hyperlink{class_polyhedron}{Polyhedron}}\ \textcolor{keyword}{const}\&\ p);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}:\ \textcolor{keyword}{public}\ ConicSet}
+\DoxyCodeLine{00037\ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ \ \ Eigen::MatrixXd\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}};}
+\DoxyCodeLine{00046\ \ \ \ \ Eigen::VectorXd\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}};}
+\DoxyCodeLine{00047\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&n);}
+\DoxyCodeLine{00058\ \ \ \ \ \mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}});}
+\DoxyCodeLine{00063\ \ \ \ \ \mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}\&\ polyhedron);}
+\DoxyCodeLine{00067\ \ \ \ \ \mbox{\hyperlink{class_polyhedron_a8f8dd9f8f21a021f543461435076de8a}{\string~Polyhedron}}();}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_polyhedron_a64bb9bc65a402435a12278a48289e52e}{update}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}});}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_polyhedron_a6e3e732370b0e478b213a6aa87998daf}{print}}();}
+\DoxyCodeLine{00086\ \ \ \ \ std::ostream\&\ \mbox{\hyperlink{class_polyhedron_a6e3e732370b0e478b213a6aa87998daf}{print}}(std::ostream\&\ out,\ \textcolor{keyword}{const}\ std::string\ \&AName,\ \textcolor{keyword}{const}\ std::string\ \&bName,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\&\ addRangeLimits);}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_polyhedron_a3ffda8db043fb84e82e7655d90844c17}{vert2con}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ v,\ Eigen::MatrixXd\&\ A\_out,\ Eigen::VectorXd\&\ b\_out);}
+\DoxyCodeLine{00098\ \ \ \ \ std::vector<int>\ \mbox{\hyperlink{class_polyhedron_a451792f99512d897d58df2ce24a0ae38}{removeRepeatedConstraints}}();}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{static}\ std::vector<int>\ \mbox{\hyperlink{class_polyhedron_a451792f99512d897d58df2ce24a0ae38}{removeRepeatedConstraints}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}},\ Eigen::MatrixXd\&\ Aout,\ Eigen::VectorXd\&\ bout);}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_polyhedron_a193ae75f29018e30b0de0ad103d3b471}{con2vert}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}},\ Eigen::MatrixXd\&\ v);}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//double\ closestVertex(const\ Eigen::VectorXd\&\ p\_in,\ Eigen::VectorXd\&\ p\_out);}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_a2858c3ced2705c3dcd0d450c56802a9e}{closestPoint}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_a2858c3ced2705c3dcd0d450c56802a9e}{closestPoint}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in);}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_a93e2241b8647902a67cc28b31fd0d7a7}{closestPointExpandingEllipsoid}}(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_a6838ac72e7cd0c43b37677a98d360d94}{isInside}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=\ 1.e-\/4);}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_aa2721b0339d20c310a7fabc02ebd02b7}{isInsideSeparatingHyperplane}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ ai,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ bi,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=\ 1.e-\/4);}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_ae1b119d29d1c4e947e4a093f2620391d}{isInsideSeparatingHyperplanes}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}},\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 1.e-\/4);}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\ \mbox{\hyperlink{class_polyhedron_a2abe1049107e6d77b9010b1111fe5e9f}{inscribedEllipsoid}}();}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_a3fa1250defbdacc5ac8936f01203ecd8}{inscribedEllipsoidVolume}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}});}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_sphere}{Sphere}}\ \mbox{\hyperlink{class_polyhedron_a38fa31dd50d92533a4549d65ab6f849e}{inscribedSphere}}();}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::VectorXd\ \mbox{\hyperlink{class_polyhedron_af6f95b937e548b16fc52a157a757c4ef}{getCentroid}}();}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{comment}{//virtual\ bool\ hasVertices();}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_a6802059ac81a600aef3194dd2137ae50}{intersect}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}\&\ polyhedron1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_polyhedron_a37e84952f6ff4d4190076ce2fe269ee8}{Polyhedron}}\&\ polyhedron2);}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_a6802059ac81a600aef3194dd2137ae50}{intersect}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}});}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::MatrixXd\ \mbox{\hyperlink{class_polyhedron_a6a7a7e2a110fb15235b3635d58c5a950}{getBoundingBox}}();}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_polyhedron_a75b1a4b52a55777b6bb793b103c62b7a}{closestConstraint}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p,\ Eigen::VectorXd\&\ ai,\ \textcolor{keywordtype}{double}\&\ bi);}
+\DoxyCodeLine{00233\ \ \ \ \ std::vector<int>\ \mbox{\hyperlink{class_polyhedron_a20b811d32e0e2a7ab95a73612f69d301}{eqConstraints}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 1.e-\/4);}
+\DoxyCodeLine{00234\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{comment}{//Polyhedron\ constraints}}
+\DoxyCodeLine{00236\ \ \ \ \ std::shared\_ptr<ndarray<double,\ 2>>\ A\_ptr;}
+\DoxyCodeLine{00237\ \ \ \ \ std::shared\_ptr<ndarray<double,\ 1>>\ b\_ptr;}
+\DoxyCodeLine{00238\ \ \ \ \ Model::t\ MClosestPoint;}
+\DoxyCodeLine{00239\ \ \ \ \ Variable::t\ xClosestPoint;}
+\DoxyCodeLine{00240\ \ \ \ \ Variable::t\ l;}
+\DoxyCodeLine{00241\ \ \ \ \ \mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\ ellipsoid;}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordtype}{bool}\ computedInscribedEllipsoid=\textcolor{keyword}{false};}
+\DoxyCodeLine{00243\ \ \ \ \ \mbox{\hyperlink{class_sphere}{Sphere}}\ sphere;}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordtype}{bool}\ computedInscribedSphere=\textcolor{keyword}{false};}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordtype}{bool}\ solverClosestPointAllocated\ =\textcolor{keyword}{false};}
+\DoxyCodeLine{00246\ \ \ \ \ Model::t\ MClosestPointEllipsoid;}
+\DoxyCodeLine{00247\ \ \ \ \ Variable::t\ xClosestPointEllipsoid;}
+\DoxyCodeLine{00248\ \ \ \ \ Variable::t\ wClosestPointEllipsoid;}
+\DoxyCodeLine{00249\ \ \ \ \ Variable::t\ alphaClosestPointEllipsoid;}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordtype}{bool}\ solverClosestPointEllipsoidAllocated\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00251\ \ \ \ \ Model::t\ MIsInsideSeparatingHyperplane;}
+\DoxyCodeLine{00252\ \ \ \ \ Variable::t\ xIsInsideSeparatingHyperplane;}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordtype}{bool}\ solverIsInsideSeparatingHyperplaneAllocated\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordtype}{int}\ numIsInsideSeparatingHyperplanes\ =\ 0;}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordtype}{void}\ allocateClosestPointEllipsoidQPSolver();}
+\DoxyCodeLine{00256\ \ \ \ \ Model::t\ MInscribedEllipsoid;}
+\DoxyCodeLine{00257\ \ \ \ \ Variable::t\ xInscribedEllipsoid;}
+\DoxyCodeLine{00258\ \ \ \ \ Variable::t\ CInscribedEllipsoid;}
+\DoxyCodeLine{00259\ \ \ \ \ Variable::t\ tInscribedEllipsoid;}
+\DoxyCodeLine{00260\ \ \ \ \ Variable::t\ YInscribedEllipsoid;}
+\DoxyCodeLine{00261\ \ \ \ \ Variable::t\ ZInscribedEllipsoid;}
+\DoxyCodeLine{00262\ \ \ \ \ Variable::t\ DZInscribedEllipsoid;}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{bool}\ solverInscribedEllipsoidAllocated\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordtype}{void}\ computeInscribedEllipsoid();}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordtype}{void}\ computeInscribedSphere();}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ allocateClosestPointSolver();}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ allocateClosestPointEllipsoidSolver();}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ allocateIsInsideSeparatingHyperplaneSolver();}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordtype}{void}\ allocateInscribedEllipsoidSolver();}
+\DoxyCodeLine{00270\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ nchoosek(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ k);}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ nchoosek(\textcolor{keyword}{const}\ Eigen::VectorXi\&\ V,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ k,\ Eigen::MatrixXi\&\ U);}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ unique(Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}});}
+\DoxyCodeLine{00274\ \};}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

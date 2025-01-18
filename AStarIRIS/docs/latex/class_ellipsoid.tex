@@ -1,0 +1,176 @@
+\doxysection{Ellipsoid Class Reference}
+\hypertarget{class_ellipsoid}{}\label{class_ellipsoid}\index{Ellipsoid@{Ellipsoid}}
+Inheritance diagram for Ellipsoid\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_ellipsoid}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_ellipsoid_ad0c212421a0ab7e6e991f9e56e5a3cd8}\label{class_ellipsoid_ad0c212421a0ab7e6e991f9e56e5a3cd8} 
+{\bfseries Ellipsoid} (const int \&n)
+\item 
+\Hypertarget{class_ellipsoid_a6151565fe1fef664e5ebc39c29bfe73b}\label{class_ellipsoid_a6151565fe1fef664e5ebc39c29bfe73b} 
+{\bfseries Ellipsoid} (const Eigen\+::\+Matrix\+Xd \&C, const Eigen\+::\+Vector\+Xd \&d)
+\item 
+\Hypertarget{class_ellipsoid_ac8d08d632c92a0b5eec464493481863b}\label{class_ellipsoid_ac8d08d632c92a0b5eec464493481863b} 
+{\bfseries Ellipsoid} (const \mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid)
+\item 
+\Hypertarget{class_ellipsoid_a33b0b50c0041ddfce64b86bcc98d7fce}\label{class_ellipsoid_a33b0b50c0041ddfce64b86bcc98d7fce} 
+\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&other)
+\item 
+\Hypertarget{class_ellipsoid_aaf58c87619cc17c7a1395639dbae926c}\label{class_ellipsoid_aaf58c87619cc17c7a1395639dbae926c} 
+void {\bfseries print} ()
+\item 
+double \mbox{\hyperlink{class_ellipsoid_a5c751a6f9c98f3c531e20cbc8469158d}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+double \mbox{\hyperlink{class_ellipsoid_a3b15eb8bde48eabb4b304260a92f42a2}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in)
+\item 
+double \mbox{\hyperlink{class_ellipsoid_a63622a70a472f4d835797c782e786e19}{closest\+Point\+Expanding\+Ellipsoid}} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+bool \mbox{\hyperlink{class_ellipsoid_a3376f30d4bed31acd9b0a345d7d7d3f3}{is\+Inside}} (const Eigen\+::\+Vector\+Xd \&p, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_ellipsoid_a74b4a15df61ed2d502c720c3673edb77}{is\+Inside\+Separating\+Hyperplane}} (const Eigen\+::\+Vector\+Xd \&ai, const double \&bi, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_ellipsoid_a7175a15400d23c838e0e8e6a43e96880}{is\+Inside\+Separating\+Hyperplanes}} (const Eigen\+::\+Matrix\+Xd \&A, const Eigen\+::\+Vector\+Xd \&b, const double \&tol=1.e-\/4)
+\item 
+Eigen\+::\+Vector\+Xd \mbox{\hyperlink{class_ellipsoid_a78fa98aa10b9feb2c63a49d1768b30a9}{get\+Centroid}} ()
+\item 
+\Hypertarget{class_ellipsoid_a19e5cebcc76e4612defcdf056dafacfd}\label{class_ellipsoid_a19e5cebcc76e4612defcdf056dafacfd} 
+Eigen\+::\+Matrix\+Xd {\bfseries get\+CInv} ()
+\item 
+\Hypertarget{class_ellipsoid_a66fb1b36608acf3d6b1ac52bffb4af31}\label{class_ellipsoid_a66fb1b36608acf3d6b1ac52bffb4af31} 
+void {\bfseries allocate\+Solver} ()
+\item 
+Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{class_ellipsoid_a8fab30d583ea6617a427cde3596db2e1}{get\+Bounding\+Box}} ()
+\item 
+\Hypertarget{class_ellipsoid_a140167ab6f2c2b4cb04682421df8ce83}\label{class_ellipsoid_a140167ab6f2c2b4cb04682421df8ce83} 
+void {\bfseries tangent\+Hyperplane} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in, Eigen\+::\+Vector\+Xd \&ai, double \&bi)
+\item 
+\Hypertarget{class_ellipsoid_a6f32c8c7ce987af1139b751e8d170d3e}\label{class_ellipsoid_a6f32c8c7ce987af1139b751e8d170d3e} 
+void {\bfseries allocate\+Is\+Inside\+Separating\+Hyperplane\+Solver} ()
+\item 
+\Hypertarget{class_ellipsoid_ada4f51318aad9f46e2e8f25019e4323c}\label{class_ellipsoid_ada4f51318aad9f46e2e8f25019e4323c} 
+void {\bfseries allocate\+Closest\+Point\+Ellipsoid\+Solver} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Conic\+Set} (const int \&n)
+\item 
+{\bfseries Conic\+Set} (const \mbox{\hyperlink{class_conic_set}{Conic\+Set}} \&conic\+Set)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_ellipsoid_ab9822bbaecf2f60f7a884de244d9914c}\label{class_ellipsoid_ab9822bbaecf2f60f7a884de244d9914c} 
+Eigen\+::\+Matrix\+Xd {\bfseries C}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+const int {\bfseries n}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries centroid\+Computed} =false
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries centroid}
+\item 
+bool {\bfseries bb\+Computed} = false
+\item 
+Eigen\+::\+Matrix\+Xd {\bfseries bb}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_ellipsoid_a3b15eb8bde48eabb4b304260a92f42a2}\index{Ellipsoid@{Ellipsoid}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a3b15eb8bde48eabb4b304260a92f42a2} 
+double Ellipsoid\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_ellipsoid_a5c751a6f9c98f3c531e20cbc8469158d}\index{Ellipsoid@{Ellipsoid}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a5c751a6f9c98f3c531e20cbc8469158d} 
+double Ellipsoid\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_ellipsoid_a63622a70a472f4d835797c782e786e19}\index{Ellipsoid@{Ellipsoid}!closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}}
+\index{closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{closestPointExpandingEllipsoid()}{closestPointExpandingEllipsoid()}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a63622a70a472f4d835797c782e786e19} 
+double Ellipsoid\+::closest\+Point\+Expanding\+Ellipsoid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&}]{ellipsoid}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_ellipsoid_a8fab30d583ea6617a427cde3596db2e1}\index{Ellipsoid@{Ellipsoid}!getBoundingBox@{getBoundingBox}}
+\index{getBoundingBox@{getBoundingBox}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{getBoundingBox()}{getBoundingBox()}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a8fab30d583ea6617a427cde3596db2e1} 
+Eigen\+::\+Matrix\+Xd Ellipsoid\+::get\+Bounding\+Box (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_ellipsoid_a78fa98aa10b9feb2c63a49d1768b30a9}\index{Ellipsoid@{Ellipsoid}!getCentroid@{getCentroid}}
+\index{getCentroid@{getCentroid}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{getCentroid()}{getCentroid()}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a78fa98aa10b9feb2c63a49d1768b30a9} 
+Eigen\+::\+Vector\+Xd Ellipsoid\+::get\+Centroid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_ellipsoid_a3376f30d4bed31acd9b0a345d7d7d3f3}\index{Ellipsoid@{Ellipsoid}!isInside@{isInside}}
+\index{isInside@{isInside}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{isInside()}{isInside()}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a3376f30d4bed31acd9b0a345d7d7d3f3} 
+bool Ellipsoid\+::is\+Inside (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_ellipsoid_a74b4a15df61ed2d502c720c3673edb77}\index{Ellipsoid@{Ellipsoid}!isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}}
+\index{isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplane()}{isInsideSeparatingHyperplane()}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a74b4a15df61ed2d502c720c3673edb77} 
+bool Ellipsoid\+::is\+Inside\+Separating\+Hyperplane (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{ai}{, }\item[{const double \&}]{bi}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_ellipsoid_a7175a15400d23c838e0e8e6a43e96880}\index{Ellipsoid@{Ellipsoid}!isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}}
+\index{isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}!Ellipsoid@{Ellipsoid}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplanes()}{isInsideSeparatingHyperplanes()}}
+{\footnotesize\ttfamily \label{class_ellipsoid_a7175a15400d23c838e0e8e6a43e96880} 
+bool Ellipsoid\+::is\+Inside\+Separating\+Hyperplanes (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xd \&}]{A}{, }\item[{const Eigen\+::\+Vector\+Xd \&}]{b}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Ellipsoid.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Ellipsoid.\+cpp\end{DoxyCompactItemize}

@@ -20,7 +20,7 @@ int removeConstraintsTest()
 	std::chrono::steady_clock::time_point t1;
 	std::chrono::steady_clock::time_point t2;
 	t1 = std::chrono::high_resolution_clock::now();
-	Polyhedron::removeRepeatedConstraints(A1, b1, A2, b2);
+	Polyhedron::removeConstraints(A1, b1, A2, b2);
 	Polyhedron poly2(A2, b2);
 	t2 = std::chrono::high_resolution_clock::now();
 	ms_double = t2 - t1;
@@ -43,7 +43,7 @@ int removeConstraintsInplaceTest()
 	std::chrono::steady_clock::time_point t1;
 	std::chrono::steady_clock::time_point t2;
 	t1 = std::chrono::high_resolution_clock::now();
-	poly.removeRepeatedConstraints();
+	poly.removeConstraints();
 	t2 = std::chrono::high_resolution_clock::now();
 	ms_double = t2 - t1;
 	std::cout << "Updated polyhedron" << std::endl;

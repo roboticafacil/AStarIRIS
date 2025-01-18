@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Range.h"
 #include "Point.h"
-#include "Circle.h"
+#include "Sphere.h"
 #include "Ellipsoid.h"
 #include "Polyhedron.h"
 #include "PolyhedronV.h"
@@ -36,21 +36,21 @@ void closestPointPerformance()
     std::cout << pointTime/N << "ms" << std::endl;
 
     double radius = 0.1;
-    double circleTime = 0.0;
+    double sphereTime = 0.0;
     for (int i = 0; i < N; i++)
     {
-        Circle c(points.col(i), radius);
+        Sphere c(points.col(i), radius);
         for (int j = i + 1; j < N; j++)
         {
             t1 = std::chrono::high_resolution_clock::now();
             c.closestPoint(points.col(j));
             t2 = std::chrono::high_resolution_clock::now();
             ms_double = t2 - t1;
-            circleTime += ms_double.count();
+            sphereTime += ms_double.count();
         }
     }
-    std::cout << "Circle performance" << std::endl;
-    std::cout << circleTime/N << "ms" << std::endl;
+    std::cout << "Sphere performance" << std::endl;
+    std::cout << sphereTime /N << "ms" << std::endl;
 
     Eigen::Matrix<double, 2, 2> C({ {0.1,0.035},{0.035,0.2} });
     Eigen::Vector<double, 2> d({ 0.,0. });
@@ -77,10 +77,10 @@ void closestPointPerformance()
     {
         Eigen::MatrixXd v = V0.colwise() + points.col(i);
         PolyhedronV poly(v);
-        poly.allocateClosestPointSolver();
+        Eigen::VectorXd p_out;
+        poly.closestVertex(points.col(i+1), p_out); //Compute once just to ensure the solver is allocated
         for (int j = i + 1; j < N; j++)
         {
-            Eigen::VectorXd p_out;
             t1 = std::chrono::high_resolution_clock::now();
             poly.closestVertex(points.col(j), p_out);
             t2 = std::chrono::high_resolution_clock::now();
@@ -104,7 +104,7 @@ void closestPointPerformance()
             b0p(k + n) = b0(k + n) - p(k);
         }
         Polyhedron poly(A0, b0p);
-        poly.allocateClosestPointSolver();
+        poly.closestPoint(points.col(i+1)); //Compute this to ensure the solver is previously allocated
         for (int j = i + 1; j < N; j++)
         {
             t1 = std::chrono::high_resolution_clock::now();
@@ -165,21 +165,21 @@ void isInsidePerformance()
     std::cout << pointTime/N << "ms" << std::endl;
 
     double radius = 0.1;
-    double circleTime = 0.0;
+    double sphereTime = 0.0;
     for (int i = 0; i < N; i++)
     {
-        Circle c(points.col(i), radius);
+        Sphere c(points.col(i), radius);
         for (int j = i + 1; j < N; j++)
         {
             t1 = std::chrono::high_resolution_clock::now();
             c.isInside(points.col(j));
             t2 = std::chrono::high_resolution_clock::now();
             ms_double = t2 - t1;
-            circleTime += ms_double.count();
+            sphereTime += ms_double.count();
         }
     }
-    std::cout << "Circle performance" << std::endl;
-    std::cout << circleTime/N << "ms" << std::endl;
+    std::cout << "Sphere performance" << std::endl;
+    std::cout << sphereTime/N << "ms" << std::endl;
 
     Eigen::Matrix<double, 2, 2> C({ {0.1,0.035},{0.035,0.2} });
     Eigen::Vector<double, 2> d({ 0.,0. });
@@ -311,10 +311,10 @@ void closestPointExpandingEllipsoidPerformance()
     std::cout << pointTime / N << "ms" << std::endl;
 
     double radius = 0.1;
-    double circleTime = 0.0;
+    double sphereTime = 0.0;
     for (int i = 0; i < N; i++)
     {
-        Circle c(points.col(i), radius);
+        Sphere c(points.col(i), radius);
         c.allocateClosestPointEllipsoidSolver();
         for (int j = i + 1; j < N; j++)
         {
@@ -324,11 +324,11 @@ void closestPointExpandingEllipsoidPerformance()
             c.closestPointExpandingEllipsoid(expEllipsoid,p_out);
             t2 = std::chrono::high_resolution_clock::now();
             ms_double = t2 - t1;
-            circleTime += ms_double.count();
+            sphereTime += ms_double.count();
         }
     }
-    std::cout << "Circle performance" << std::endl;
-    std::cout << circleTime / N << "ms" << std::endl;
+    std::cout << "Sphere performance" << std::endl;
+    std::cout << sphereTime / N << "ms" << std::endl;
 
     Eigen::Matrix<double, 2, 2> C({ {0.1,0.035},{0.035,0.2} });
     Eigen::Vector<double, 2> d({ 0.,0. });
@@ -386,11 +386,12 @@ void closestPointExpandingEllipsoidPerformance()
             b0p(k + n) = b0(k + n) - p(k);
         }
         Polyhedron poly(A0, b0p);
-        poly.allocateClosestPointEllipsoidSolver();
+        Ellipsoid expEllipsoid_tmp(C_expanding, points.col(i+1));
+        Eigen::VectorXd p_out(n);
+        poly.closestPointExpandingEllipsoid(expEllipsoid_tmp, p_out); //Compute this once to ensure the solver is allocated
         for (int j = i + 1; j < N; j++)
         {
-            Ellipsoid expEllipsoid(C_expanding, points.col(j));
-            Eigen::VectorXd p_out(n);
+            Ellipsoid expEllipsoid(C_expanding, points.col(j));            
             t1 = std::chrono::high_resolution_clock::now();
             poly.closestPointExpandingEllipsoid(expEllipsoid, p_out);
             t2 = std::chrono::high_resolution_clock::now();

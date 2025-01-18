@@ -1,0 +1,161 @@
+\doxysection{Sphere Class Reference}
+\hypertarget{class_sphere}{}\label{class_sphere}\index{Sphere@{Sphere}}
+Inheritance diagram for Sphere\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_sphere}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_sphere_a79b59bf31c2ea92679a7ad2c376c9024}\label{class_sphere_a79b59bf31c2ea92679a7ad2c376c9024} 
+{\bfseries Sphere} (const int \&n)
+\item 
+\Hypertarget{class_sphere_ac709ee1b1f5cda5ba9604ade44ea6fdf}\label{class_sphere_ac709ee1b1f5cda5ba9604ade44ea6fdf} 
+{\bfseries Sphere} (const \mbox{\hyperlink{class_sphere}{Sphere}} \&sphere)
+\item 
+\Hypertarget{class_sphere_aab059ce84261eadcd8a397078320345b}\label{class_sphere_aab059ce84261eadcd8a397078320345b} 
+{\bfseries Sphere} (const Eigen\+::\+Vector\+Xd \&center, const double \&radius)
+\item 
+\Hypertarget{class_sphere_a8c24d0a1c27b2a7300cc003940134d0b}\label{class_sphere_a8c24d0a1c27b2a7300cc003940134d0b} 
+\mbox{\hyperlink{class_sphere}{Sphere}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_sphere}{Sphere}} \&other)
+\item 
+double \mbox{\hyperlink{class_sphere_a2329158d2a94d18e54b1bb36a1aa8dda}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+double \mbox{\hyperlink{class_sphere_ab3eec228351f1a4575704cea3f62f52d}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in)
+\item 
+double \mbox{\hyperlink{class_sphere_af125efc1dfc90726d6c8c6ff6ac37fa4}{closest\+Point\+Expanding\+Ellipsoid}} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+bool \mbox{\hyperlink{class_sphere_aa9d19f34b2041dc3467a8d5755344769}{is\+Inside}} (const Eigen\+::\+Vector\+Xd \&p, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_sphere_a02fa8e19bdd857cbf37e30dbaeeb66dd}{is\+Inside\+Separating\+Hyperplane}} (const Eigen\+::\+Vector\+Xd \&ai, const double \&bi, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_sphere_adfe762d93bc463dcfa999111302d6d12}{is\+Inside\+Separating\+Hyperplanes}} (const Eigen\+::\+Matrix\+Xd \&A, const Eigen\+::\+Vector\+Xd \&b, const double \&tol=1.e-\/4)
+\item 
+Eigen\+::\+Vector\+Xd \mbox{\hyperlink{class_sphere_a4733500866e48b99a59e12a8347212ae}{get\+Centroid}} ()
+\item 
+Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{class_sphere_af9365a7b223bcf93c3794567f1ddddda}{get\+Bounding\+Box}} ()
+\item 
+\Hypertarget{class_sphere_a641d03fe02f7c76bd6b40358dd29cdf3}\label{class_sphere_a641d03fe02f7c76bd6b40358dd29cdf3} 
+void {\bfseries allocate\+Closest\+Point\+Ellipsoid\+Solver} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Conic\+Set} (const int \&n)
+\item 
+{\bfseries Conic\+Set} (const \mbox{\hyperlink{class_conic_set}{Conic\+Set}} \&conic\+Set)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_sphere_a45d6c6c870fac7c2a885ad2e226334ad}\label{class_sphere_a45d6c6c870fac7c2a885ad2e226334ad} 
+double {\bfseries radius}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+const int {\bfseries n}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries centroid\+Computed} =false
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries centroid}
+\item 
+bool {\bfseries bb\+Computed} = false
+\item 
+Eigen\+::\+Matrix\+Xd {\bfseries bb}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_sphere_ab3eec228351f1a4575704cea3f62f52d}\index{Sphere@{Sphere}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_sphere_ab3eec228351f1a4575704cea3f62f52d} 
+double Sphere\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_sphere_a2329158d2a94d18e54b1bb36a1aa8dda}\index{Sphere@{Sphere}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_sphere_a2329158d2a94d18e54b1bb36a1aa8dda} 
+double Sphere\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_sphere_af125efc1dfc90726d6c8c6ff6ac37fa4}\index{Sphere@{Sphere}!closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}}
+\index{closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{closestPointExpandingEllipsoid()}{closestPointExpandingEllipsoid()}}
+{\footnotesize\ttfamily \label{class_sphere_af125efc1dfc90726d6c8c6ff6ac37fa4} 
+double Sphere\+::closest\+Point\+Expanding\+Ellipsoid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&}]{ellipsoid}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_sphere_af9365a7b223bcf93c3794567f1ddddda}\index{Sphere@{Sphere}!getBoundingBox@{getBoundingBox}}
+\index{getBoundingBox@{getBoundingBox}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{getBoundingBox()}{getBoundingBox()}}
+{\footnotesize\ttfamily \label{class_sphere_af9365a7b223bcf93c3794567f1ddddda} 
+Eigen\+::\+Matrix\+Xd Sphere\+::get\+Bounding\+Box (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_sphere_a4733500866e48b99a59e12a8347212ae}\index{Sphere@{Sphere}!getCentroid@{getCentroid}}
+\index{getCentroid@{getCentroid}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{getCentroid()}{getCentroid()}}
+{\footnotesize\ttfamily \label{class_sphere_a4733500866e48b99a59e12a8347212ae} 
+Eigen\+::\+Vector\+Xd Sphere\+::get\+Centroid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_sphere_aa9d19f34b2041dc3467a8d5755344769}\index{Sphere@{Sphere}!isInside@{isInside}}
+\index{isInside@{isInside}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{isInside()}{isInside()}}
+{\footnotesize\ttfamily \label{class_sphere_aa9d19f34b2041dc3467a8d5755344769} 
+bool Sphere\+::is\+Inside (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_sphere_a02fa8e19bdd857cbf37e30dbaeeb66dd}\index{Sphere@{Sphere}!isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}}
+\index{isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplane()}{isInsideSeparatingHyperplane()}}
+{\footnotesize\ttfamily \label{class_sphere_a02fa8e19bdd857cbf37e30dbaeeb66dd} 
+bool Sphere\+::is\+Inside\+Separating\+Hyperplane (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{ai}{, }\item[{const double \&}]{bi}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_sphere_adfe762d93bc463dcfa999111302d6d12}\index{Sphere@{Sphere}!isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}}
+\index{isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}!Sphere@{Sphere}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplanes()}{isInsideSeparatingHyperplanes()}}
+{\footnotesize\ttfamily \label{class_sphere_adfe762d93bc463dcfa999111302d6d12} 
+bool Sphere\+::is\+Inside\+Separating\+Hyperplanes (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xd \&}]{A}{, }\item[{const Eigen\+::\+Vector\+Xd \&}]{b}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Sphere.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Sphere.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,44 @@
+\doxysection{Min\+Distance\+Solver.\+h}
+\hypertarget{_min_distance_solver_8h_source}{}\label{_min_distance_solver_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/MinDistanceSolver.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/MinDistanceSolver.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ MIN\_DISTANCE\_SOLVER}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ MIN\_DISTANCE\_SOLVER}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}fusion.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}EigenNdArray.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Solver.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ namespace\ }mosek::fusion;}
+\DoxyCodeLine{00009\ \textcolor{keyword}{using\ namespace\ }monty;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ SolutionStatus\ status;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{double}\ cost;}
+\DoxyCodeLine{00015\ \ \ \ \ Eigen::VectorXd\ y;}
+\DoxyCodeLine{00016\ \ \ \ \ Eigen::MatrixXd\ z;}
+\DoxyCodeLine{00017\ \ \ \ \ Eigen::MatrixXd\ p;}
+\DoxyCodeLine{00018\ \ \ \ \ Eigen::MatrixXd\ x;}
+\DoxyCodeLine{00019\ \ \ \ \ Eigen::MatrixXd\ l;}
+\DoxyCodeLine{00020\ \}\mbox{\hyperlink{struct_m_i_p_sol__t}{MIPSol\_t}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }MinDistanceSolver\ :\ \textcolor{keyword}{public}\ Solver}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{struct_m_i_p_sol__t}{MIPSol\_t}}\ MIPSolution;}
+\DoxyCodeLine{00026\ \ \ \ \ MinDistanceSolver(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_graph}{Graph}}\&\ g,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ startKey,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ targetKey);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ setTask();}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ computeFeasibleSolution(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ maxIters\ =\ 1);}
+\DoxyCodeLine{00029\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00030\ \ \ \ \ Variable::t\ l;}
+\DoxyCodeLine{00031\ \ \ \ \ Variable::t\ z;}
+\DoxyCodeLine{00032\ \ \ \ \ Variable::t\ p;}
+\DoxyCodeLine{00033\ \ \ \ \ Variable::t\ y;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//Variable::t\ v;}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ solve();}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

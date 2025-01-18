@@ -1,0 +1,50 @@
+\doxysection{Expandable\+IRISConic.\+h}
+\hypertarget{_expandable_i_r_i_s_conic_8h_source}{}\label{_expandable_i_r_i_s_conic_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/ExpandableIRISConic.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/ExpandableIRISConic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ EXPANDABLE\_IRIS\_CONIC}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ EXPANDABLE\_IRIS\_CONIC}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CObsConic.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GCS.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}IRISConic.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}PointNode.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}ConvexRelaxationSolver.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\_t}}\ IRISParams;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{int}\ maxTrialsTerminal;}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{int}\ maxItersOptimalPath;}
+\DoxyCodeLine{00016\ \}\mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{ExpandableIRISParams\_t}};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }ExpandableIRISConic\ :\ \textcolor{keyword}{public}\ IRISConic}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{class_nav_graph}{NavGraph}}\ navGraph;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ qStartNodeNavGraphKey;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{int}\ qTargetNodeNavGraphKey;}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//ExpandableIRISConic(const\ Graph\&\ g,\ const\ std::vector<int>\&\ nodeKeys,\ const\ int\&\ startKey,\ const\ int\&\ targetKey);}}
+\DoxyCodeLine{00026\ \ \ \ \ ExpandableIRISConic(\mbox{\hyperlink{class_c_obs_conic}{CObsConic}}\&\ cObs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{ExpandableIRISParams\_t}}\&\ params);}
+\DoxyCodeLine{00027\ \ \ \ \ \string~ExpandableIRISConic();}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ addConvexSet(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q);}
+\DoxyCodeLine{00029\ \ \ \ \ std::vector<int>\ addConvexSets(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ buildNavGraph(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ qstart,\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ qtarget);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ terminalCosts(Eigen::VectorXd\&\ hCosts,\ Eigen::MatrixXd\&\ pClosest);}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ expandTerminalNode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ terminalNodeKey);}
+\DoxyCodeLine{00033\ \ \ \ \ Eigen::VectorXd\ generateRandomSeedInTerminalNode();}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{ExpandableIRISParams\_t}}\ getDefaultExpandableIRISParams();}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{class_nav_graph}{NavGraph}}\ getGraphWithoutTerminalConnections();}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ removeNode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00037\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00038\ \ \ \ \ std::map<std::pair<int,\ int>,\ \textcolor{keywordtype}{int}>\ navGraph2gcs;}
+\DoxyCodeLine{00039\ \ \ \ \ std::vector<std::pair<int,\ int>>\ terminalNodeKeys;}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{class_point_node}{PointNode}}*\ qStartNode;}
+\DoxyCodeLine{00041\ \ \ \ \ \mbox{\hyperlink{class_point_node}{PointNode}}*\ qTargetNode;}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{ExpandableIRISParams\_t}}\ params;}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

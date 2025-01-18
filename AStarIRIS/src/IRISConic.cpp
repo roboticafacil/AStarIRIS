@@ -49,29 +49,39 @@ Eigen::VectorXd IRISConic::generateRandomSeed(int& trials)
 	}
 }
 
-void IRISConic::addConvexSets(const Eigen::VectorXd& q)
+
+int IRISConic::addConvexSet(const Eigen::VectorXd& q)
 {
 	//Warning, convexSet is not removed from memory!!
 	Ellipsoid ellipsoid(Eigen::MatrixXd::Identity(q.rows(), q.rows()), q);
-	Polyhedron* convexSet = new Polyhedron(q.rows());
+	Polyhedron convexSet(q.rows());
 	//std::vector<IRISNeighbour_t> neighbours;
 	std::vector<int> neighbourKeys;
-	while(true)
+	this->computeConvexSet(ellipsoid, convexSet, neighbourKeys);
+	//Add the convexSet to GCS
+	Eigen::VectorXd bShrinked = (1. - params.shrinkFactor) * convexSet.b + params.shrinkFactor * (convexSet.A * ellipsoid.getCentroid());
+	int nodeKey = this->gcs.addNode(new PolyhedronNode(convexSet.A, convexSet.b, bShrinked));
+	for (std::vector<int>::iterator it = neighbourKeys.begin(); it != neighbourKeys.end(); it++)
 	{
-		this->computeConvexSet(ellipsoid, *convexSet, neighbourKeys);
-		//Add the convexSet to GCS
-		Eigen::VectorXd bShrinked = (1.-params.shrinkFactor)*convexSet->b + params.shrinkFactor * (convexSet->A*ellipsoid.getCentroid());
-		int nodeKey=this->gcs.addNode(new PolyhedronNode(convexSet->A, convexSet->b,bShrinked));
-		for (std::vector<int>::iterator it = neighbourKeys.begin(); it != neighbourKeys.end(); it++)
-		{
-			this->gcs.addEdge(nodeKey, *it);
-		}
-		//Check if the original seed is inside the generated convex set. If not, repeat
-		if (convexSet->isInside(q))
-			break;
-		ellipsoid = Ellipsoid(Eigen::MatrixXd::Identity(q.rows(), q.rows()), q);
+		this->gcs.addEdge(nodeKey, *it);
 	}
-	//convexSet->print();
+	return nodeKey;
+}
+
+
+std::vector<int> IRISConic::addConvexSets(const Eigen::VectorXd& q)
+{
+	std::vector<int> convexSetNodeKeys;
+	while (true)
+	{
+		int convexSetNodeKey = this->addConvexSet(q);
+		convexSetNodeKeys.push_back(convexSetNodeKey);
+		PolyhedronNode* node = (PolyhedronNode*)this->gcs.getNode(convexSetNodeKey);
+		//Check if the original seed is inside the generated convex set. If not, repeat
+		if (node->polyhedron.isInside(q))
+			break;
+	}
+	return convexSetNodeKeys;
 }
 
 /*void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<IRISNeighbour_t>& neighbours)
@@ -105,38 +115,36 @@ void IRISConic::addConvexSets(const Eigen::VectorXd& q)
 
 void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<int>& neighbourKeys)
 {
+	double detC = 0.;
+	Polyhedron newConvexSet(convexSet.n);
 	while (true)
 	{
-		separatingHyperplanes(ellipsoid, convexSet);
-		//convexSet->print();
-		Ellipsoid newEllipsoid = convexSet.inscribedEllipsoid();
+		separatingHyperplanes(ellipsoid, newConvexSet);
+		//newConvexSet.print();
+		Ellipsoid newEllipsoid = newConvexSet.inscribedEllipsoid();
 		//newEllipsoid.print();
-		double detC = ellipsoid.C.determinant();
 		double detNewC = newEllipsoid.C.determinant();
-		if (abs((detNewC - detC) / detC) < params.tolConvexSetConvergence)
+		if (((detNewC - detC) / detC) < params.tolConvexSetConvergence)
 		{
+			if ((params.seperatingHyperplaneAligned)&&(detNewC < detC))
+			{
+				break;
+			}
+			convexSet = newConvexSet;
 			ellipsoid = newEllipsoid;
 			break;
 		}
 		ellipsoid = newEllipsoid;
+		detC = detNewC;
 	}
-	convexSet.removeRepeatedConstraints();
+	convexSet.removeConstraints();
 	neighbourKeys.clear();
 	std::vector<int> nodeKeys = this->gcs.getNodeKeys();
 	for (std::vector<int>::iterator itNode = nodeKeys.begin(); itNode != nodeKeys.end(); itNode++)
 	{
 		Node* existingNode = this->gcs.getNode(*itNode);
 		PolyhedronNode* existingPolyNode = (PolyhedronNode*)existingNode;
-		bool neighbour = true;
-		for (int i = 0; i < existingPolyNode->polyhedron.A.rows(); i++)
-		{
-			if (!existingPolyNode->polyhedron.isInsideSeparatingHyperplane(convexSet.A.row(i), convexSet.b(i), 0.0))
-			{
-				neighbour = false;
-				break;
-			}
-		}
-		if (neighbour)
+		if (Polyhedron::intersect(convexSet,existingPolyNode->polyhedron))
 			neighbourKeys.push_back(*itNode);
 	}
 }
@@ -161,6 +169,11 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 		objectsIdx.push_back(idx++);
 		distances.push_back(d);
 		closestPoints.push_back(p_out);
+		if (dynamic_cast<Polyhedron*>(p) != NULL)
+		{
+			Polyhedron* poly = (Polyhedron*)p;
+			poly->isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
+		}
 	}
 	int i = 0;
 	for (std::vector<Node*>::iterator it = nodes.begin(); it != nodes.end(); it++)
@@ -173,11 +186,13 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 		{
 			d = poly->shrinkedPolyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
 			objects.push_back(&poly->shrinkedPolyhedron);
+			poly->shrinkedPolyhedron.isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
 		}
 		else
 		{
 			d = poly->polyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
 			objects.push_back(&poly->polyhedron);
+			poly->polyhedron.isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
 		}
 		objectsIdx.push_back(idx++);
 		distances.push_back(d);
@@ -198,7 +213,68 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 		//std::cout << x << std::endl;
 		Eigen::VectorXd ai(n);
 		double bi;
-		ellipsoid.tangentHyperplane(x, ai, bi);
+		if (params.seperatingHyperplaneAligned)
+		{
+			ConicSet* conicSet = objects[ii];
+			if (dynamic_cast<Polyhedron*>(conicSet) != NULL)
+			{
+				Polyhedron* poly = (Polyhedron*)conicSet;
+				//std::cout << "A: " << poly->A << std::endl;
+				//std::cout << "b: " << poly->b << std::endl;
+				//std::cout << "x: " << x << std::endl;
+				//poly->closestConstraint(x, ai, bi, params.tol);
+				std::vector<int> activeConstraints=poly->eqConstraints(x); //Do not use IRIS contraint tolerance!! If you include a tolerance here it should be smaller than IRIS constraint tolerance
+				if (activeConstraints.size() > 1)
+				{
+					Eigen::MatrixXd newA(A.rows() + 1, A.cols());
+					Eigen::VectorXd newB(A.rows() + 1);
+					newA << A;
+					newB << b;
+					double maxVol = 0.;
+					//std::cout << "A: " << A << std::endl;
+					//std::cout << "b: " << b << std::endl;
+					for (int i = 0; i < activeConstraints.size(); i++)
+					{
+						Eigen::VectorXd aa = -poly->A.row(activeConstraints[i]);
+						double bb = -poly->b(activeConstraints[i]);
+						double error = aa.dot(centroid) - bb;
+						//std::cout << "error: " << error << std::endl;
+						if (error <= 1.e-5)
+						{
+							newA.row(A.rows()) = aa;
+							newB(A.rows()) = bb;
+							//std::cout << "newA: " << std::endl;
+							//std::cout << newA << std::endl;
+							//std::cout << "newB: " << std::endl;
+							//std::cout << newB << std::endl;
+							double vol = Polyhedron::inscribedEllipsoidVolume(newA, newB);
+							if (vol > maxVol)
+							{
+								ai = -poly->A.row(activeConstraints[i]);
+								bi = -poly->b(activeConstraints[i]);
+								maxVol = vol;
+							}
+						}
+					}
+				}
+				else if (activeConstraints.size() == 1)
+				{
+					ai = -poly->A.row(activeConstraints[0]);
+					bi = -poly->b(activeConstraints[0]);
+				}
+				else
+				{
+					std::cout << "Error closestConstraint" << std::endl;
+				}
+				//std::cout << "ai: " << ai << std::endl;
+				//std::cout << "bi: " << bi << std::endl;
+			}
+			else
+				ellipsoid.tangentHyperplane(x, ai, bi);
+		}
+		else
+			ellipsoid.tangentHyperplane(x, ai, bi);
+		
 		//std::cout << "Closest object separting hyperplane " << std::endl;
 		//std::cout << "ai=";
 		//std::cout << ai << std::endl;
@@ -221,12 +297,13 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 		{
 			ConicSet* c = *it;
 			//bool isInside = c->isInsideSeparatingHyperplane(ai, bi,params.tol);
-			bool isInside = true;
+			/*bool isInside = true;
 			for (int k = 0; k < A.rows(); k++)
 			{
 				isInside &= (c->isInsideSeparatingHyperplane(A.row(k), b(k), params.tol));
-			}
-			//std::cout << "Object " << *itIdx << "is inside?" << isInside << std::endl;
+			}*/
+			bool isInside = c->isInsideSeparatingHyperplanes(A,b,params.tol);
+			//std::cout << "Object " << *itIdx << " is inside? " << isInside << std::endl;
 			int j = std::distance(objects.begin(), it);
 			if (!isInside)
 			{
@@ -379,7 +456,7 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 
 IRISParams_t IRISConic::getDefaultIRISParams()
 {
-	IRISParams_t params = {2,1e-2,0.25,999,1e-3};
+	IRISParams_t params = {2,1e-2,0.25,999,false,1e-3};
 	return params;
 }
 

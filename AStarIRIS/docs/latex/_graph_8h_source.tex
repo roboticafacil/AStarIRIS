@@ -1,0 +1,59 @@
+\doxysection{Graph.\+h}
+\hypertarget{_graph_8h_source}{}\label{_graph_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Graph.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Graph.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ GRAPH}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ GRAPH}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Node.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{typedef}\ std::map<int,\ Node*>\ NodeMap;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ std::pair<int,\ int>\ Edge;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }Graph}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{int}\ numNodes;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{int}\ numEdges;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00019\ \ \ \ \ NodeMap\ nodes;}
+\DoxyCodeLine{00020\ \ \ \ \ std::vector<Edge>\ edges;}
+\DoxyCodeLine{00021\ \ \ \ \ std::vector<int>\ nodeKeys;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//Default\ constructor}}
+\DoxyCodeLine{00024\ \ \ \ \ Graph();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//Copy\ constructor}}
+\DoxyCodeLine{00026\ \ \ \ \ Graph(Graph*\ graph);}
+\DoxyCodeLine{00027\ \ \ \ \ Graph\&\ operator=(Graph\&\ other);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ print();}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ printNodes();}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ printEdges();}
+\DoxyCodeLine{00031\ \ \ \ \ std::vector<int>\ getNodeKeys();}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{class_node}{Node}}*\ getNode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00033\ \ \ \ \ std::vector<Node*>\ getNodes();}
+\DoxyCodeLine{00034\ \ \ \ \ std::vector<Node*>\ getNodes(std::vector<int>\&\ keys);}
+\DoxyCodeLine{00035\ \ \ \ \ Graph\ subGraph(std::vector<int>\&\ keys);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{int}\ addNode(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_node}{Node}}*\ node);}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ addNode(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_node}{Node}}*\ node,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{bool}\ removeNode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{bool}\ addEdge(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ keyFrom,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ keyTo);}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ removeEdge(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ keyFrom,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ keyTo);}
+\DoxyCodeLine{00041\ \ \ \ \ std::vector<int>\ findOutEdges(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00042\ \ \ \ \ std::vector<int>\ findInEdges(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00043\ \ \ \ \ std::vector<Edge>\ getEdges();}
+\DoxyCodeLine{00044\ \ \ \ \ std::vector<Node*>\ getOutNeighbours(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00045\ \ \ \ \ std::vector<Node*>\ getInNeighbours(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00046\ \ \ \ \ std::vector<Node*>\ getNeighbours(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00047\ \ \ \ \ std::vector<int>\ getOutNeighbourKeys(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00048\ \ \ \ \ std::vector<int>\ getInNeighbourKeys(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00049\ \ \ \ \ std::vector<int>\ getNeighbourKeys(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ key);}
+\DoxyCodeLine{00050\ \ \ \ \ Edge\ getEdge(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&edgeIdx);}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ setEdges(\textcolor{keyword}{const}\ std::vector<Edge>\&\ edges);}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

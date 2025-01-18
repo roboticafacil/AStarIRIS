@@ -1,0 +1,26 @@
+\doxysection{GCS.\+h}
+\hypertarget{_g_c_s_8h_source}{}\label{_g_c_s_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/GCS.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/GCS.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ GCS\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ GCS\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{class\ }GCS\ :\ \textcolor{keyword}{public}\ Graph}
+\DoxyCodeLine{00006\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{comment}{//Default\ constructor}}
+\DoxyCodeLine{00009\ \ \ \ \ GCS();}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{comment}{//Copy\ constructor}}
+\DoxyCodeLine{00011\ \ \ \ \ GCS(GCS*\ graph);}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{void}\ print(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&num=1);}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{//GCS\&\ operator=(const\ GCS\&\ other);}}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{bool}\ contains(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&\ tol=0.);}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{int}\ findConvexSet(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q);}
+\DoxyCodeLine{00016\ \ \ \ \ std::vector<int>\ findConvexSets(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q);}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ print();}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ printEdges();}
+\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

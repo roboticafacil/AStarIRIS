@@ -1,0 +1,36 @@
+\doxysection{Polyhedron\+Terminal\+Node.\+h}
+\hypertarget{_polyhedron_terminal_node_8h_source}{}\label{_polyhedron_terminal_node_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/PolyhedronTerminalNode.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/PolyhedronTerminalNode.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ POLYHEDRON\_TERMINAL\_NODE}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ POLYHEDRON\_TERMINAL\_NODE}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}PolyhedronNode.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Node.h"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }PolyhedronTerminalNode\ :\ \textcolor{keyword}{public}\ PolyhedronNode}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{bool}\ expanded;}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordtype}{int}\ terminalConstrainIdx;}
+\DoxyCodeLine{00012\ \ \ \ \ PolyhedronTerminalNode(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ A,\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ b,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&terminalConstrainIdx);}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{bool}\ generateRandomSeed(Eigen::VectorXd\&\ seed,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&maxTrials);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}*\ getNodeData();}
+\DoxyCodeLine{00015\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00016\ \ \ \ \ Eigen::VectorXd\ ai\_col;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{double}\ aipivot;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{double}\ bi;}
+\DoxyCodeLine{00019\ \ \ \ \ Eigen::MatrixXd\ Aj;}
+\DoxyCodeLine{00020\ \ \ \ \ Eigen::VectorXd\ bj;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ n;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ m;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{int}\ col;}
+\DoxyCodeLine{00024\ \ \ \ \ std::vector<int>\ rows;}
+\DoxyCodeLine{00025\ \ \ \ \ std::vector<int>\ cols;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//Eigen::ArithmeticSequence<Eigen::Index,Eigen::Index,Eigen::internal::FixedInt<1>>\ idxI;}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//Eigen::ArithmeticSequence<Eigen::Index,\ Eigen::Index,\ Eigen::internal::FixedInt<1>>\ idxJ;}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

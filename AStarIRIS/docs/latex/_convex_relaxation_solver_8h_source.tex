@@ -1,0 +1,49 @@
+\doxysection{Convex\+Relaxation\+Solver.\+h}
+\hypertarget{_convex_relaxation_solver_8h_source}{}\label{_convex_relaxation_solver_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/ConvexRelaxationSolver.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/ConvexRelaxationSolver.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CONVEX\_RELAXATION\_SOLVER}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CONVEX\_RELAXATION\_SOLVER}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}fusion.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}EigenNdArray.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Solver.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ namespace\ }mosek::fusion;}
+\DoxyCodeLine{00009\ \textcolor{keyword}{using\ namespace\ }monty;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ SolutionStatus\ status;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{double}\ cost;}
+\DoxyCodeLine{00015\ \ \ \ \ Eigen::VectorXd\ y;}
+\DoxyCodeLine{00016\ \ \ \ \ Eigen::MatrixXd\ z;}
+\DoxyCodeLine{00017\ \ \ \ \ Eigen::MatrixXd\ p;}
+\DoxyCodeLine{00018\ \ \ \ \ Eigen::MatrixXd\ x;}
+\DoxyCodeLine{00019\ \ \ \ \ Eigen::MatrixXd\ l;}
+\DoxyCodeLine{00020\ \}\mbox{\hyperlink{struct_convex_relaxation_sol__t}{ConvexRelaxationSol\_t}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }ConvexRelaxationSolver:\ \textcolor{keyword}{public}\ Solver}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{struct_convex_relaxation_sol__t}{ConvexRelaxationSol\_t}}\ relaxedSolution;}
+\DoxyCodeLine{00027\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00028\ \ \ \ \ Variable::t\ l;}
+\DoxyCodeLine{00029\ \ \ \ \ Variable::t\ z;}
+\DoxyCodeLine{00030\ \ \ \ \ Variable::t\ p;}
+\DoxyCodeLine{00031\ \ \ \ \ Variable::t\ y;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//Variable::t\ v;}}
+\DoxyCodeLine{00033\ \ \ \ \ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ ConvexRelaxationSolver(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_graph}{Graph}}\&\ g,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ startKey,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ targetKey);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ setTask()=0;}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ solve();}
+\DoxyCodeLine{00038\ \ \ \ \ \mbox{\hyperlink{struct_path__t}{Path\_t}}\ getGreedyPath();}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{bool}\ getMCPath(\mbox{\hyperlink{struct_path__t}{Path\_t}}\&\ path);}
+\DoxyCodeLine{00040\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ computeFeasibleSolution(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&maxIters=1)\ =\ 0;}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

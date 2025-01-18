@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Range.h"
 #include "Point.h"
-#include "Circle.h"
+#include "Sphere.h"
 #include "Polyhedron.h"
 #include "PolyhedronV.h"
 #include "PolyhedronObstacleCircularRobot.h"
@@ -35,20 +35,20 @@ int pointExpandingEllipsoidTest()
 	return test ? 0 : -1;
 }
 
-int circleExpandingEllipsoidTest()
+int sphereExpandingEllipsoidTest()
 {
 	double distance_test = 4.2055;
 	Eigen::Vector<double, 2> p_out_test({-0.2529,0.1614});
-	std::cout << "Circle Expanding Ellipsoid Distance Test...";
+	std::cout << "Sphere Expanding Ellipsoid Distance Test...";
 	Eigen::Matrix<double, 2, 2> C1({ {0.5,0.2},{0.2,0.5} });
 	Eigen::Vector<double, 2> d1({ -2.,0. });
 	Eigen::Vector<double, 2> p({ 0.,0. });
 	double r = 0.3;
-	Circle circle(p,r);
-	circle.allocateClosestPointEllipsoidSolver();
+	Sphere sphere(p,r);
+	sphere.allocateClosestPointEllipsoidSolver();
 	Ellipsoid ellipsoid(C1, d1);
 	Eigen::VectorXd p_out(2);
-	double distance = circle.closestPointExpandingEllipsoid(ellipsoid, p_out);
+	double distance = sphere.closestPointExpandingEllipsoid(ellipsoid, p_out);
 	std::cout << distance << std::endl;
 	std::cout << "Closest point: " << std::endl;
 	std::cout << p_out << std::endl;
@@ -107,14 +107,14 @@ int polyhedronExpandingEllipsoidTest()
 	Eigen::Matrix<double, 4, 2> A1({ {1.,0.},{0.,1.},{-1.,0},{0.,-1.} });
 	Eigen::Vector<double, 4> b1({ 1.,1.,1.,1. });
 	Polyhedron poly1(A1, b1);
-	poly1.allocateClosestPointEllipsoidSolver();
+	//poly1.allocateClosestPointEllipsoidSolver();
 	Eigen::Matrix<double, 2, 5> v2({ {-5., -5., -4., -4., -4.5},{-1., 1., -1., 1.,0.}});
 	PolyhedronV poly2(v2);
-	poly2.allocateClosestPointEllipsoidSolver();
+	//poly2.allocateClosestPointEllipsoidSolver();
 	Eigen::Matrix<double, 2, 4> v({{-3.,-1.,-1.,-3.},{1.5,1.5,2.,2.}});
 	double r = 0.3;
 	PolyhedronObstacleCircularRobot obs(v, r);
-	obs.allocateClosestPointEllipsoidSolver();
+	//obs.allocateClosestPointEllipsoidSolver();
 	Eigen::Matrix<double, 2, 2> C1({ {0.5,0.2},{0.2,0.5}});
 	Eigen::Vector<double, 2> d1({-2.,0.});
 	Ellipsoid ellipsoid1 = Ellipsoid(C1, d1);
@@ -180,7 +180,7 @@ int main(int argc, char** argv)
 	Range* range = Range::getInstance();
 	range->setRange(2, -10., 10.);
 	pointExpandingEllipsoidTest();
-	circleExpandingEllipsoidTest();
+	sphereExpandingEllipsoidTest();
 	ellipsoidExpandingEllipsoidTest();
 	polyhedronExpandingEllipsoidTest();
 	return 0;

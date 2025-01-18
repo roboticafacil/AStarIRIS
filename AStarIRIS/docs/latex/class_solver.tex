@@ -1,0 +1,80 @@
+\doxysection{Solver Class Reference}
+\hypertarget{class_solver}{}\label{class_solver}\index{Solver@{Solver}}
+Inheritance diagram for Solver\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_solver}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_solver_a7be58b31764b73f3728376b6760aeff8}\label{class_solver_a7be58b31764b73f3728376b6760aeff8} 
+{\bfseries Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+\Hypertarget{class_solver_af377348c7cc2b3d736b7eec338dd02fb}\label{class_solver_af377348c7cc2b3d736b7eec338dd02fb} 
+virtual void {\bfseries set\+Task} ()=0
+\item 
+\Hypertarget{class_solver_ad073be705a5da281c18b5f8423fda216}\label{class_solver_ad073be705a5da281c18b5f8423fda216} 
+virtual void {\bfseries solve} ()=0
+\item 
+\Hypertarget{class_solver_a2f66c88ecaaf12a406f424db7f3e4a10}\label{class_solver_a2f66c88ecaaf12a406f424db7f3e4a10} 
+void {\bfseries set\+Graph} (\mbox{\hyperlink{class_graph}{Graph}} \&g)
+\item 
+\Hypertarget{class_solver_acf07a81b9444bd3c61c9da1568ad3e7c}\label{class_solver_acf07a81b9444bd3c61c9da1568ad3e7c} 
+bool {\bfseries optimal\+Path\+Contains\+Terminal\+Nodes} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_solver_a9bdb4d0a89d4af1ae9123948b8489d56}\label{class_solver_a9bdb4d0a89d4af1ae9123948b8489d56} 
+\mbox{\hyperlink{struct_feasible_sol__t}{Feasible\+Sol\+\_\+t}} {\bfseries feasible\+Solution}
+\item 
+\Hypertarget{class_solver_aacf9fd2a8b68f51f82aa6b5125f1d18b}\label{class_solver_aacf9fd2a8b68f51f82aa6b5125f1d18b} 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries optimal\+Path}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_solver_a259fcbfac633f08a67af8a4d97c97a04}\label{class_solver_a259fcbfac633f08a67af8a4d97c97a04} 
+virtual void {\bfseries compute\+Feasible\+Solution} (const int \&max\+Iters=1)=0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_solver_a20f477f51a96808d2e8de5a952168c16}\label{class_solver_a20f477f51a96808d2e8de5a952168c16} 
+\mbox{\hyperlink{class_graph}{Graph}} {\bfseries g}
+\item 
+\Hypertarget{class_solver_a30b476f1a7facd6dc4bee584386dfaa3}\label{class_solver_a30b476f1a7facd6dc4bee584386dfaa3} 
+Model\+::t {\bfseries M}
+\item 
+\Hypertarget{class_solver_ac8105f5e49acd009dc5bf0c11bb4c3cd}\label{class_solver_ac8105f5e49acd009dc5bf0c11bb4c3cd} 
+int {\bfseries n}
+\item 
+\Hypertarget{class_solver_a25591ca8312406ff682be2d26ffb16e1}\label{class_solver_a25591ca8312406ff682be2d26ffb16e1} 
+int {\bfseries nE}
+\item 
+\Hypertarget{class_solver_adf5332ef21562ce1b26e19dde5e4faf3}\label{class_solver_adf5332ef21562ce1b26e19dde5e4faf3} 
+int {\bfseries nN}
+\item 
+\Hypertarget{class_solver_a61a751859f8aa1e1242ccaeb173840da}\label{class_solver_a61a751859f8aa1e1242ccaeb173840da} 
+int {\bfseries start\+Key}
+\item 
+\Hypertarget{class_solver_a2eb8dde575a069443368c6f28b3102c8}\label{class_solver_a2eb8dde575a069443368c6f28b3102c8} 
+int {\bfseries target\+Key}
+\item 
+\Hypertarget{class_solver_af76dba2257e8b61c9f86ea92ac74282f}\label{class_solver_af76dba2257e8b61c9f86ea92ac74282f} 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qstart}
+\item 
+\Hypertarget{class_solver_aec3216f2f7ebfb62d6f8d9f152236dd8}\label{class_solver_aec3216f2f7ebfb62d6f8d9f152236dd8} 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qtarget}
+\item 
+\Hypertarget{class_solver_a790448d0382cb924114bf6626a5d8b41}\label{class_solver_a790448d0382cb924114bf6626a5d8b41} 
+bool {\bfseries solver\+Allocated}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Solver.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Solver.\+cpp\end{DoxyCompactItemize}

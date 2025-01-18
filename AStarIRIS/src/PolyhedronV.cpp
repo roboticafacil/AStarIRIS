@@ -17,6 +17,7 @@ PolyhedronV::PolyhedronV(const int& n) : Polyhedron(n)
 PolyhedronV::PolyhedronV(const Eigen::MatrixXd& v) : Polyhedron(Eigen::MatrixXd(0,v.rows()), Eigen::VectorXd(0))
 {
     this->v = v;
+    //std::cout << this->v << std::endl;
     Polyhedron::vert2con(this->v, this->A, this->b);
     //std::cout << this->A << std::endl;
     A_ptr = Eigen2NdArray(this->A);
@@ -40,6 +41,11 @@ PolyhedronV::~PolyhedronV()
 void PolyhedronV::print()
 {
     std::cout << this->v << std::endl;
+}
+
+void PolyhedronV::printAB()
+{
+    Polyhedron::print();
 }
 
 std::ostream& PolyhedronV::print(std::ostream& out, const std::string& vName)
@@ -71,6 +77,17 @@ bool PolyhedronV::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const 
     bool isInside = (((ai.transpose() * this->v).array() - bi) <=tol).any();
     return isInside;
 }
+
+/*bool PolyhedronV::isInsideSeparatingHyperplanes(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, const double& tol)
+{
+    //for (int i = 0; i < this->v.cols(); i++)
+    //{
+    //    if (((((A * this->v.col(i)) - b).array()) <= tol).all())
+    //        return true;
+    //}
+    //We should check first the vertices because is cheaper, but then we have to be careful with the cached version of Polyhedron::isInsideSeparatingHyperplanes
+    return Polyhedron::isInsideSeparatingHyperplanes(A,b,tol);
+}*/
 
 double PolyhedronV::closestVertex(const Eigen::VectorXd& p_in, Eigen::VectorXd& p_out)
 {
@@ -150,20 +167,4 @@ Eigen::MatrixXd PolyhedronV::getBoundingBox()
         this->bbComputed = true;
     }
     return this->bb;
-}
-
-void PolyhedronV::getFilled2DPolyhedron(std::vector<double>& x, std::vector<double>& y)
-{
-    if (this->v.rows() == 2)
-    {
-        x.clear();
-        y.clear();
-        for (int i = 0; i < this->v.cols(); i++)
-        {
-            x.push_back(v(0, i));
-            y.push_back(v(1, i));
-        }
-    }
-    else
-        std::cout << "This method is intended to be used with 2D polyhedra" << std::endl;
 }

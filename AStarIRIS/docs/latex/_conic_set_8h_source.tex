@@ -1,0 +1,44 @@
+\doxysection{Conic\+Set.\+h}
+\hypertarget{_conic_set_8h_source}{}\label{_conic_set_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/ConicSet.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/ConicSet.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CONIC\_SET}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CONIC\_SET}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ ConicType}
+\DoxyCodeLine{00006\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ point\ =\ 0,}
+\DoxyCodeLine{00008\ \ \ \ \ circle\ =\ 1,}
+\DoxyCodeLine{00009\ \ \ \ \ ellipsoid\ =\ 2,}
+\DoxyCodeLine{00010\ \ \ \ \ polyhedron\ =\ 3,}
+\DoxyCodeLine{00011\ \ \ \ \ obstacleCircularRobot\ =\ 4}
+\DoxyCodeLine{00012\ \}\ ConicType;}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }ConicSet}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ centroidComputed\ =\textcolor{keyword}{false};}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ Eigen::VectorXd\ centroid;}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ bbComputed\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ Eigen::MatrixXd\ bb;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ ConicSet(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ n);}
+\DoxyCodeLine{00027\ \ \ \ \ ConicSet(\textcolor{keyword}{const}\ ConicSet\&\ conicSet);}
+\DoxyCodeLine{00028\ \ \ \ \ \string~ConicSet();}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ closestPoint(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in,\ Eigen::VectorXd\&\ p\_out)\ =\ 0;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ closestPoint(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in)=0;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ closestPointExpandingEllipsoid(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ Eigen::VectorXd\&\ p\_out)\ =\ 0;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ isInside(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=0.)=0;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ isInsideSeparatingHyperplane(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ ai,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ bi,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=0.)\ =\ 0;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ isInsideSeparatingHyperplanes(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ A,\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ b,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 0.)\ =\ 0;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::VectorXd\ getCentroid()\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::MatrixXd\ getBoundingBox()\ =\ 0;}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

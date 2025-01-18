@@ -1,0 +1,57 @@
+\doxysection{Solver.\+h}
+\hypertarget{_solver_8h_source}{}\label{_solver_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Solver.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/Solver.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ SOLVER}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ SOLVER}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}fusion.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}EigenNdArray.h"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{using\ namespace\ }mosek::fusion;}
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ namespace\ }monty;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ std::vector<int>\ nodeKeys;}
+\DoxyCodeLine{00013\ \ \ \ \ std::vector<int>\ edgeKeys;}
+\DoxyCodeLine{00014\ \}\mbox{\hyperlink{struct_path__t}{Path\_t}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ SolutionStatus\ status;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{double}\ cost;}
+\DoxyCodeLine{00020\ \ \ \ \ Eigen::MatrixXd\ x;}
+\DoxyCodeLine{00021\ \}\mbox{\hyperlink{struct_feasible_sol__t}{FeasibleSol\_t}};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }Solver}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{struct_feasible_sol__t}{FeasibleSol\_t}}\ feasibleSolution;}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{struct_path__t}{Path\_t}}\ optimalPath;}
+\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{class_graph}{Graph}}\ g;}
+\DoxyCodeLine{00030\ \ \ \ \ Model::t\ M;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ n;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{int}\ nE;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{int}\ nN;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{int}\ startKey;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{int}\ targetKey;}
+\DoxyCodeLine{00036\ \ \ \ \ std::shared\_ptr<ndarray<double,\ 2>>\ qstart;}
+\DoxyCodeLine{00037\ \ \ \ \ std::shared\_ptr<ndarray<double,\ 2>>\ qtarget;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ \ \ Solver(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_graph}{Graph}}\&\ g,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ startKey,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ targetKey);}
+\DoxyCodeLine{00041\ \ \ \ \ \string~Solver();}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ setTask()\ =\ 0;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ solve()\ =\ 0;}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ setGraph(\mbox{\hyperlink{class_graph}{Graph}}\&\ g);}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ optimalPathContainsTerminalNodes();}
+\DoxyCodeLine{00046\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ computeFeasibleSolution(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&maxIters=1)=0;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ solverAllocated;}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,35 @@
+\doxysection{MCIRISConic.\+h}
+\hypertarget{_m_c_i_r_i_s_conic_8h_source}{}\label{_m_c_i_r_i_s_conic_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/MCIRISConic.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/MCIRISConic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ MC\_IRIS\_CONIC}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ MC\_IRIS\_CONIC}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CObsConic.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GCS.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}ExpandableIRISConic.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}PointNode.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}ConvexRelaxationSolver.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{ExpandableIRISParams\_t}}\ ExpandableIRISParams;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//Add\ here\ more\ parameters\ if\ needed}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{int}\ maxIters;}
+\DoxyCodeLine{00016\ \}\mbox{\hyperlink{struct_m_c_i_r_i_s_params__t}{MCIRISParams\_t}};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }MCIRISConic\ :\ \textcolor{keyword}{public}\ ExpandableIRISConic}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{struct_feasible_sol__t}{FeasibleSol\_t}}\ feasibleSolution;\ \textcolor{comment}{//These\ two\ properties\ probably\ should\ be\ inherited\ from\ a\ base\ class\ (see\ AStarIRISConic\ also\ has\ the\ same\ properties)}}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{struct_path__t}{Path\_t}}\ optimalPath;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ MCIRISConic(\mbox{\hyperlink{class_c_obs_conic}{CObsConic}}\&\ cObs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_m_c_i_r_i_s_params__t}{MCIRISParams\_t}}\&\ params);}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{struct_m_c_i_r_i_s_params__t}{MCIRISParams\_t}}\ getDefaultMCIRISParams();}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ do\_MCRelaxedSolver();}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{struct_m_c_i_r_i_s_params__t}{MCIRISParams\_t}}\ params;}
+\DoxyCodeLine{00028\ \};}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

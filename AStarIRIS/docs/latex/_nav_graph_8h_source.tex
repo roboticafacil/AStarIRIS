@@ -1,0 +1,27 @@
+\doxysection{Nav\+Graph.\+h}
+\hypertarget{_nav_graph_8h_source}{}\label{_nav_graph_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/NavGraph.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/NavGraph.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ EGCS\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ EGCS\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}GCS.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }NavGraph\ :\ \textcolor{keyword}{public}\ Graph}
+\DoxyCodeLine{00007\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{comment}{//Default\ constructor}}
+\DoxyCodeLine{00010\ \ \ \ \ NavGraph();}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{comment}{//Copy\ constructor}}
+\DoxyCodeLine{00012\ \ \ \ \ NavGraph(NavGraph*\ graph);}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{void}\ printConvexSets(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ num\ =\ 1);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}\ printConvexSet(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ num,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ nodeKey);}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{void}\ printGraph(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ num\ =\ 1,\ std::vector<double>\&\ weights=std::vector<double>());}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{comment}{//NavGraph\&\ operator=(const\ NavGraph\&\ other);}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//void\ buildEdgeGraph(GCS\&\ gcs);}}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{bool}\ contains(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 0.);}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ print();}
+\DoxyCodeLine{00020\ \};}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,134 @@
+\doxysection{AStar\+IRISConic Class Reference}
+\hypertarget{class_a_star_i_r_i_s_conic}{}\label{class_a_star_i_r_i_s_conic}\index{AStarIRISConic@{AStarIRISConic}}
+Inheritance diagram for AStar\+IRISConic\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_star_i_r_i_s_conic}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_ae31a8041fbcf5f89d8aae9660c9cfd55}\label{class_a_star_i_r_i_s_conic_ae31a8041fbcf5f89d8aae9660c9cfd55} 
+{\bfseries AStar\+IRISConic} (\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \&c\+Obs, const \mbox{\hyperlink{struct_a_star_i_r_i_s_params__t}{AStar\+IRISParams\+\_\+t}} \&params)
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_a6fe0662da776e02d9df95f745785ab13}\label{class_a_star_i_r_i_s_conic_a6fe0662da776e02d9df95f745785ab13} 
+void {\bfseries do\+\_\+\+Relaxed\+Solver} ()
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_a9913788664cc8842bb5332d196d23f93}\label{class_a_star_i_r_i_s_conic_a9913788664cc8842bb5332d196d23f93} 
+void {\bfseries do\+\_\+\+Relaxed\+Solver} (std\+::ostream \&out)
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_ae4e39f997994dcb194e470d29add58a3}\label{class_a_star_i_r_i_s_conic_ae4e39f997994dcb194e470d29add58a3} 
+void {\bfseries do\+\_\+\+MIPSolver} ()
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_a3503c4160509c77805a82583f7df564f}\label{class_a_star_i_r_i_s_conic_a3503c4160509c77805a82583f7df564f} 
+void {\bfseries do\+\_\+\+MIPSolver} (std\+::ostream \&out)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Expandable\+IRISConic} (\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \&c\+Obs, const \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{Expandable\+IRISParams\+\_\+t}} \&params)
+\item 
+int {\bfseries add\+Convex\+Set} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+std\+::vector$<$ int $>$ {\bfseries add\+Convex\+Sets} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+void {\bfseries build\+Nav\+Graph} (const Eigen\+::\+Vector\+Xd \&qstart, const Eigen\+::\+Vector\+Xd \&qtarget)
+\item 
+void {\bfseries terminal\+Costs} (Eigen\+::\+Vector\+Xd \&h\+Costs, Eigen\+::\+Matrix\+Xd \&p\+Closest)
+\item 
+void {\bfseries expand\+Terminal\+Node} (const int \&terminal\+Node\+Key)
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries generate\+Random\+Seed\+In\+Terminal\+Node} ()
+\item 
+\mbox{\hyperlink{class_nav_graph}{Nav\+Graph}} {\bfseries get\+Graph\+Without\+Terminal\+Connections} ()
+\item 
+void {\bfseries remove\+Node} (const int key)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries IRISConic} (\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \&c\+Obs, const \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\+\_\+t}} \&params)
+\item 
+void {\bfseries add\+Convex\+Sets} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+void {\bfseries separating\+Hyperplanes} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, \mbox{\hyperlink{class_polyhedron}{Polyhedron}} \&polyhedron)
+\item 
+void {\bfseries generate\+GCS} ()
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries generate\+Random\+Seed} (int \&trials)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_a737281b3aa7a8b722719bbe8a20d6e67}\label{class_a_star_i_r_i_s_conic_a737281b3aa7a8b722719bbe8a20d6e67} 
+static \mbox{\hyperlink{struct_a_star_i_r_i_s_params__t}{AStar\+IRISParams\+\_\+t}} {\bfseries get\+Default\+AStar\+IRISParams} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{Expandable\+IRISParams\+\_\+t}} {\bfseries get\+Default\+Expandable\+IRISParams} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\+\_\+t}} {\bfseries get\+Default\+IRISParams} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_a94e8889703f59e2141567f02060e073c}\label{class_a_star_i_r_i_s_conic_a94e8889703f59e2141567f02060e073c} 
+\mbox{\hyperlink{struct_feasible_sol__t}{Feasible\+Sol\+\_\+t}} {\bfseries feasible\+Solution}
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_afef44a8993123c0521fcf09ea0bd7e96}\label{class_a_star_i_r_i_s_conic_afef44a8993123c0521fcf09ea0bd7e96} 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries optimal\+Path}
+\item 
+\Hypertarget{class_a_star_i_r_i_s_conic_a8e79aaa2b08c4610ef0cd425ab908f97}\label{class_a_star_i_r_i_s_conic_a8e79aaa2b08c4610ef0cd425ab908f97} 
+\mbox{\hyperlink{struct_a_star_i_r_i_s_params__t}{AStar\+IRISParams\+\_\+t}} {\bfseries params}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_nav_graph}{Nav\+Graph}} {\bfseries nav\+Graph}
+\item 
+int {\bfseries q\+Start\+Node\+Nav\+Graph\+Key}
+\item 
+int {\bfseries q\+Target\+Node\+Nav\+Graph\+Key}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_g_c_s}{GCS}} {\bfseries gcs}
+\item 
+\mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\+\_\+t}} {\bfseries params}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries compute\+Convex\+Set} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, \mbox{\hyperlink{class_polyhedron}{Polyhedron}} \&convex\+Set, std\+::vector$<$ int $>$ \&neighbour\+Keys)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::pair$<$ int, int $>$, int $>$ {\bfseries nav\+Graph2gcs}
+\item 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries terminal\+Node\+Keys}
+\item 
+\mbox{\hyperlink{class_point_node}{Point\+Node}} \texorpdfstring{$\ast$}{*} {\bfseries q\+Start\+Node}
+\item 
+\mbox{\hyperlink{class_point_node}{Point\+Node}} \texorpdfstring{$\ast$}{*} {\bfseries q\+Target\+Node}
+\item 
+\mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{Expandable\+IRISParams\+\_\+t}} {\bfseries params}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+c\+Obs}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/AStar\+IRISConic.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/AStar\+IRISConic.\+cpp\end{DoxyCompactItemize}

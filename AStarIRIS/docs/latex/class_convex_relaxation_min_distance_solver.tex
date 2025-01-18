@@ -1,0 +1,114 @@
+\doxysection{Convex\+Relaxation\+Min\+Distance\+Solver Class Reference}
+\hypertarget{class_convex_relaxation_min_distance_solver}{}\label{class_convex_relaxation_min_distance_solver}\index{ConvexRelaxationMinDistanceSolver@{ConvexRelaxationMinDistanceSolver}}
+Inheritance diagram for Convex\+Relaxation\+Min\+Distance\+Solver\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_convex_relaxation_min_distance_solver}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_convex_relaxation_min_distance_solver_a0c5b6c470d228c44c54a93af173a7967}\label{class_convex_relaxation_min_distance_solver_a0c5b6c470d228c44c54a93af173a7967} 
+{\bfseries Convex\+Relaxation\+Min\+Distance\+Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+void \mbox{\hyperlink{class_convex_relaxation_min_distance_solver_ab6525e676f176b3357633ec488f1967d}{set\+Task}} ()
+\item 
+void \mbox{\hyperlink{class_convex_relaxation_min_distance_solver_af1f694483e7bfe56ef664fd2ace87120}{compute\+Feasible\+Solution}} (const int \&max\+Iters=1)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_convex_relaxation_solver}{Convex\+Relaxation\+Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Convex\+Relaxation\+Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+void \mbox{\hyperlink{class_convex_relaxation_solver_abe7537641e56d3a3c8f16f632e16c7db}{solve}} ()
+\item 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries get\+Greedy\+Path} ()
+\item 
+bool {\bfseries get\+MCPath} (\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} \&path)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+void {\bfseries set\+Graph} (\mbox{\hyperlink{class_graph}{Graph}} \&g)
+\item 
+bool {\bfseries optimal\+Path\+Contains\+Terminal\+Nodes} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_convex_relaxation_solver}{Convex\+Relaxation\+Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_convex_relaxation_sol__t}{Convex\+Relaxation\+Sol\+\_\+t}} {\bfseries relaxed\+Solution}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_feasible_sol__t}{Feasible\+Sol\+\_\+t}} {\bfseries feasible\+Solution}
+\item 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries optimal\+Path}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_convex_relaxation_solver}{Convex\+Relaxation\+Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+Variable\+::t {\bfseries l}
+\item 
+Variable\+::t {\bfseries z}
+\item 
+Variable\+::t {\bfseries p}
+\item 
+Variable\+::t {\bfseries y}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_graph}{Graph}} {\bfseries g}
+\item 
+Model\+::t {\bfseries M}
+\item 
+int {\bfseries n}
+\item 
+int {\bfseries nE}
+\item 
+int {\bfseries nN}
+\item 
+int {\bfseries start\+Key}
+\item 
+int {\bfseries target\+Key}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qstart}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qtarget}
+\item 
+bool {\bfseries solver\+Allocated}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_convex_relaxation_min_distance_solver_af1f694483e7bfe56ef664fd2ace87120}\index{ConvexRelaxationMinDistanceSolver@{ConvexRelaxationMinDistanceSolver}!computeFeasibleSolution@{computeFeasibleSolution}}
+\index{computeFeasibleSolution@{computeFeasibleSolution}!ConvexRelaxationMinDistanceSolver@{ConvexRelaxationMinDistanceSolver}}
+\doxysubsubsection{\texorpdfstring{computeFeasibleSolution()}{computeFeasibleSolution()}}
+{\footnotesize\ttfamily \label{class_convex_relaxation_min_distance_solver_af1f694483e7bfe56ef664fd2ace87120} 
+void Convex\+Relaxation\+Min\+Distance\+Solver\+::compute\+Feasible\+Solution (\begin{DoxyParamCaption}\item[{const int \&}]{max\+Iters}{ = {\ttfamily 1}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_convex_relaxation_solver}{Convex\+Relaxation\+Solver}}.
+
+\Hypertarget{class_convex_relaxation_min_distance_solver_ab6525e676f176b3357633ec488f1967d}\index{ConvexRelaxationMinDistanceSolver@{ConvexRelaxationMinDistanceSolver}!setTask@{setTask}}
+\index{setTask@{setTask}!ConvexRelaxationMinDistanceSolver@{ConvexRelaxationMinDistanceSolver}}
+\doxysubsubsection{\texorpdfstring{setTask()}{setTask()}}
+{\footnotesize\ttfamily \label{class_convex_relaxation_min_distance_solver_ab6525e676f176b3357633ec488f1967d} 
+void Convex\+Relaxation\+Min\+Distance\+Solver\+::set\+Task (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_convex_relaxation_solver}{Convex\+Relaxation\+Solver}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Convex\+Relaxation\+Min\+Distance\+Solver.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Convex\+Relaxation\+Min\+Distance\+Solver.\+cpp\end{DoxyCompactItemize}

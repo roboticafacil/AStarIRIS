@@ -1,0 +1,127 @@
+\doxysection{GCS Class Reference}
+\hypertarget{class_g_c_s}{}\label{class_g_c_s}\index{GCS@{GCS}}
+Inheritance diagram for GCS\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_g_c_s}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_g_c_s_a4a6e9b7745d2d6eaf6b34079d73e6ee2}\label{class_g_c_s_a4a6e9b7745d2d6eaf6b34079d73e6ee2} 
+{\bfseries GCS} (\mbox{\hyperlink{class_g_c_s}{GCS}} \texorpdfstring{$\ast$}{*}graph)
+\item 
+\Hypertarget{class_g_c_s_a4df2ef330173f8d45ab6b539bed79139}\label{class_g_c_s_a4df2ef330173f8d45ab6b539bed79139} 
+void {\bfseries print} (std\+::ostream \&out, const int \&num=1)
+\item 
+\Hypertarget{class_g_c_s_ae1f03ef7c42d53aea8534aa1ecbe4ade}\label{class_g_c_s_ae1f03ef7c42d53aea8534aa1ecbe4ade} 
+bool {\bfseries contains} (const Eigen\+::\+Vector\+Xd \&q, const double \&tol=0.)
+\item 
+\Hypertarget{class_g_c_s_a4a58e65661f06b56c924921dc9a8b941}\label{class_g_c_s_a4a58e65661f06b56c924921dc9a8b941} 
+int {\bfseries find\+Convex\+Set} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+\Hypertarget{class_g_c_s_ad0efdcb1abfd5f03c7b816877c3ab0c8}\label{class_g_c_s_ad0efdcb1abfd5f03c7b816877c3ab0c8} 
+std\+::vector$<$ int $>$ {\bfseries find\+Convex\+Sets} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+void \mbox{\hyperlink{class_g_c_s_a6d262951a79032e94e13841459509dc1}{print}} ()
+\item 
+void \mbox{\hyperlink{class_g_c_s_a8e4ad23c997515b50895de249b82e50b}{print\+Edges}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_graph}{Graph}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Graph} (\mbox{\hyperlink{class_graph}{Graph}} \texorpdfstring{$\ast$}{*}graph)
+\item 
+\mbox{\hyperlink{class_graph}{Graph}} \& {\bfseries operator=} (\mbox{\hyperlink{class_graph}{Graph}} \&other)
+\item 
+virtual void {\bfseries print\+Nodes} ()
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+Node\+Keys} ()
+\item 
+\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} {\bfseries get\+Node} (const int \&key)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Nodes} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Nodes} (std\+::vector$<$ int $>$ \&keys)
+\item 
+\mbox{\hyperlink{class_graph}{Graph}} {\bfseries sub\+Graph} (std\+::vector$<$ int $>$ \&keys)
+\item 
+int {\bfseries add\+Node} (const \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}node)
+\item 
+void {\bfseries add\+Node} (const \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}node, const int \&key)
+\item 
+bool {\bfseries remove\+Node} (const int \&key)
+\item 
+bool {\bfseries add\+Edge} (const int \&key\+From, const int \&key\+To)
+\item 
+bool {\bfseries remove\+Edge} (const int \&key\+From, const int \&key\+To)
+\item 
+std\+::vector$<$ int $>$ {\bfseries find\+Out\+Edges} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries find\+In\+Edges} (const int \&key)
+\item 
+std\+::vector$<$ Edge $>$ {\bfseries get\+Edges} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Out\+Neighbours} (const int \&key)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+In\+Neighbours} (const int \&key)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Neighbours} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+Out\+Neighbour\+Keys} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+In\+Neighbour\+Keys} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+Neighbour\+Keys} (const int \&key)
+\item 
+Edge {\bfseries get\+Edge} (const int \&edge\+Idx)
+\item 
+void {\bfseries set\+Edges} (const std\+::vector$<$ Edge $>$ \&edges)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_graph}{Graph}}}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries num\+Nodes}
+\item 
+int {\bfseries num\+Edges}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_graph}{Graph}}}
+\begin{DoxyCompactItemize}
+\item 
+Node\+Map {\bfseries nodes}
+\item 
+std\+::vector$<$ Edge $>$ {\bfseries edges}
+\item 
+std\+::vector$<$ int $>$ {\bfseries node\+Keys}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_g_c_s_a6d262951a79032e94e13841459509dc1}\index{GCS@{GCS}!print@{print}}
+\index{print@{print}!GCS@{GCS}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily \label{class_g_c_s_a6d262951a79032e94e13841459509dc1} 
+void GCS\+::print (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_graph}{Graph}}.
+
+\Hypertarget{class_g_c_s_a8e4ad23c997515b50895de249b82e50b}\index{GCS@{GCS}!printEdges@{printEdges}}
+\index{printEdges@{printEdges}!GCS@{GCS}}
+\doxysubsubsection{\texorpdfstring{printEdges()}{printEdges()}}
+{\footnotesize\ttfamily \label{class_g_c_s_a8e4ad23c997515b50895de249b82e50b} 
+void GCS\+::print\+Edges (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_graph}{Graph}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/GCS.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/GCS.\+cpp\end{DoxyCompactItemize}

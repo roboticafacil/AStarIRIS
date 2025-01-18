@@ -87,6 +87,13 @@ bool PolyhedronObstacleCircularRobot::isInsideSeparatingHyperplane(const Eigen::
         return false;
 }
 
+bool PolyhedronObstacleCircularRobot::isInsideSeparatingHyperplanes(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, const double& tol)
+{
+    std::cout << "PolyhedronObstacleCircularRobot: isInsideSeparatingHyperplanes not implemented yet!!" << std::endl;
+    //Hay que pensar esto...
+    return false;
+}
+
 Ellipsoid PolyhedronObstacleCircularRobot::inscribedEllipsoid()
 {
     //std::shared_ptr<ndarray<double, 2>> A_ptr = Eigen2NdArray(polyhedron.A);
@@ -130,14 +137,14 @@ Ellipsoid PolyhedronObstacleCircularRobot::inscribedEllipsoid()
     return Ellipsoid(CEigen, dEigen);
 }
 
-Circle PolyhedronObstacleCircularRobot::inscribedCircle()
+Sphere PolyhedronObstacleCircularRobot::inscribedSphere()
 {
     //std::shared_ptr<ndarray<double, 2>> A_ptr = Eigen2NdArray(polyhedron.A);
     //std::shared_ptr<ndarray<double, 1>> b_ptr = Eigen2NdArray(polyhedron.b);
     //Model::t M = new Model("inscribed_ellipsoid"); auto _M = finally([&]() { M->dispose(); });
     Range* range = Range::getInstance();
     std::pair<double, double> bounds = range->getBounds();
-    Model::t M = new Model("PolyhedronObstacleCircularRobot::inscribedCircle");
+    Model::t M = new Model("PolyhedronObstacleCircularRobot::inscribedSphere");
     auto _M = finally([&]() { M->dispose(); });
     Variable::t x = M->variable("x", n, Domain::inRange(bounds.first, bounds.second));
     Variable::t chi1 = M->variable("chi1", v.rows(), Domain::inRange(bounds.first, bounds.second));
@@ -158,16 +165,16 @@ Circle PolyhedronObstacleCircularRobot::inscribedCircle()
     M->solve();
     Eigen::VectorXd cEigen = Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(c->level()->begin(), n));
     double rr = (*r->level())[0];
-    return Circle(cEigen, rr);
+    return Sphere(cEigen, rr);
 }
 
 Eigen::VectorXd PolyhedronObstacleCircularRobot::getCentroid()
 {
     if (!this->centroidComputed)
     {
-        Circle circle = this->inscribedCircle();
+        Sphere sphere = this->inscribedSphere();
         this->centroidComputed = true;
-        this->centroid = circle.getCentroid();
+        this->centroid = sphere.getCentroid();
     }
     return this->centroid;
 }

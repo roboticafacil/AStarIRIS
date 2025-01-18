@@ -1,0 +1,60 @@
+\doxysection{IRISConic.\+h}
+\hypertarget{_i_r_i_s_conic_8h_source}{}\label{_i_r_i_s_conic_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/IRISConic.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/IRISConic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ IRIS\_CONIC}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ IRIS\_CONIC}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Range.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}Node.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}CObsConic.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}GCS.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}NavGraph.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00010\ \{}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordtype}{int}\ status;}
+\DoxyCodeLine{00012\ \}\mbox{\hyperlink{struct_i_r_i_s_res__t}{IRISRes\_t}};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{/*typedef\ struct}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\{}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ \ \ int\ nodeKey;}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ \ \ int\ idx;}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ \ \ Eigen::VectorXd\ ai;}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ \ \ double\ bi;}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\}IRISNeighbour\_t;*/}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{int}\ n;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{double}\ tolConvexSetConvergence;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{double}\ shrinkFactor;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{int}\ maxTrials;}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{bool}\ seperatingHyperplaneAligned;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{double}\ tol;}
+\DoxyCodeLine{00030\ \}\mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\_t}};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{class\ }IRISConic}
+\DoxyCodeLine{00033\ \{}
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{class_g_c_s}{GCS}}\ gcs;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//IRISConic(CObsConic*\ cObs,\ GCS*\ gcs,\ EGCS*\ egcs,\ const\ IRISParams\_t\&\ params);}}
+\DoxyCodeLine{00037\ \ \ \ \ IRISConic(\mbox{\hyperlink{class_c_obs_conic}{CObsConic}}\&\ cObs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\_t}}\&\ params);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ addConvexSets(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q);}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\_t}}\ getDefaultIRISParams();}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//void\ IRISConic::separatingHyperplanes(Ellipsoid\&\ ellipsoid,\ Polyhedron\&\ polyhedron,\ std::vector<IRISNeighbour\_t>\&\ neighbours);}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ IRISConic::separatingHyperplanes(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ \mbox{\hyperlink{class_polyhedron}{Polyhedron}}\&\ polyhedron);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ generateGCS();}
+\DoxyCodeLine{00043\ \ \ \ \ Eigen::VectorXd\ generateRandomSeed(\textcolor{keywordtype}{int}\&\ trials);}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//void\ addStartNode(const\ Eigen::VectorXd\&\ q);}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00046\ \ \ \ \ \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\_t}}\ params;}
+\DoxyCodeLine{00047\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//void\ computeConvexSet(Ellipsoid\&\ ellipsoid,\ Polyhedron\&\ convexSet,\ std::vector<IRISNeighbour\_t>\&\ neighbours);}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ computeConvexSet(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ \mbox{\hyperlink{class_polyhedron}{Polyhedron}}\&\ convexSet,\ std::vector<int>\&\ neighbourKeys);}
+\DoxyCodeLine{00050\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{class_c_obs_conic}{CObsConic}}*\ \_cObs;}
+\DoxyCodeLine{00052\ \ \ \ \ }
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

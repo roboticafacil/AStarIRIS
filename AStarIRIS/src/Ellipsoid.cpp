@@ -131,6 +131,13 @@ bool Ellipsoid::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const do
     return (status == ProblemStatus::PrimalFeasible) || (status == ProblemStatus::PrimalAndDualFeasible);
 }
 
+bool Ellipsoid::isInsideSeparatingHyperplanes(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, const double& tol)
+{
+    std::cout << "Ellipsoid: isInsideSeparatingHyperplanes not implemented yet!!" << std::endl;
+    //Hay que pensar esto...
+    return false;
+}
+
 Eigen::VectorXd Ellipsoid::getCentroid()
 {
     return this->centroid;    

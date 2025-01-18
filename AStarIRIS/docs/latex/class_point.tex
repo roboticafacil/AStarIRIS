@@ -1,0 +1,161 @@
+\doxysection{Point Class Reference}
+\hypertarget{class_point}{}\label{class_point}\index{Point@{Point}}
+Inheritance diagram for Point\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_point}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_point_ab80b7e36192bcdf976ed1d295fed2c80}\label{class_point_ab80b7e36192bcdf976ed1d295fed2c80} 
+{\bfseries Point} (const Eigen\+::\+Vector\+Xd \&p)
+\item 
+\Hypertarget{class_point_a53534941e7bcb3c6d3af84d58a542899}\label{class_point_a53534941e7bcb3c6d3af84d58a542899} 
+{\bfseries Point} (const \mbox{\hyperlink{class_point}{Point}} \&point)
+\item 
+\Hypertarget{class_point_a76c5855c06d98aed16b5796a9a50bbee}\label{class_point_a76c5855c06d98aed16b5796a9a50bbee} 
+void {\bfseries print} ()
+\item 
+\Hypertarget{class_point_a5eedd6aae50060013b9c9942df4452b4}\label{class_point_a5eedd6aae50060013b9c9942df4452b4} 
+std\+::ostream \& {\bfseries print} (std\+::ostream \&out, const std\+::string \&point\+Name)
+\item 
+\Hypertarget{class_point_a3ac7dd6d284fd163472314764a4f1175}\label{class_point_a3ac7dd6d284fd163472314764a4f1175} 
+double {\bfseries distance} (const Eigen\+::\+Vector\+Xd \&point)
+\item 
+double \mbox{\hyperlink{class_point_adef64049a5d54803b95c5e1e664e1f13}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+double \mbox{\hyperlink{class_point_a69cb722d903c16d3ab71caf74a818bac}{closest\+Point}} (const Eigen\+::\+Vector\+Xd \&p\+\_\+in)
+\item 
+double \mbox{\hyperlink{class_point_ada6beed5a9f5dec88e3c4b5d6aea161d}{closest\+Point\+Expanding\+Ellipsoid}} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, Eigen\+::\+Vector\+Xd \&p\+\_\+out)
+\item 
+bool \mbox{\hyperlink{class_point_a9926584f5b4d0e920aece561f50b7493}{is\+Inside}} (const Eigen\+::\+Vector\+Xd \&p, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_point_ad8305012531117e41294ab78300e0dd9}{is\+Inside\+Separating\+Hyperplane}} (const Eigen\+::\+Vector\+Xd \&ai, const double \&bi, const double \&tol=1.e-\/4)
+\item 
+bool \mbox{\hyperlink{class_point_a68130b892ba008eb78d2ac70d45e9870}{is\+Inside\+Separating\+Hyperplanes}} (const Eigen\+::\+Matrix\+Xd \&A, const Eigen\+::\+Vector\+Xd \&b, const double \&tol=1.e-\/4)
+\item 
+Eigen\+::\+Vector\+Xd \mbox{\hyperlink{class_point_ae9cf0793fde195de0e305c09eb4e3be0}{get\+Centroid}} ()
+\item 
+Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{class_point_a982440d85a914d21e20bdfed667ad4da}{get\+Bounding\+Box}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Conic\+Set} (const int \&n)
+\item 
+{\bfseries Conic\+Set} (const \mbox{\hyperlink{class_conic_set}{Conic\+Set}} \&conic\+Set)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_point_a6b04b728864558c715c0093678b94797}\label{class_point_a6b04b728864558c715c0093678b94797} 
+Eigen\+::\+Vector\+Xd {\bfseries p}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+const int {\bfseries n}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_conic_set}{Conic\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries centroid\+Computed} =false
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries centroid}
+\item 
+bool {\bfseries bb\+Computed} = false
+\item 
+Eigen\+::\+Matrix\+Xd {\bfseries bb}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_point_a69cb722d903c16d3ab71caf74a818bac}\index{Point@{Point}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_point_a69cb722d903c16d3ab71caf74a818bac} 
+double Point\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_point_adef64049a5d54803b95c5e1e664e1f13}\index{Point@{Point}!closestPoint@{closestPoint}}
+\index{closestPoint@{closestPoint}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{closestPoint()}{closestPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_point_adef64049a5d54803b95c5e1e664e1f13} 
+double Point\+::closest\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p\+\_\+in}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_point_ada6beed5a9f5dec88e3c4b5d6aea161d}\index{Point@{Point}!closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}}
+\index{closestPointExpandingEllipsoid@{closestPointExpandingEllipsoid}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{closestPointExpandingEllipsoid()}{closestPointExpandingEllipsoid()}}
+{\footnotesize\ttfamily \label{class_point_ada6beed5a9f5dec88e3c4b5d6aea161d} 
+double Point\+::closest\+Point\+Expanding\+Ellipsoid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&}]{ellipsoid}{, }\item[{Eigen\+::\+Vector\+Xd \&}]{p\+\_\+out}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_point_a982440d85a914d21e20bdfed667ad4da}\index{Point@{Point}!getBoundingBox@{getBoundingBox}}
+\index{getBoundingBox@{getBoundingBox}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{getBoundingBox()}{getBoundingBox()}}
+{\footnotesize\ttfamily \label{class_point_a982440d85a914d21e20bdfed667ad4da} 
+Eigen\+::\+Matrix\+Xd Point\+::get\+Bounding\+Box (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_point_ae9cf0793fde195de0e305c09eb4e3be0}\index{Point@{Point}!getCentroid@{getCentroid}}
+\index{getCentroid@{getCentroid}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{getCentroid()}{getCentroid()}}
+{\footnotesize\ttfamily \label{class_point_ae9cf0793fde195de0e305c09eb4e3be0} 
+Eigen\+::\+Vector\+Xd Point\+::get\+Centroid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_point_a9926584f5b4d0e920aece561f50b7493}\index{Point@{Point}!isInside@{isInside}}
+\index{isInside@{isInside}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{isInside()}{isInside()}}
+{\footnotesize\ttfamily \label{class_point_a9926584f5b4d0e920aece561f50b7493} 
+bool Point\+::is\+Inside (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{p}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_point_ad8305012531117e41294ab78300e0dd9}\index{Point@{Point}!isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}}
+\index{isInsideSeparatingHyperplane@{isInsideSeparatingHyperplane}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplane()}{isInsideSeparatingHyperplane()}}
+{\footnotesize\ttfamily \label{class_point_ad8305012531117e41294ab78300e0dd9} 
+bool Point\+::is\+Inside\+Separating\+Hyperplane (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{ai}{, }\item[{const double \&}]{bi}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+\Hypertarget{class_point_a68130b892ba008eb78d2ac70d45e9870}\index{Point@{Point}!isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}}
+\index{isInsideSeparatingHyperplanes@{isInsideSeparatingHyperplanes}!Point@{Point}}
+\doxysubsubsection{\texorpdfstring{isInsideSeparatingHyperplanes()}{isInsideSeparatingHyperplanes()}}
+{\footnotesize\ttfamily \label{class_point_a68130b892ba008eb78d2ac70d45e9870} 
+bool Point\+::is\+Inside\+Separating\+Hyperplanes (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix\+Xd \&}]{A}{, }\item[{const Eigen\+::\+Vector\+Xd \&}]{b}{, }\item[{const double \&}]{tol}{ = {\ttfamily 1.e-\/4}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_conic_set}{Conic\+Set}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Point.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Point.\+cpp\end{DoxyCompactItemize}

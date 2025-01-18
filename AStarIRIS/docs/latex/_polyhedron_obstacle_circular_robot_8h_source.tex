@@ -1,0 +1,42 @@
+\doxysection{Polyhedron\+Obstacle\+Circular\+Robot.\+h}
+\hypertarget{_polyhedron_obstacle_circular_robot_8h_source}{}\label{_polyhedron_obstacle_circular_robot_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/PolyhedronObstacleCircularRobot.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/PolyhedronObstacleCircularRobot.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ POLYHEDRON\_OBSTACLE\_CIRCULAR\_ROBOT}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ POLYHEDRON\_OBSTACLE\_CIRCULAR\_ROBOT}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}PolyhedronV.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}ConicSet.h"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }PolyhedronObstacleCircularRobot\ :\ \textcolor{keyword}{public}\ PolyhedronV\textcolor{comment}{//,\ public\ ConicSet}}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{double}\ r;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00012\ \ \ \ \ PolyhedronObstacleCircularRobot(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ v,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ r);}
+\DoxyCodeLine{00013\ \ \ \ \ PolyhedronObstacleCircularRobot(\textcolor{keyword}{const}\ PolyhedronObstacleCircularRobot\&\ polyhedronCircularRobot);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a4aece36c385229a541b7aba0eea55d76}{closestPoint}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a4aece36c385229a541b7aba0eea55d76}{closestPoint}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p\_in);}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a608e2792d14e245f19d47c9239d3c389}{isInside}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ p,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=\ 1.e-\/4);}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a115bce61a7b997a9c958d67cf0370d83}{isInsideSeparatingHyperplane}}(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ ai,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ bi,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol=\ 1.e-\/4);}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a14e43cb17bf99b9c94e35862d22c74d0}{isInsideSeparatingHyperplanes}}(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ \mbox{\hyperlink{class_polyhedron_a8a53df2a45de769e3ee35998689d719f}{A}},\ \textcolor{keyword}{const}\ Eigen::VectorXd\&\ \mbox{\hyperlink{class_polyhedron_a42daf765d70025964a665139b19f5a2b}{b}},\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ tol\ =\ 1.e-\/4);}
+\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_ae3cf356645de3cbe1b1620fdc06b312b}{inscribedEllipsoid}}();}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{class_sphere}{Sphere}}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a6a1a94619c81e55a3d219452023392f7}{inscribedSphere}}();}
+\DoxyCodeLine{00021\ \ \ \ \ Eigen::VectorXd\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a2c4d5474b09d89923a3ca3758f0072e3}{getCentroid}}();}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_a078251158067bd04e65d646e90ee2bbd}{closestPointExpandingEllipsoid}}(\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}}\&\ ellipsoid,\ Eigen::VectorXd\&\ p\_out);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ allocateClosestPointSolver();}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ allocateClosestPointEllipsoidSolver();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ allocateIsInsideSeparatingHyperplaneSolver();}
+\DoxyCodeLine{00026\ \ \ \ \ Eigen::MatrixXd\ \mbox{\hyperlink{class_polyhedron_obstacle_circular_robot_ab5056e188079342cc8d736cb427539aa}{getBoundingBox}}();}
+\DoxyCodeLine{00027\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00028\ \ \ \ \ Variable::t\ chi1;}
+\DoxyCodeLine{00029\ \ \ \ \ Variable::t\ chi2;}
+\DoxyCodeLine{00030\ \ \ \ \ Variable::t\ chi1ClosestPointEllipsoid;}
+\DoxyCodeLine{00031\ \ \ \ \ Variable::t\ chi2ClosestPointEllipsoid;}
+\DoxyCodeLine{00032\ \ \ \ \ Variable::t\ chi1IsInsideSeparatingHyperplane;}
+\DoxyCodeLine{00033\ \ \ \ \ Variable::t\ chi2IsInsideSeparatingHyperplane;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//Parameter::t\ radius;}}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

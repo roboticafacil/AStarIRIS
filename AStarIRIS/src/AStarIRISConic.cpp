@@ -124,7 +124,7 @@ void AStarIRISConic::do_RelaxedSolver(std::ostream& out)
 		out << "% Starting Phase 1" << std::endl;
 		out << "Frames=[];" << std::endl;
 	}
-	this->addConvexSets(qStartNode->point.p);
+	this->addConvexSet(qStartNode->point.p);
 	bool phase1_finished = this->gcs.contains(qTargetNode->point.p);
 	while (!phase1_finished)
 	{
@@ -196,8 +196,6 @@ void AStarIRISConic::do_RelaxedSolver(std::ostream& out)
 		std::cout << "Terminal node to expand " << terminalNodeKey << std::endl;
 		this->expandTerminalNode(terminalNodeKey);
 		phase1_finished = this->gcs.contains(qTargetNode->point.p);
-		//if ((terminalNodeKey==87)|| (terminalNodeKey == 115))
-		//	std::cout<<"This one is problematic!" << std::endl,
 		iters++;
 	}
 
@@ -329,6 +327,7 @@ void AStarIRISConic::do_RelaxedSolver(std::ostream& out)
 			nodesOptimalTargetReachedGraphPath = solverPhase2.optimalPath;
 			bestCost = solverPhase2.feasibleSolution.cost;
 			std::cout << "Optimal cost " << bestCost << std::endl;
+			break;
 		}
 
 		if (dumpResults)

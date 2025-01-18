@@ -1,0 +1,28 @@
+\doxysection{CObs\+Conic.\+h}
+\hypertarget{_c_obs_conic_8h_source}{}\label{_c_obs_conic_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/CObsConic.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/CObsConic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ COBS\_CONIC}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ COBS\_CONIC}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}CObs.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}ConicSet.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Point.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}Sphere.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Polyhedron.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}PolyhedronObstacleCircularRobot.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }CObsConic:\ \textcolor{keyword}{public}\ CObs}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ CObsConic();}
+\DoxyCodeLine{00015\ \ \ \ \ CObsConic(CObsConic*\ cObs);}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{void}\ addObject(\mbox{\hyperlink{class_conic_set}{ConicSet}}*\ \textcolor{keywordtype}{object});}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{bool}\ isFree(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ q,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&tol);}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ print(std::ostream\&\ out);}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{int}\ numObjects=0;}
+\DoxyCodeLine{00020\ \ \ \ \ std::vector<ConicSet*>\ conicObjects;\ \ \ \ }
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

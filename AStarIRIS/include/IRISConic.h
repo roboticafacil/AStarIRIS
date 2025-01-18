@@ -25,6 +25,7 @@ typedef struct
 	double tolConvexSetConvergence;
 	double shrinkFactor;
 	int maxTrials;
+	bool seperatingHyperplaneAligned;
 	double tol;
 }IRISParams_t;
 
@@ -34,7 +35,8 @@ public:
 	GCS gcs;
 	//IRISConic(CObsConic* cObs, GCS* gcs, EGCS* egcs, const IRISParams_t& params);
 	IRISConic(CObsConic& cObs, const IRISParams_t& params);
-	void addConvexSets(const Eigen::VectorXd& q);
+	virtual std::vector<int> addConvexSets(const Eigen::VectorXd& q);
+	virtual int addConvexSet(const Eigen::VectorXd& q);
 	static IRISParams_t getDefaultIRISParams();
 	//void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron, std::vector<IRISNeighbour_t>& neighbours);
 	void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron);
@@ -45,7 +47,7 @@ public:
 	IRISParams_t params;
 protected:
 	//void computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<IRISNeighbour_t>& neighbours);
-	void computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<int>& neighbourKeys);
+	virtual void computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, std::vector<int>& neighbourKeys);
 protected:
 	CObsConic* _cObs;
 	

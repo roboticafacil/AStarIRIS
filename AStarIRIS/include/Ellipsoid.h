@@ -21,6 +21,7 @@ public:
     double closestPointExpandingEllipsoid(Ellipsoid& ellipsoid, Eigen::VectorXd& p_out);
     bool isInside(const Eigen::VectorXd& p, const double &tol=1.e-4);
     bool isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol=1.e-4);
+    bool isInsideSeparatingHyperplanes(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, const double& tol = 1.e-4);
     Eigen::VectorXd getCentroid();
     Eigen::MatrixXd getCInv();
     void allocateSolver();

@@ -460,6 +460,7 @@ int AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>& qstart, Eigen::Vect
 	CObsConic cObs = getCObsPolyhedronV();
 	AStarIRISParams_t& AStarIRISParams = AStarIRISConic::getDefaultAStarIRISParams();
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
+	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 200;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
 	std::ofstream fout("AStar_IRIS_relaxed_solver_test_results.m");
@@ -479,6 +480,11 @@ int AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>& qstart, Eigen::Vect
 	irisConic.buildNavGraph(qstart, qtarget);
 	irisConic.do_RelaxedSolver(fout);
 	t2 = std::chrono::high_resolution_clock::now();
+	std::cout << "Resulting navGraph2 GCS" << std::endl;
+	for (std::map<std::pair<int, int>, int>::iterator it = irisConic.navGraph2gcs.begin(); it != irisConic.navGraph2gcs.end(); it++)
+	{
+		std::cout << it->first.first << " " << it->first.second << " " << it->second << std::endl;
+	}
 	ms_double = t2 - t1;
 	phase1Time = ms_double.count();
 	std::cout << "Performance" << std::endl;
@@ -504,6 +510,7 @@ int AStar_IRIS_relaxed_solver_test1(Eigen::Vector<double, 2>& qstart, Eigen::Vec
 	CObsConic cObs = getCObsPolyhedronV_15_obstacles();
 	AStarIRISParams_t& AStarIRISParams = AStarIRISConic::getDefaultAStarIRISParams();
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
+	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 200;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
 	std::ofstream fout("AStar_IRIS_relaxed_solver_test1_results.m");
@@ -548,6 +555,7 @@ int AStar_IRIS_relaxed_solver_test2(Eigen::Vector<double, 2>& qstart, Eigen::Vec
 	CObsConic cObs = getCObsPolyhedronV_30_obstacles();
 	AStarIRISParams_t& AStarIRISParams = AStarIRISConic::getDefaultAStarIRISParams();
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
+	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 300;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
 	std::ofstream fout("AStar_IRIS_relaxed_solver_test2_results.m");
@@ -592,6 +600,7 @@ int AStar_IRIS_MIP_solver_test(Eigen::Vector<double, 2>& qstart, Eigen::Vector<d
 	CObsConic cObs = getCObsPolyhedronV();
 	AStarIRISParams_t& AStarIRISParams = AStarIRISConic::getDefaultAStarIRISParams();
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
+	//AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
 	std::ofstream fout("AStar_IRIS_MIP_test_results.m");
 	fout << "close all;" << std::endl;
@@ -688,8 +697,8 @@ int main(int argc, char** argv)
 	//AStart_convex_relaxation_test(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8 }));
 	//AStart_expand_convex_relaxation_test(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8 }));
 	//AStart_expand_convex_MIP_test(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8 }));
-	//AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>({ -5.,-8.}), Eigen::Vector<double, 2>({ 9.,8.}));
 	//AStar_IRIS_MIP_solver_test(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8 }));
+	AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>({ -5.,-8.}), Eigen::Vector<double, 2>({ 9.,8.}));
 	//AStar_IRIS_relaxed_solver_test1(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8. }));
-	AStar_IRIS_relaxed_solver_test2(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8. }));
+	//AStar_IRIS_relaxed_solver_test2(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8. }));
 }

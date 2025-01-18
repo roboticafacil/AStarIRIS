@@ -1,0 +1,125 @@
+\doxysection{MCIRISConic Class Reference}
+\hypertarget{class_m_c_i_r_i_s_conic}{}\label{class_m_c_i_r_i_s_conic}\index{MCIRISConic@{MCIRISConic}}
+Inheritance diagram for MCIRISConic\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_m_c_i_r_i_s_conic}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_m_c_i_r_i_s_conic_aa2efd60d9dddf26e54cc1912ea78bb1e}\label{class_m_c_i_r_i_s_conic_aa2efd60d9dddf26e54cc1912ea78bb1e} 
+{\bfseries MCIRISConic} (\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \&c\+Obs, const \mbox{\hyperlink{struct_m_c_i_r_i_s_params__t}{MCIRISParams\+\_\+t}} \&params)
+\item 
+\Hypertarget{class_m_c_i_r_i_s_conic_a4540d90bbf91bbbe8447d004b706356d}\label{class_m_c_i_r_i_s_conic_a4540d90bbf91bbbe8447d004b706356d} 
+void {\bfseries do\+\_\+\+MCRelaxed\+Solver} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Expandable\+IRISConic} (\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \&c\+Obs, const \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{Expandable\+IRISParams\+\_\+t}} \&params)
+\item 
+int {\bfseries add\+Convex\+Set} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+std\+::vector$<$ int $>$ {\bfseries add\+Convex\+Sets} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+void {\bfseries build\+Nav\+Graph} (const Eigen\+::\+Vector\+Xd \&qstart, const Eigen\+::\+Vector\+Xd \&qtarget)
+\item 
+void {\bfseries terminal\+Costs} (Eigen\+::\+Vector\+Xd \&h\+Costs, Eigen\+::\+Matrix\+Xd \&p\+Closest)
+\item 
+void {\bfseries expand\+Terminal\+Node} (const int \&terminal\+Node\+Key)
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries generate\+Random\+Seed\+In\+Terminal\+Node} ()
+\item 
+\mbox{\hyperlink{class_nav_graph}{Nav\+Graph}} {\bfseries get\+Graph\+Without\+Terminal\+Connections} ()
+\item 
+void {\bfseries remove\+Node} (const int key)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries IRISConic} (\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \&c\+Obs, const \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\+\_\+t}} \&params)
+\item 
+void {\bfseries add\+Convex\+Sets} (const Eigen\+::\+Vector\+Xd \&q)
+\item 
+void {\bfseries separating\+Hyperplanes} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, \mbox{\hyperlink{class_polyhedron}{Polyhedron}} \&polyhedron)
+\item 
+void {\bfseries generate\+GCS} ()
+\item 
+Eigen\+::\+Vector\+Xd {\bfseries generate\+Random\+Seed} (int \&trials)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_m_c_i_r_i_s_conic_a3f1adb9f206673c22dd5a78b6dc34a21}\label{class_m_c_i_r_i_s_conic_a3f1adb9f206673c22dd5a78b6dc34a21} 
+static \mbox{\hyperlink{struct_m_c_i_r_i_s_params__t}{MCIRISParams\+\_\+t}} {\bfseries get\+Default\+MCIRISParams} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{Expandable\+IRISParams\+\_\+t}} {\bfseries get\+Default\+Expandable\+IRISParams} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\+\_\+t}} {\bfseries get\+Default\+IRISParams} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_m_c_i_r_i_s_conic_a89cd060252baa60e0897d80c75fd51c6}\label{class_m_c_i_r_i_s_conic_a89cd060252baa60e0897d80c75fd51c6} 
+\mbox{\hyperlink{struct_feasible_sol__t}{Feasible\+Sol\+\_\+t}} {\bfseries feasible\+Solution}
+\item 
+\Hypertarget{class_m_c_i_r_i_s_conic_ab91ffdb41f7b963833797f9f1a6cfe57}\label{class_m_c_i_r_i_s_conic_ab91ffdb41f7b963833797f9f1a6cfe57} 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries optimal\+Path}
+\item 
+\Hypertarget{class_m_c_i_r_i_s_conic_a4b28903486629d3d88613ea0349761a4}\label{class_m_c_i_r_i_s_conic_a4b28903486629d3d88613ea0349761a4} 
+\mbox{\hyperlink{struct_m_c_i_r_i_s_params__t}{MCIRISParams\+\_\+t}} {\bfseries params}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_nav_graph}{Nav\+Graph}} {\bfseries nav\+Graph}
+\item 
+int {\bfseries q\+Start\+Node\+Nav\+Graph\+Key}
+\item 
+int {\bfseries q\+Target\+Node\+Nav\+Graph\+Key}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_g_c_s}{GCS}} {\bfseries gcs}
+\item 
+\mbox{\hyperlink{struct_i_r_i_s_params__t}{IRISParams\+\_\+t}} {\bfseries params}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries compute\+Convex\+Set} (\mbox{\hyperlink{class_ellipsoid}{Ellipsoid}} \&ellipsoid, \mbox{\hyperlink{class_polyhedron}{Polyhedron}} \&convex\+Set, std\+::vector$<$ int $>$ \&neighbour\+Keys)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_expandable_i_r_i_s_conic}{Expandable\+IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::pair$<$ int, int $>$, int $>$ {\bfseries nav\+Graph2gcs}
+\item 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries terminal\+Node\+Keys}
+\item 
+\mbox{\hyperlink{class_point_node}{Point\+Node}} \texorpdfstring{$\ast$}{*} {\bfseries q\+Start\+Node}
+\item 
+\mbox{\hyperlink{class_point_node}{Point\+Node}} \texorpdfstring{$\ast$}{*} {\bfseries q\+Target\+Node}
+\item 
+\mbox{\hyperlink{struct_expandable_i_r_i_s_params__t}{Expandable\+IRISParams\+\_\+t}} {\bfseries params}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_i_r_i_s_conic}{IRISConic}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_c_obs_conic}{CObs\+Conic}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+c\+Obs}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/MCIRISConic.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/MCIRISConic.\+cpp\end{DoxyCompactItemize}

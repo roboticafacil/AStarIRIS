@@ -1,0 +1,18 @@
+\doxysection{Eigen\+Nd\+Array.\+h}
+\hypertarget{_eigen_nd_array_8h_source}{}\label{_eigen_nd_array_8h_source}\index{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/EigenNdArray.h@{C:/Users/34696/source/repos/AStarIRIS/AStarIRIS/include/EigenNdArray.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_ND\_ARRAY}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ EIGEN\_ND\_ARRAY}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<Eigen/Dense>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}fusion.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{using\ namespace\ }mosek::fusion;}
+\DoxyCodeLine{00007\ \textcolor{keyword}{using\ namespace\ }monty;}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ std::shared\_ptr<ndarray<double,\ 2>>\ Eigen2NdArray(\textcolor{keyword}{const}\ Eigen::MatrixXd\&\ A);}
+\DoxyCodeLine{00010\ std::shared\_ptr<ndarray<double,\ 1>>\ Eigen2NdArray(\textcolor{keyword}{const}\ Eigen::VectorXd\&\ b);}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

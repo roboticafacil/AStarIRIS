@@ -1,0 +1,117 @@
+\doxysection{Nav\+Graph Class Reference}
+\hypertarget{class_nav_graph}{}\label{class_nav_graph}\index{NavGraph@{NavGraph}}
+Inheritance diagram for Nav\+Graph\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_nav_graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_nav_graph_a090962a129d58fdb4d3cc770bf9f3de0}\label{class_nav_graph_a090962a129d58fdb4d3cc770bf9f3de0} 
+{\bfseries Nav\+Graph} (\mbox{\hyperlink{class_nav_graph}{Nav\+Graph}} \texorpdfstring{$\ast$}{*}graph)
+\item 
+\Hypertarget{class_nav_graph_aa62fc4e4c08695f9ec4ebfa6fe983a85}\label{class_nav_graph_aa62fc4e4c08695f9ec4ebfa6fe983a85} 
+void {\bfseries print\+Convex\+Sets} (std\+::ostream \&out, const int \&num=1)
+\item 
+\Hypertarget{class_nav_graph_ab2c357e42165bc30472905ce8e7c3c3e}\label{class_nav_graph_ab2c357e42165bc30472905ce8e7c3c3e} 
+void {\bfseries print\+Convex\+Set} (std\+::ostream \&out, const int \&num, const int \&node\+Key)
+\item 
+\Hypertarget{class_nav_graph_a82a737711cd8a4f0c90f68744f6cac66}\label{class_nav_graph_a82a737711cd8a4f0c90f68744f6cac66} 
+void {\bfseries print\+Graph} (std\+::ostream \&out, const int \&num=1, std\+::vector$<$ double $>$ \&weights=std\+::vector$<$ double $>$())
+\item 
+\Hypertarget{class_nav_graph_a99e287d5e50d75b8869c4920467b62b4}\label{class_nav_graph_a99e287d5e50d75b8869c4920467b62b4} 
+bool {\bfseries contains} (const Eigen\+::\+Vector\+Xd \&q, const double \&tol=0.)
+\item 
+void \mbox{\hyperlink{class_nav_graph_aef9b9782c532883f9e57928b85ffc75f}{print}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_graph}{Graph}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Graph} (\mbox{\hyperlink{class_graph}{Graph}} \texorpdfstring{$\ast$}{*}graph)
+\item 
+\mbox{\hyperlink{class_graph}{Graph}} \& {\bfseries operator=} (\mbox{\hyperlink{class_graph}{Graph}} \&other)
+\item 
+virtual void {\bfseries print\+Nodes} ()
+\item 
+virtual void {\bfseries print\+Edges} ()
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+Node\+Keys} ()
+\item 
+\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} {\bfseries get\+Node} (const int \&key)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Nodes} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Nodes} (std\+::vector$<$ int $>$ \&keys)
+\item 
+\mbox{\hyperlink{class_graph}{Graph}} {\bfseries sub\+Graph} (std\+::vector$<$ int $>$ \&keys)
+\item 
+int {\bfseries add\+Node} (const \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}node)
+\item 
+void {\bfseries add\+Node} (const \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}node, const int \&key)
+\item 
+bool {\bfseries remove\+Node} (const int \&key)
+\item 
+bool {\bfseries add\+Edge} (const int \&key\+From, const int \&key\+To)
+\item 
+bool {\bfseries remove\+Edge} (const int \&key\+From, const int \&key\+To)
+\item 
+std\+::vector$<$ int $>$ {\bfseries find\+Out\+Edges} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries find\+In\+Edges} (const int \&key)
+\item 
+std\+::vector$<$ Edge $>$ {\bfseries get\+Edges} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Out\+Neighbours} (const int \&key)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+In\+Neighbours} (const int \&key)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Neighbours} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+Out\+Neighbour\+Keys} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+In\+Neighbour\+Keys} (const int \&key)
+\item 
+std\+::vector$<$ int $>$ {\bfseries get\+Neighbour\+Keys} (const int \&key)
+\item 
+Edge {\bfseries get\+Edge} (const int \&edge\+Idx)
+\item 
+void {\bfseries set\+Edges} (const std\+::vector$<$ Edge $>$ \&edges)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_graph}{Graph}}}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries num\+Nodes}
+\item 
+int {\bfseries num\+Edges}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_graph}{Graph}}}
+\begin{DoxyCompactItemize}
+\item 
+Node\+Map {\bfseries nodes}
+\item 
+std\+::vector$<$ Edge $>$ {\bfseries edges}
+\item 
+std\+::vector$<$ int $>$ {\bfseries node\+Keys}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_nav_graph_aef9b9782c532883f9e57928b85ffc75f}\index{NavGraph@{NavGraph}!print@{print}}
+\index{print@{print}!NavGraph@{NavGraph}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily \label{class_nav_graph_aef9b9782c532883f9e57928b85ffc75f} 
+void Nav\+Graph\+::print (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_graph}{Graph}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Nav\+Graph.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Nav\+Graph.\+cpp\end{DoxyCompactItemize}

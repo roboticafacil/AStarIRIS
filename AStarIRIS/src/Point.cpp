@@ -60,6 +60,13 @@ bool Point::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double
 	return ((ai.dot(p) - bi*ai.norm())<=tol);
 }
 
+bool Point::isInsideSeparatingHyperplanes(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, const double& tol)
+{
+	std::cout << "Point: isInsideSeparatingHyperplanes not implemented yet!!" << std::endl;
+	//Hay que comprobar esto...
+	return ((((A * this->p) - b).array()) <= tol).all();
+}
+
 Eigen::VectorXd Point::getCentroid()
 {
 	if (!centroidComputed)

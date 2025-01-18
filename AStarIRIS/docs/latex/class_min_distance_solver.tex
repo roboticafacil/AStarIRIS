@@ -1,0 +1,105 @@
+\doxysection{Min\+Distance\+Solver Class Reference}
+\hypertarget{class_min_distance_solver}{}\label{class_min_distance_solver}\index{MinDistanceSolver@{MinDistanceSolver}}
+Inheritance diagram for Min\+Distance\+Solver\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_min_distance_solver}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_min_distance_solver_a43c4890b80aa6f041e8670fe8727e92e}\label{class_min_distance_solver_a43c4890b80aa6f041e8670fe8727e92e} 
+{\bfseries Min\+Distance\+Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+void \mbox{\hyperlink{class_min_distance_solver_ad53f8a271c6a85c5796ca5a2718c6d6c}{set\+Task}} ()
+\item 
+void \mbox{\hyperlink{class_min_distance_solver_a55666b10c679b40a23d39d308f269c96}{compute\+Feasible\+Solution}} (const int \&max\+Iters=1)
+\item 
+void \mbox{\hyperlink{class_min_distance_solver_ab4e7f0f8c44fe180582f2e64dd93c2e6}{solve}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Solver} (const \mbox{\hyperlink{class_graph}{Graph}} \&g, const int \&start\+Key, const int \&target\+Key)
+\item 
+void {\bfseries set\+Graph} (\mbox{\hyperlink{class_graph}{Graph}} \&g)
+\item 
+bool {\bfseries optimal\+Path\+Contains\+Terminal\+Nodes} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_min_distance_solver_a04a61495a0a1ebf1a2185c2352ced5ea}\label{class_min_distance_solver_a04a61495a0a1ebf1a2185c2352ced5ea} 
+\mbox{\hyperlink{struct_m_i_p_sol__t}{MIPSol\+\_\+t}} {\bfseries MIPSolution}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_feasible_sol__t}{Feasible\+Sol\+\_\+t}} {\bfseries feasible\+Solution}
+\item 
+\mbox{\hyperlink{struct_path__t}{Path\+\_\+t}} {\bfseries optimal\+Path}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_solver}{Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_graph}{Graph}} {\bfseries g}
+\item 
+Model\+::t {\bfseries M}
+\item 
+int {\bfseries n}
+\item 
+int {\bfseries nE}
+\item 
+int {\bfseries nN}
+\item 
+int {\bfseries start\+Key}
+\item 
+int {\bfseries target\+Key}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qstart}
+\item 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries qtarget}
+\item 
+bool {\bfseries solver\+Allocated}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_min_distance_solver_a55666b10c679b40a23d39d308f269c96}\index{MinDistanceSolver@{MinDistanceSolver}!computeFeasibleSolution@{computeFeasibleSolution}}
+\index{computeFeasibleSolution@{computeFeasibleSolution}!MinDistanceSolver@{MinDistanceSolver}}
+\doxysubsubsection{\texorpdfstring{computeFeasibleSolution()}{computeFeasibleSolution()}}
+{\footnotesize\ttfamily \label{class_min_distance_solver_a55666b10c679b40a23d39d308f269c96} 
+void Min\+Distance\+Solver\+::compute\+Feasible\+Solution (\begin{DoxyParamCaption}\item[{const int \&}]{max\+Iters}{ = {\ttfamily 1}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_solver}{Solver}}.
+
+\Hypertarget{class_min_distance_solver_ad53f8a271c6a85c5796ca5a2718c6d6c}\index{MinDistanceSolver@{MinDistanceSolver}!setTask@{setTask}}
+\index{setTask@{setTask}!MinDistanceSolver@{MinDistanceSolver}}
+\doxysubsubsection{\texorpdfstring{setTask()}{setTask()}}
+{\footnotesize\ttfamily \label{class_min_distance_solver_ad53f8a271c6a85c5796ca5a2718c6d6c} 
+void Min\+Distance\+Solver\+::set\+Task (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_solver}{Solver}}.
+
+\Hypertarget{class_min_distance_solver_ab4e7f0f8c44fe180582f2e64dd93c2e6}\index{MinDistanceSolver@{MinDistanceSolver}!solve@{solve}}
+\index{solve@{solve}!MinDistanceSolver@{MinDistanceSolver}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily \label{class_min_distance_solver_ab4e7f0f8c44fe180582f2e64dd93c2e6} 
+void Min\+Distance\+Solver\+::solve (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_solver}{Solver}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Min\+Distance\+Solver.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Min\+Distance\+Solver.\+cpp\end{DoxyCompactItemize}

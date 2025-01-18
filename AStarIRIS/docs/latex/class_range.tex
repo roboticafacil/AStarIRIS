@@ -1,0 +1,56 @@
+\doxysection{Range Class Reference}
+\hypertarget{class_range}{}\label{class_range}\index{Range@{Range}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_range_a86e3ea893bbdefbca50fea9b7ff1be17}\label{class_range_a86e3ea893bbdefbca50fea9b7ff1be17} 
+void {\bfseries set\+Range} (const int \&n, const double \&lb, const double \&ub)
+\item 
+\Hypertarget{class_range_ad413ac8fab225df2941f9b6e6599407a}\label{class_range_ad413ac8fab225df2941f9b6e6599407a} 
+std\+::pair$<$ double, double $>$ {\bfseries get\+Bounds} ()
+\item 
+\Hypertarget{class_range_ae6d06959f910c1c78cd866baa26dcbce}\label{class_range_ae6d06959f910c1c78cd866baa26dcbce} 
+std\+::pair$<$ std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$, std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 1 $>$ $>$ $>$ {\bfseries get\+Constraints} ()
+\item 
+\Hypertarget{class_range_a9ed5e45b9146353e6863094a72dc4dd1}\label{class_range_a9ed5e45b9146353e6863094a72dc4dd1} 
+void {\bfseries get\+Constraints} (Eigen\+::\+Matrix\+Xd \&A, Eigen\+::\+Vector\+Xd \&b)
+\item 
+\Hypertarget{class_range_af7acb227a831ed66d69b886e4e7a07e9}\label{class_range_af7acb227a831ed66d69b886e4e7a07e9} 
+{\bfseries Range} (\mbox{\hyperlink{class_range}{Range}} \&other)=delete
+\item 
+\Hypertarget{class_range_a05e79b8327442dc249157e9c0d48bea3}\label{class_range_a05e79b8327442dc249157e9c0d48bea3} 
+void {\bfseries operator=} (const \mbox{\hyperlink{class_range}{Range}} \&)=delete
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_range_aadf5d7ff36e4bec36c2d2f373631a7c7}\label{class_range_aadf5d7ff36e4bec36c2d2f373631a7c7} 
+static \mbox{\hyperlink{class_range}{Range}} \texorpdfstring{$\ast$}{*} {\bfseries get\+Instance} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_range_acb7cb1788afd49a8f36c19354a97b7ec}\label{class_range_acb7cb1788afd49a8f36c19354a97b7ec} 
+double {\bfseries \+\_\+lb}
+\item 
+\Hypertarget{class_range_a16e590be57505b12fe2a6cf916f33153}\label{class_range_a16e590be57505b12fe2a6cf916f33153} 
+double {\bfseries \+\_\+ub}
+\item 
+\Hypertarget{class_range_a5a8d7a22cc3fa00ee6f0e40551fd817c}\label{class_range_a5a8d7a22cc3fa00ee6f0e40551fd817c} 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 2 $>$ $>$ {\bfseries A\+\_\+ptr}
+\item 
+\Hypertarget{class_range_adc63afb99adb1981609deccfdfff9af1}\label{class_range_adc63afb99adb1981609deccfdfff9af1} 
+std\+::shared\+\_\+ptr$<$ ndarray$<$ double, 1 $>$ $>$ {\bfseries b\+\_\+ptr}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_range_a842e466f7d566735669911c2232f8b89}\label{class_range_a842e466f7d566735669911c2232f8b89} 
+static \mbox{\hyperlink{class_range}{Range}} \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+range} = nullptr
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Range.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Range.\+cpp\end{DoxyCompactItemize}

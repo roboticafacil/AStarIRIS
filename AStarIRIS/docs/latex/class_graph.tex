@@ -1,0 +1,116 @@
+\doxysection{Graph Class Reference}
+\hypertarget{class_graph}{}\label{class_graph}\index{Graph@{Graph}}
+Inheritance diagram for Graph\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_graph_a91d2dbcc749d03c6f6c9799d630edbf1}\label{class_graph_a91d2dbcc749d03c6f6c9799d630edbf1} 
+{\bfseries Graph} (\mbox{\hyperlink{class_graph}{Graph}} \texorpdfstring{$\ast$}{*}graph)
+\item 
+\Hypertarget{class_graph_ae375a29600afead9edb56a63eeacf6cd}\label{class_graph_ae375a29600afead9edb56a63eeacf6cd} 
+\mbox{\hyperlink{class_graph}{Graph}} \& {\bfseries operator=} (\mbox{\hyperlink{class_graph}{Graph}} \&other)
+\item 
+\Hypertarget{class_graph_a2ecf3dd3c4897aa924da8e5c221a8509}\label{class_graph_a2ecf3dd3c4897aa924da8e5c221a8509} 
+virtual void {\bfseries print} ()
+\item 
+\Hypertarget{class_graph_ac83f6a4edf0d503d387f59093692d719}\label{class_graph_ac83f6a4edf0d503d387f59093692d719} 
+virtual void {\bfseries print\+Nodes} ()
+\item 
+\Hypertarget{class_graph_a37a53b4ccf99d9a31976b62b3ab1eea2}\label{class_graph_a37a53b4ccf99d9a31976b62b3ab1eea2} 
+virtual void {\bfseries print\+Edges} ()
+\item 
+\Hypertarget{class_graph_a00385e8cde653035c8b183fa65b86990}\label{class_graph_a00385e8cde653035c8b183fa65b86990} 
+std\+::vector$<$ int $>$ {\bfseries get\+Node\+Keys} ()
+\item 
+\Hypertarget{class_graph_a8d6921e0a6cb482752789cc35751de5d}\label{class_graph_a8d6921e0a6cb482752789cc35751de5d} 
+\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} {\bfseries get\+Node} (const int \&key)
+\item 
+\Hypertarget{class_graph_a79e0eaa71a68b231ffc69d09329c6d78}\label{class_graph_a79e0eaa71a68b231ffc69d09329c6d78} 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Nodes} ()
+\item 
+\Hypertarget{class_graph_a2a25f443143a0b5b2dd27ede439a6f79}\label{class_graph_a2a25f443143a0b5b2dd27ede439a6f79} 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Nodes} (std\+::vector$<$ int $>$ \&keys)
+\item 
+\Hypertarget{class_graph_a05b57e3181dc76ec0bdac046ffd5959f}\label{class_graph_a05b57e3181dc76ec0bdac046ffd5959f} 
+\mbox{\hyperlink{class_graph}{Graph}} {\bfseries sub\+Graph} (std\+::vector$<$ int $>$ \&keys)
+\item 
+\Hypertarget{class_graph_a1f66a2fd5527359d5b88b13b8b1b4c8d}\label{class_graph_a1f66a2fd5527359d5b88b13b8b1b4c8d} 
+int {\bfseries add\+Node} (const \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}node)
+\item 
+\Hypertarget{class_graph_a4fbc569187169ee64fddfa73863cb158}\label{class_graph_a4fbc569187169ee64fddfa73863cb158} 
+void {\bfseries add\+Node} (const \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}node, const int \&key)
+\item 
+\Hypertarget{class_graph_aa3b2c5878529f193ed8eb9ef0ed13347}\label{class_graph_aa3b2c5878529f193ed8eb9ef0ed13347} 
+bool {\bfseries remove\+Node} (const int \&key)
+\item 
+\Hypertarget{class_graph_a416239f20f08d0f030c20c95e41c3de8}\label{class_graph_a416239f20f08d0f030c20c95e41c3de8} 
+bool {\bfseries add\+Edge} (const int \&key\+From, const int \&key\+To)
+\item 
+\Hypertarget{class_graph_a127a8fb8c504448668b0a3dbb63f4a57}\label{class_graph_a127a8fb8c504448668b0a3dbb63f4a57} 
+bool {\bfseries remove\+Edge} (const int \&key\+From, const int \&key\+To)
+\item 
+\Hypertarget{class_graph_a9db13be76dbbedf11e494095cd5fec64}\label{class_graph_a9db13be76dbbedf11e494095cd5fec64} 
+std\+::vector$<$ int $>$ {\bfseries find\+Out\+Edges} (const int \&key)
+\item 
+\Hypertarget{class_graph_ac36280a42068549baf9d45b4372acfbb}\label{class_graph_ac36280a42068549baf9d45b4372acfbb} 
+std\+::vector$<$ int $>$ {\bfseries find\+In\+Edges} (const int \&key)
+\item 
+\Hypertarget{class_graph_a1e3a5c49c8e525d434d52ddf8d6f108e}\label{class_graph_a1e3a5c49c8e525d434d52ddf8d6f108e} 
+std\+::vector$<$ Edge $>$ {\bfseries get\+Edges} ()
+\item 
+\Hypertarget{class_graph_ab02c0dda032103d40eed3cb48b284e96}\label{class_graph_ab02c0dda032103d40eed3cb48b284e96} 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Out\+Neighbours} (const int \&key)
+\item 
+\Hypertarget{class_graph_ac82c3f843c7acc424fed4a194fe071ab}\label{class_graph_ac82c3f843c7acc424fed4a194fe071ab} 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+In\+Neighbours} (const int \&key)
+\item 
+\Hypertarget{class_graph_a05d23f4284af9d2d1d74f902d22c0333}\label{class_graph_a05d23f4284af9d2d1d74f902d22c0333} 
+std\+::vector$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries get\+Neighbours} (const int \&key)
+\item 
+\Hypertarget{class_graph_a3effa163fa51499be72840ecbcf26b6e}\label{class_graph_a3effa163fa51499be72840ecbcf26b6e} 
+std\+::vector$<$ int $>$ {\bfseries get\+Out\+Neighbour\+Keys} (const int \&key)
+\item 
+\Hypertarget{class_graph_a399beba7d382797a6cafa6d5a9bfdf39}\label{class_graph_a399beba7d382797a6cafa6d5a9bfdf39} 
+std\+::vector$<$ int $>$ {\bfseries get\+In\+Neighbour\+Keys} (const int \&key)
+\item 
+\Hypertarget{class_graph_a651a44be489702cb269fa167ea32d929}\label{class_graph_a651a44be489702cb269fa167ea32d929} 
+std\+::vector$<$ int $>$ {\bfseries get\+Neighbour\+Keys} (const int \&key)
+\item 
+\Hypertarget{class_graph_a187ef95de3da762c010c32cb43cd7583}\label{class_graph_a187ef95de3da762c010c32cb43cd7583} 
+Edge {\bfseries get\+Edge} (const int \&edge\+Idx)
+\item 
+\Hypertarget{class_graph_a192efafa28763743be28683fa4d08ef6}\label{class_graph_a192efafa28763743be28683fa4d08ef6} 
+void {\bfseries set\+Edges} (const std\+::vector$<$ Edge $>$ \&edges)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_graph_ad3db12d7f8327a6717fd161d694e43c0}\label{class_graph_ad3db12d7f8327a6717fd161d694e43c0} 
+int {\bfseries num\+Nodes}
+\item 
+\Hypertarget{class_graph_a4f98dc06b0c1e32b27fa26efc0e11777}\label{class_graph_a4f98dc06b0c1e32b27fa26efc0e11777} 
+int {\bfseries num\+Edges}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_graph_a07a226d6b15109f596c9b2f1caa10ab3}\label{class_graph_a07a226d6b15109f596c9b2f1caa10ab3} 
+Node\+Map {\bfseries nodes}
+\item 
+\Hypertarget{class_graph_a28d19ea9c7d111f55fee78331abe88bd}\label{class_graph_a28d19ea9c7d111f55fee78331abe88bd} 
+std\+::vector$<$ Edge $>$ {\bfseries edges}
+\item 
+\Hypertarget{class_graph_ae91c0c102762fc675b9cd3fc82eef9e7}\label{class_graph_ae91c0c102762fc675b9cd3fc82eef9e7} 
+std\+::vector$<$ int $>$ {\bfseries node\+Keys}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/include/Graph.\+h\item 
+C\+:/\+Users/34696/source/repos/\+AStar\+IRIS/\+AStar\+IRIS/src/Graph.\+cpp\end{DoxyCompactItemize}

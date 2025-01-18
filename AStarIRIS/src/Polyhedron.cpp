@@ -31,19 +31,57 @@ std::ostream& operator<<(std::ostream& out, Polyhedron const& p)
     }
 };
 
-Polyhedron::Polyhedron(const int& n): ConicSet(n), ellipsoid(n), circle(n) //ConicSet(n,true)
+Polyhedron::Polyhedron(const int& n): ConicSet(n), ellipsoid(n), sphere(n) //ConicSet(n,true)
 {
 }
 
-Polyhedron::Polyhedron(const Eigen::MatrixXd& A, const Eigen::VectorXd& b) : A(A), b(b), ConicSet(A.cols()), ellipsoid(A.cols()), circle(A.cols()) //ConicSet(v.rows(),true)
+Polyhedron::Polyhedron(const Eigen::MatrixXd& A, const Eigen::VectorXd& b) : A(A), b(b), ConicSet(A.cols()), ellipsoid(A.cols()), sphere(A.cols()) //ConicSet(v.rows(),true)
 {
     A_ptr = Eigen2NdArray(this->A);
     b_ptr = Eigen2NdArray(this->b);
 }
-Polyhedron::Polyhedron(const Polyhedron& polyhedron): ConicSet(polyhedron), A(polyhedron.A), b(polyhedron.b), ellipsoid(polyhedron.ellipsoid), circle(polyhedron.circle)
+Polyhedron::Polyhedron(const Polyhedron& polyhedron): ConicSet(polyhedron), A(polyhedron.A), b(polyhedron.b), ellipsoid(polyhedron.ellipsoid), sphere(polyhedron.sphere)
 {
     A_ptr = Eigen2NdArray(this->A);
     b_ptr = Eigen2NdArray(this->b);
+}
+
+Polyhedron& Polyhedron::operator=(const Polyhedron& other) {
+    this->A = other.A;
+    this->b = other.b;
+    this->A_ptr = other.A_ptr;
+    this->b_ptr = other.b_ptr;
+    this->bb = other.bb;
+    this->bbComputed = other.bbComputed;
+    this->centroid = other.centroid;
+    this->centroidComputed = other.centroidComputed;
+    this->CInscribedEllipsoid = other.CInscribedEllipsoid;
+    this->computedInscribedEllipsoid = other.computedInscribedEllipsoid;
+    this->computedInscribedSphere = other.computedInscribedSphere;
+    this->DZInscribedEllipsoid = other.DZInscribedEllipsoid;
+    this->ellipsoid = other.ellipsoid;
+    this->l = other.l;
+    this->MClosestPoint = other.MClosestPoint;
+    this->MClosestPointEllipsoid = other.MClosestPointEllipsoid;
+    this->MIsInsideSeparatingHyperplane = other.MIsInsideSeparatingHyperplane;
+    this->MInscribedEllipsoid = other.MInscribedEllipsoid;
+    this->numIsInsideSeparatingHyperplanes = other.numIsInsideSeparatingHyperplanes;
+    this->solverClosestPointAllocated = other.solverClosestPointAllocated;
+    this->solverClosestPointEllipsoidAllocated = other.solverClosestPointEllipsoidAllocated;
+    this->solverInscribedEllipsoidAllocated = other.solverInscribedEllipsoidAllocated;
+    this->solverIsInsideSeparatingHyperplaneAllocated = other.solverIsInsideSeparatingHyperplaneAllocated;
+    this->sphere = other.sphere;
+    this->tInscribedEllipsoid = other.tInscribedEllipsoid;
+    this->wClosestPointEllipsoid = other.wClosestPointEllipsoid;
+    this->xClosestPoint = other.xClosestPoint;
+    this->xClosestPointEllipsoid = other.xClosestPointEllipsoid;
+    this->xInscribedEllipsoid = other.xInscribedEllipsoid;
+    this->xIsInsideSeparatingHyperplane = other.xIsInsideSeparatingHyperplane;
+    this->YInscribedEllipsoid = other.YInscribedEllipsoid;
+    this->ZInscribedEllipsoid = other.ZInscribedEllipsoid;
+    return *this;
+
+
 }
 Polyhedron::~Polyhedron()
 {
@@ -107,7 +145,8 @@ bool Polyhedron::isInside(const Eigen::VectorXd& q, const double &tol)
     return ((this->A * q - this->b).array()<=tol).all();
 }
 
-bool Polyhedron::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double &tol)
+
+bool Polyhedron::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const double& bi, const double& tol)
 {
     this->allocateIsInsideSeparatingHyperplaneSolver();
     //if ((ai.rows() != 2))
@@ -118,6 +157,30 @@ bool Polyhedron::isInsideSeparatingHyperplane(const Eigen::VectorXd& ai, const d
         this->MIsInsideSeparatingHyperplane->constraint("hyperplane", Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi), Domain::lessThan(tol));
     else
         this->MIsInsideSeparatingHyperplane->getConstraint("hyperplane")->update(Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi));
+    this->numIsInsideSeparatingHyperplanes = 1;
+    this->MIsInsideSeparatingHyperplane->solve();
+    ProblemStatus status = this->MIsInsideSeparatingHyperplane->getProblemStatus();
+    return (status == ProblemStatus::PrimalFeasible) || (status == ProblemStatus::PrimalAndDualFeasible);
+}
+
+bool Polyhedron::isInsideSeparatingHyperplanes(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, const double& tol)
+{
+    if (((A.rows() - 1) != this->numIsInsideSeparatingHyperplanes)||(A.rows()==0))
+    {
+        if (this->solverIsInsideSeparatingHyperplaneAllocated)
+            this->MIsInsideSeparatingHyperplane->dispose();
+        this->solverIsInsideSeparatingHyperplaneAllocated = false;
+        if (A.rows() == 0)
+        {
+            this->numIsInsideSeparatingHyperplanes = 0;
+            return true;
+        }
+    }
+    this->allocateIsInsideSeparatingHyperplaneSolver();
+    std::shared_ptr<ndarray<double, 2>> ai_ptr = Eigen2NdArray(Eigen::MatrixXd(A.row(A.rows() - 1)));
+    double bi = b(b.rows() - 1);
+    this->MIsInsideSeparatingHyperplane->constraint(Expr::sub(Expr::mul(ai_ptr, this->xIsInsideSeparatingHyperplane), bi), Domain::lessThan(tol));
+    this->numIsInsideSeparatingHyperplanes = A.rows();
     this->MIsInsideSeparatingHyperplane->solve();
     ProblemStatus status = this->MIsInsideSeparatingHyperplane->getProblemStatus();
     return (status == ProblemStatus::PrimalFeasible) || (status == ProblemStatus::PrimalAndDualFeasible);
@@ -227,9 +290,15 @@ void Polyhedron::vert2con(const Eigen::MatrixXd& v, Eigen::MatrixXd& A_out, Eige
         btmp += Atmp * c;
         //std::cout << "btmp = " << std::endl;
         //std::cout << btmp << std::endl;
-        //A_out = Atmp;
-        //b_out = btmp;
-        removeRepeatedConstraints(Atmp, btmp, A_out, b_out);
+        A_out.resize(Atmp.rows(), Atmp.cols());
+        b_out.resize(btmp.rows());
+        for (int i = 0; i < Atmp.rows(); i++)
+        {
+            double nA = Atmp.row(i).norm();
+            A_out.row(i) = Atmp.row(i)/nA;
+            b_out(i) = btmp(i)/nA;
+        }
+        //removeRepeatedConstraints(Atmp, btmp, A_out, b_out);
         //std::cout << "A_out=" << std::endl;
         //std::cout << A_out << std::endl;
         //std::cout << "b_out=" << std::endl;
@@ -241,11 +310,55 @@ void Polyhedron::vert2con(const Eigen::MatrixXd& v, Eigen::MatrixXd& A_out, Eige
     }
 }
 
-std::vector<int> Polyhedron::removeRepeatedConstraints()
+// Function to compare two rows with tolerance due to floating-point precision issues
+bool Polyhedron::areRowsEqual(const Eigen::RowVectorXd& row1, const Eigen::RowVectorXd& row2, const double& tolerance) {
+    return (row1 - row2).norm() < tolerance; // Compare the norm of the difference between rows
+}
+
+// Function to remove duplicate rows from an Eigen::MatrixXd
+Eigen::MatrixXd Polyhedron::removeDuplicateRows(const Eigen::MatrixXd& matrix, const double& tolerance) {
+    std::vector<Eigen::RowVectorXd> uniqueRows;
+
+    for (int i = 0; i < matrix.rows(); ++i) {
+        Eigen::RowVectorXd currentRow = matrix.row(i);
+        bool isDuplicate = false;
+
+        // Check if the current row already exists in uniqueRows
+        for (const auto& uniqueRow : uniqueRows) {
+            if (Polyhedron::areRowsEqual(currentRow, uniqueRow, tolerance)) {
+                isDuplicate = true;
+                break;
+            }
+        }
+
+        // If not a duplicate, add it to uniqueRows
+        if (!isDuplicate) {
+            uniqueRows.push_back(currentRow);
+        }
+    }
+
+    // Build the new matrix from uniqueRows
+    Eigen::MatrixXd result(uniqueRows.size(), matrix.cols());
+    for (size_t i = 0; i < uniqueRows.size(); ++i) {
+        result.row(i) = uniqueRows[i];
+    }
+    return result;
+}
+
+std::vector<int> Polyhedron::removeConstraints()
 {
     Eigen::MatrixXd Anew;
     Eigen::VectorXd bnew;
-    std::vector<int> removed=Polyhedron::removeRepeatedConstraints(this->A, this->b, Anew, bnew);
+    Eigen::MatrixXd AB(A.rows(),A.cols()+1);
+    AB << this->A, this->b;
+    //this->print();
+    //std::cout << AB << std::endl;
+    Eigen::MatrixXd ABnew = Polyhedron::removeDuplicateRows(AB);
+    //std::cout << ABnew << std::endl;
+    //std::cout << ABnew.block(0, 0, ABnew.rows(), AB.cols() - 1) << std::endl;
+    //std::cout << ABnew.block(0, AB.cols() - 1, ABnew.rows(), 1) << std::endl;
+    //std::vector<int> removed = Polyhedron::removeConstraints(this->A, this->b, Anew, bnew);
+    std::vector<int> removed = Polyhedron::removeConstraints(ABnew.block(0,0,ABnew.rows(),AB.cols()-1),ABnew.block(0,AB.cols()-1,ABnew.rows(),1), Anew, bnew);
     if (A.rows() != Anew.rows())
     {
         this->update(Anew, bnew);
@@ -253,31 +366,31 @@ std::vector<int> Polyhedron::removeRepeatedConstraints()
     return removed;
 }
 
-std::vector<int> Polyhedron::removeRepeatedConstraints(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, Eigen::MatrixXd& A_out, Eigen::VectorXd& b_out)
+std::vector<int> Polyhedron::removeConstraints(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, Eigen::MatrixXd& Aout, Eigen::VectorXd& bout)
 {
     Range* range = Range::getInstance();
     std::pair<double, double> bounds = range->getBounds();
-    Model::t M = new Model("Polyhedron::removeRepeatedConstraints");
+    Model::t M = new Model("Polyhedron::removeConstraints");
     auto _M = finally([&]() { M->dispose(); });
     Variable::t x = M->variable("x", 2, Domain::inRange(bounds.first, bounds.second));
     Constraint::t con;
-    A_out = A;
-    b_out = b;
+    Aout = A;
+    bout = b;
     std::shared_ptr<ndarray<double, 2>> A_ptr;
     std::shared_ptr<ndarray<double, 1>> b_ptr;
-    A_ptr = Eigen2NdArray(A_out);
-    b_ptr = Eigen2NdArray(b_out);
+    A_ptr = Eigen2NdArray(Aout);
+    b_ptr = Eigen2NdArray(bout);
     con = M->constraint("linear", Expr::sub(Expr::mul(A_ptr, x), b_ptr), Domain::lessThan(0.0));
     M->objective(ObjectiveSense::Minimize, Expr::sum(x));
 
     std::vector<int> keep;
     std::vector<int> removed;
-    for (int i = 0; i < A_out.rows(); i++)
+    for (int i = 0; i < Aout.rows(); i++)
     {
-        A_out.row(i) = -A_out.row(i);
-        b_out(i) = -b_out(i);
-        A_ptr = Eigen2NdArray(A_out);
-        b_ptr = Eigen2NdArray(b_out);
+        Aout.row(i) = -Aout.row(i);
+        bout(i) = -bout(i);
+        A_ptr = Eigen2NdArray(Aout);
+        b_ptr = Eigen2NdArray(bout);
         con->update(Expr::sub(Expr::mul(A_ptr, x), b_ptr));
         //M->writeTask("problem.lp");
         M->solve();
@@ -288,16 +401,16 @@ std::vector<int> Polyhedron::removeRepeatedConstraints(const Eigen::MatrixXd& A,
         else
             removed.push_back(i);
         //Undo changes
-        A_out.row(i) = -A_out.row(i);
-        b_out(i) = -b_out(i);
+        Aout.row(i) = -Aout.row(i);
+        bout(i) = -bout(i);
     }
 
-    A_out.resize(keep.size(), A.cols());
-    b_out.resize(keep.size());
+    Aout.resize(keep.size(), A.cols());
+    bout.resize(keep.size());
     for (int i = 0; i < keep.size(); i++)
     {
-        A_out.row(i) = A.row(keep[i]);
-        b_out(i) = b(keep[i]);
+        Aout.row(i) = A.row(keep[i]);
+        bout(i) = b(keep[i]);
     }
     return removed;
 };
@@ -541,32 +654,81 @@ Ellipsoid Polyhedron::inscribedEllipsoid()
     }
     return this->ellipsoid;
 }
+
+
+double Polyhedron::inscribedEllipsoidVolume(const Eigen::MatrixXd& A, const Eigen::VectorXd& b)
+{
+    Range* range = Range::getInstance();
+    std::pair<double, double> bounds = range->getBounds();
+    std::pair<std::shared_ptr<ndarray<double, 2>>, std::shared_ptr<ndarray<double, 1>>> rangeConstraints = range->getConstraints();
+    int n = A.cols();
+    std::shared_ptr<ndarray<double, 2>> A_ptr= Eigen2NdArray(A);
+    std::shared_ptr<ndarray<double, 1>> b_ptr= Eigen2NdArray(b);
+    Model::t m = new Model("Polyhedron::inscribedEllipsoidVolume");
+    auto _M = finally([&]() { m->dispose(); });
+    Variable::t x = m->variable("x", n, Domain::inRange(bounds.first, bounds.second));
+    // Setup variables
+    Variable::t t = m->variable("t", 1, Domain::greaterThan(0.0));
+    Variable::t Y = m->variable(Domain::inPSDCone(2 * n));
+    Variable::t C = Y->slice(new_array_ptr<int, 1>({ 0, 0 }), new_array_ptr<int, 1>({ n, n }));
+    Variable::t Z = Y->slice(new_array_ptr<int, 1>({ 0, n }), new_array_ptr<int, 1>({ n, 2 * n }));
+    Variable::t DZ = Y->slice(new_array_ptr<int, 1>({ n, n }), new_array_ptr<int, 1>({ 2 * n, 2 * n }));
+    // Z is lower-triangular
+    std::shared_ptr<ndarray<int, 2>> low_tri(new ndarray<int, 2>(shape_t<2>(n * (n - 1) / 2, 2)));
+    int k = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = i + 1; j < n; j++)
+            (*low_tri)(k, 0) = i, (*low_tri)(k, 1) = j, ++k;
+    m->constraint(Z->pick(low_tri), Domain::equalsTo(0.0));
+    // DZ = Diag(Z)
+    m->constraint(Expr::sub(DZ, Expr::mulElm(Z, Matrix::eye(n))), Domain::equalsTo(0.0));
+    m->constraint(Expr::vstack(DZ->diag(), t), Domain::inPGeoMeanCone());
+    // quadratic cones
+    m->constraint(Expr::hstack(Expr::sub(b_ptr, Expr::mul(A_ptr, x)), Expr::mul(A_ptr,C)), Domain::inQCone());
+    m->constraint(Expr::hstack(Expr::sub(rangeConstraints.second, Expr::mul(rangeConstraints.first, x)), Expr::mul(rangeConstraints.first, C)), Domain::inQCone());
+    // Objective: Maximize t
+    m->objective(ObjectiveSense::Maximize, t);
+    m->solve();
+    ProblemStatus status = m->getProblemStatus();
+    if ((status == ProblemStatus::PrimalFeasible) || (status == ProblemStatus::PrimalAndDualFeasible))
+        return (*t->level())[0];
+    else
+        return 0.0;
+}
 void Polyhedron::computeInscribedEllipsoid()
 {
     this->allocateInscribedEllipsoidSolver();
+    if (!this->MInscribedEllipsoid->hasConstraint("Q"))
+    {
+        this->MInscribedEllipsoid->constraint("Q", Expr::hstack(Expr::sub(b_ptr, Expr::mul(A_ptr, this->xInscribedEllipsoid)), Expr::mul(A_ptr, this->CInscribedEllipsoid)), Domain::inQCone());
+    }
+    else
+    {
+        this->MInscribedEllipsoid->getConstraint("Q")->update(Expr::hstack(Expr::sub(b_ptr, Expr::mul(A_ptr, this->xInscribedEllipsoid)), Expr::mul(A_ptr, this->CInscribedEllipsoid)));
+    }
     this->MInscribedEllipsoid->solve();
     Eigen::MatrixXd CEigen = Eigen::MatrixXd(Eigen::Map<Eigen::MatrixXd>(this->CInscribedEllipsoid->level()->begin(), n, n));
     Eigen::VectorXd dEigen = Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(this->xInscribedEllipsoid->level()->begin(), n));
     this->ellipsoid= Ellipsoid(CEigen, dEigen);
 }
 
-Circle Polyhedron::inscribedCircle()
+Sphere Polyhedron::inscribedSphere()
 {
-    if (!computedInscribedCircle)
+    if (!computedInscribedSphere)
     {
-        this->computeInscribedCircle();
+        this->computeInscribedSphere();
     }
-    return this->circle;
+    return this->sphere;
 }
 
-void Polyhedron::computeInscribedCircle()
+void Polyhedron::computeInscribedSphere()
 {
     //std::shared_ptr<ndarray<double, 2>> A_ptr = Eigen2NdArray(polyhedron.A);
     //std::shared_ptr<ndarray<double, 1>> b_ptr = Eigen2NdArray(polyhedron.b);
     //Model::t M = new Model("inscribed_ellipsoid"); auto _M = finally([&]() { M->dispose(); });
     Range* range = Range::getInstance();
     std::pair<double, double> bounds = range->getBounds();
-    Model::t M = new Model("Polyhedron::inscribedCircle");
+    Model::t M = new Model("Polyhedron::inscribedSphere");
     auto _M = finally([&]() { M->dispose(); });
     Variable::t x = M->variable("x", n, Domain::inRange(bounds.first, bounds.second));
     // Setup variables
@@ -578,33 +740,58 @@ void Polyhedron::computeInscribedCircle()
     M->solve();
     Eigen::VectorXd cEigen = Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(c->level()->begin(), n));
     double radius=(*r->level())[0];
-    this->circle=Circle(cEigen, radius);
+    this->sphere= Sphere(cEigen, radius);
 }
 
 Eigen::VectorXd Polyhedron::getCentroid()
 {
     if (!this->centroidComputed)
     {
-        Circle circle = this->inscribedCircle();
+        Sphere sphere = this->inscribedSphere();
         this->centroidComputed = true;
-        this->centroid = circle.getCentroid();
+        this->centroid = sphere.getCentroid();
     }
     return this->centroid;
 }
 
-bool Polyhedron::hasVertices()
+
+bool Polyhedron::intersect(const Eigen::MatrixXd& A, const Eigen::VectorXd& b)
 {
-    return false;
+    Eigen::MatrixXd bigA(this->A.rows() + A.rows(), this->A.cols());
+    Eigen::VectorXd bigB(bigA.rows());
+    bigA << this->A, A;
+    bigB << this->b, b;
+    std::shared_ptr<ndarray<double, 2>> ABig_ptr = Eigen2NdArray(bigA);
+    std::shared_ptr<ndarray<double, 1>> bBig_ptr = Eigen2NdArray(bigB);
+    Range* range = Range::getInstance();
+    std::pair<double, double> bounds = range->getBounds();
+    Model::t MInstersect = new Model("Polyhedron::intersect");
+    Variable::t xIntersect = MInstersect->variable("x", this->A.cols(), Domain::inRange(bounds.first, bounds.second));
+    MInstersect->constraint("linear", Expr::sub(Expr::mul(ABig_ptr, xIntersect), bBig_ptr), Domain::lessThan(0.0));
+    MInstersect->objective(ObjectiveSense::Minimize, Expr::sum(xIntersect));
+    MInstersect->solve();
+    ProblemStatus status = MInstersect->getProblemStatus();
+    return (status == ProblemStatus::PrimalFeasible) || (status == ProblemStatus::PrimalAndDualFeasible);
 }
 
-Polyhedron Polyhedron::intersection(const Polyhedron& polyhedron1, const Polyhedron& polyhedron2)
+bool Polyhedron::intersect(const Polyhedron& polyhedron1, const Polyhedron& polyhedron2)
 {
     assert(polyhedron1.A.cols() == polyhedron2.A.cols());
     Eigen::MatrixXd bigA(polyhedron1.A.rows()+polyhedron2.A.rows(),polyhedron1.A.cols());
     Eigen::VectorXd bigB(bigA.rows());
     bigA << polyhedron1.A, polyhedron2.A;
     bigB << polyhedron1.b, polyhedron2.b;
-    return Polyhedron(bigA,bigB);
+    std::shared_ptr<ndarray<double, 2>> A_ptr = Eigen2NdArray(bigA);
+    std::shared_ptr<ndarray<double, 1>> b_ptr = Eigen2NdArray(bigB);
+    Range* range = Range::getInstance();
+    std::pair<double, double> bounds = range->getBounds();
+    Model::t MInstersect = new Model("Polyhedron::intersect");
+    Variable::t xIntersect = MInstersect->variable("x", polyhedron1.A.cols(), Domain::inRange(bounds.first, bounds.second));
+    MInstersect->constraint("linear", Expr::sub(Expr::mul(A_ptr, xIntersect), b_ptr), Domain::lessThan(0.0));
+    MInstersect->objective(ObjectiveSense::Minimize, Expr::sum(xIntersect));
+    MInstersect->solve();
+    ProblemStatus status = MInstersect->getProblemStatus();
+    return (status == ProblemStatus::PrimalFeasible) || (status == ProblemStatus::PrimalAndDualFeasible);
 }
 
 void Polyhedron::allocateClosestPointSolver()
@@ -725,32 +912,25 @@ Eigen::MatrixXd Polyhedron::getBoundingBox()
     return this->bb;
 }
 
-void Polyhedron::getFilled2DPolyhedron(std::vector<double>& x, std::vector<double>& y)
+std::vector<int> Polyhedron::eqConstraints(const Eigen::VectorXd& p, const double& tol)
 {
-    if (this->A.cols() == 2)
+    std::vector<int> activeConstraints;
+    for (int i = 0; i < this->A.rows(); i++)
     {
-        Eigen::MatrixXd v;
-        //std::cout << this->A << std::endl;
-        Polyhedron::con2vert(this->A, this->b, v);
-        //std::cout << v << std::endl;
-        x.clear();
-        y.clear();
-        std::vector<std::pair<double,std::pair<double,double>>> ang;
-        for (int i = 0; i < v.cols(); i++)
+        double x = (this->A.row(i) * p - this->b(i));
+        if (abs(x)<=tol)
         {
-            double xi= v(0, i);
-            double yi= v(1, i);
-            double a = atan2(yi, xi);
-            a += (a<0.)* (2.*3.14159265358979311600);
-            ang.push_back(std::make_pair(atan2(yi, xi),std::make_pair(xi,yi)));
-        }
-        std::sort(std::begin(ang), std::end(ang), [&](const auto& a, const auto& b) {return a.first < b.first; });
-        for (std::vector<std::pair<double, std::pair<double, double>>>::iterator it = ang.begin(); it != ang.end(); it++)
-        {
-            x.push_back(it->second.first);
-            y.push_back(it->second.second);
+            activeConstraints.push_back(i);
         }
     }
-    else
-        std::cout << "This method is intended to be used with 2D polyhedra" << std::endl;
+    return activeConstraints;
+}
+
+void Polyhedron::closestConstraint(const Eigen::VectorXd& p, Eigen::VectorXd& ai, double& bi)
+{
+    
+    Eigen::VectorXd::Index idx;
+    (this->A * p - this->b).array().maxCoeff(&idx);
+    ai = -this->A.row(idx);
+    bi = -this->b(idx);
 }
