@@ -212,6 +212,13 @@ public:
     */
     static bool intersect(const Polyhedron& polyhedron1, const Polyhedron& polyhedron2);
     /**
+    Returns the intersection of two polyhedron. Given \f$\mathcal{P}_{1}(A_{1},b_{1})\f$ and \f$\mathcal{P}_{2}(A_{2},b_{2})\f$ return \f$\left[\begin{array}{c}A_{1}\\A_{2}\end{array}\right]\leq\left[\begin{array}{c}b_{1}\\b_{2}\end{array}\right]\f$.
+    \param polyhedron1 Polyhedron \f$\mathcal{P}_{1}(A_{1},b_{1})\f$
+    \param polyhedron2 Polyhedron \f$\mathcal{P}_{2}(A_{2},b_{2})\f$
+    \return Polyhedron intersection
+    */
+    static Polyhedron intersection(const Polyhedron& polyhedron1, const Polyhedron& polyhedron2);
+    /**
     Checks if the current polyhedron intersects with another polyhedron. Given another polyhedron \f$\mathcal{P}'(A',b')\f$, checks if \f$\left[\begin{array}{c}A\\A'\end{array}\right]\leq\left[\begin{array}{c}b\\b'\end{array}\right]\f$ is valid for at least one point.
     \param A Constraint matrix of the (another) polyhedron
     \param b Contraint intercept of the (another) polyhedron
@@ -237,6 +244,7 @@ public:
     \return Vector with the indexes of the contraints satisfying the condition 
     */
     std::vector<int> eqConstraints(const Eigen::VectorXd& p, const double& tol = 1.e-5);
+    void deallocateInscribedEllipsoidSolver();
 protected:
     //Polyhedron constraints
     std::shared_ptr<ndarray<double, 2>> A_ptr;
@@ -273,11 +281,5 @@ protected:
     virtual void allocateClosestPointEllipsoidSolver();
     virtual void allocateIsInsideSeparatingHyperplaneSolver();
     void allocateInscribedEllipsoidSolver();
-private:
-    static double nchoosek(const int n, const int k);
-    static void nchoosek(const Eigen::VectorXi& V, const int k, Eigen::MatrixXi& U);
-    static void unique(Eigen::MatrixXd& A);
-    static bool areRowsEqual(const Eigen::RowVectorXd& row1, const Eigen::RowVectorXd& row2, const double& tolerance = 1e-5);
-    static Eigen::MatrixXd removeDuplicateRows(const Eigen::MatrixXd& matrix, const double& tolerance = 1e-5);
 };
 #endif

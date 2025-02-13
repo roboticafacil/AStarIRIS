@@ -1,6 +1,6 @@
 #include<Eigen/Dense>
 #include "Ellipsoid.h"
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 #include "Range.h"
 
 Ellipsoid::Ellipsoid(const int& n): solverAllocated(false), ConicSet(n) //ConicSet(n,true)

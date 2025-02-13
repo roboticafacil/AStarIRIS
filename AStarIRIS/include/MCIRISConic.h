@@ -6,7 +6,7 @@
 #include "GCS.h"
 #include "ExpandableIRISConic.h"
 #include "PointNode.h"
-#include "ConvexRelaxationSolver.h"
+#include "PerspectiveSPP_GCS.h"
 
 typedef struct
 {

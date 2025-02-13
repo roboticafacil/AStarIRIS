@@ -7,8 +7,8 @@
 #include "PolyhedronObstacleCircularRobotNode.h"
 #include "CObsConic.h"
 #include "GCS.h"
-#include "ConvexRelaxationMinDistanceSolver.h"
-#include "MinDistanceSolver.h"
+#include "ConvexRelaxationMinDistanceSPP_GCS.h"
+#include "MIPMinDistanceSPP_GCS.h"
 
 
 MCIRISConic::MCIRISConic(CObsConic& cObs, const MCIRISParams_t& params) : ExpandableIRISConic(cObs, params.ExpandableIRISParams), params(params)
@@ -25,9 +25,8 @@ void MCIRISConic::do_MCRelaxedSolver()
 	//Phase 1
 	while (!this->gcs.contains(qTargetNode->point.p))
 	{
-		ConvexRelaxationMinDistanceSolver solver(this->navGraph, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
-		solver.setTask();
-		solver.solve();
+		ConvexRelaxationMinDistanceSPP_GCS solver(&this->navGraph, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
+		solver.optimize();
 		solver.computeFeasibleSolution(this->params.ExpandableIRISParams.maxItersOptimalPath);
 		int previousLastNodeKey = solver.optimalPath.nodeKeys[solver.optimalPath.nodeKeys.size() - 2];
 		Node* node = this->navGraph.getNode(previousLastNodeKey);
@@ -44,18 +43,16 @@ void MCIRISConic::do_MCRelaxedSolver()
 	}
 	//Phase 2
 	NavGraph simplifiedGraphPhase1 = this->getGraphWithoutTerminalConnections();
-	ConvexRelaxationMinDistanceSolver feasibleSolverPhase1(simplifiedGraphPhase1, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
-	feasibleSolverPhase1.setTask();
-	feasibleSolverPhase1.solve();
+	ConvexRelaxationMinDistanceSPP_GCS feasibleSolverPhase1(&simplifiedGraphPhase1, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
+	feasibleSolverPhase1.optimize();
 	feasibleSolverPhase1.computeFeasibleSolution(this->params.ExpandableIRISParams.maxItersOptimalPath);
 	bestCost = feasibleSolverPhase1.feasibleSolution.cost;
 	this->optimalPath = feasibleSolverPhase1.optimalPath;
 	this->feasibleSolution = feasibleSolverPhase1.feasibleSolution;
 	while (iters < params.maxIters)
 	{
-		ConvexRelaxationMinDistanceSolver solver(this->navGraph, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
-		solver.setTask();
-		solver.solve();
+		ConvexRelaxationMinDistanceSPP_GCS solver(&this->navGraph, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
+		solver.optimize();
 		solver.computeFeasibleSolution(this->params.ExpandableIRISParams.maxItersOptimalPath);
 		if (solver.feasibleSolution.cost < bestCost)
 		{
@@ -67,9 +64,8 @@ void MCIRISConic::do_MCRelaxedSolver()
 				this->expandTerminalNode(previousLastNodeKey);
 			}
 			NavGraph simplifiedGraph = this->getGraphWithoutTerminalConnections();
-			ConvexRelaxationMinDistanceSolver feasibleSolver(simplifiedGraph, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
-			feasibleSolver.setTask();
-			feasibleSolver.solve();
+			ConvexRelaxationMinDistanceSPP_GCS feasibleSolver(&simplifiedGraph, this->qStartNodeNavGraphKey, this->qTargetNodeNavGraphKey);
+			feasibleSolver.optimize();
 			feasibleSolver.computeFeasibleSolution(this->params.ExpandableIRISParams.maxItersOptimalPath);
 			if (feasibleSolver.feasibleSolution.cost < bestCost)
 			{

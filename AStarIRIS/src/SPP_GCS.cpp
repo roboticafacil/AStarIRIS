@@ -1,37 +1,34 @@
-#include "Solver.h"
+#include "SPP_GCS.h"
 #include "Graph.h"
 #include "PolyhedronNode.h"
 #include "PolyhedronTerminalNode.h"
 #include "PointNode.h"
 #include "fusion.h"
 #include <vector>
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 
-Solver::Solver(const Graph& g, const int& startKey, const int& targetKey) : g(g), nN(g.numNodes), nE(g.numEdges), startKey(startKey), targetKey(targetKey)
+SPP_GCS::SPP_GCS(Graph* g, const int &N, const int& startKey, const int& targetKey) : g(g), N(N), startKey(startKey), targetKey(targetKey)
 {
-	PointNode* qs = (PointNode*)this->g.getNode(startKey);
+	PointNode* qs = (PointNode*)this->g->getNode(startKey);
 	Eigen::MatrixXd qsEigen(qs->point.p);
 	this->n = qs->point.p.rows();
 	qstart = Eigen2NdArray(qsEigen);
-	PointNode* qt = (PointNode*)this->g.getNode(targetKey);
+	PointNode* qt = (PointNode*)this->g->getNode(targetKey);
 	Eigen::MatrixXd qtEigen(qt->point.p);
 	qtarget = Eigen2NdArray(qtEigen);
-}
-
-Solver::~Solver()
-{
-	if (solverAllocated)
+	/*int k = 0;
+	for (int i = 0; i < N; i++)
 	{
-		solverAllocated = false;
-		this->M->dispose();
-	}
+		for (int j = 0; j < nE; j++)
+			idx(i, j) = k++;
+	}*/
 }
 
-bool Solver::optimalPathContainsTerminalNodes()
+bool SPP_GCS::optimalPathContainsTerminalNodes()
 {
 	for (std::vector<int>::iterator it = this->optimalPath.nodeKeys.begin(); it != this->optimalPath.nodeKeys.end(); it++)
 	{
-		Node* node = this->g.getNode(*it);
+		Node* node = this->g->getNode(*it);
 		if (dynamic_cast<PolyhedronTerminalNode*>(node) != NULL)
 		{
 			return true;
@@ -40,7 +37,7 @@ bool Solver::optimalPathContainsTerminalNodes()
 	return false;
 }
 
-void Solver::setGraph(Graph& g)
+void SPP_GCS::setGraph(Graph* g)
 {
 	this->g = g;
 }

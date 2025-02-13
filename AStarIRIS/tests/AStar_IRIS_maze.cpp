@@ -11,8 +11,8 @@
 #include "PolyhedronNode.h"
 #include "PolyhedronTerminalNode.h"
 #include "PointNode.h"
-#include "ConvexRelaxationMinDistanceSolver.h"
-#include "MinDistanceSolver.h"
+#include "ConvexRelaxationMinDistanceSPP_GCS.h"
+#include "MIPMinDistanceSPP_GCS.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -429,6 +429,12 @@ int AStar_IRIS_relaxed_solver_maze(Eigen::Vector<double, 2>& qstart, Eigen::Vect
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
 	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 300;
+	AStartIRISDebugLevel_t debug_level;
+	debug_level.gcsGraph = true;
+	debug_level.gcsConvexSets = true;
+	debug_level.navGraph = false;
+	debug_level.navGraphConvexSets = false;
+	debug_level.video_frames = false;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
 	std::ofstream fout("AStar_IRIS_relaxed_solver_maze.m");
 	fout << "close all;" << std::endl;
@@ -445,7 +451,8 @@ int AStar_IRIS_relaxed_solver_maze(Eigen::Vector<double, 2>& qstart, Eigen::Vect
 	double phase1Time = 0.0;
 	t1 = std::chrono::high_resolution_clock::now();
 	irisConic.buildNavGraph(qstart, qtarget);
-	irisConic.do_RelaxedSolver(fout);
+	ConvexRelaxationMinDistanceSPP_GCS solver(&irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
+	irisConic.do_RelaxedSolver(solver,fout,debug_level);
 	t2 = std::chrono::high_resolution_clock::now();
 	ms_double = t2 - t1;
 	phase1Time = ms_double.count();

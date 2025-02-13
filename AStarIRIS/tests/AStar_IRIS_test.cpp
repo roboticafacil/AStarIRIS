@@ -11,8 +11,8 @@
 #include "PolyhedronNode.h"
 #include "PolyhedronTerminalNode.h"
 #include "PointNode.h"
-#include "ConvexRelaxationMinDistanceSolver.h"
-#include "MinDistanceSolver.h"
+#include "ConvexRelaxationMinDistanceSPP_GCS.h"
+#include "MIPMinDistanceSPP_GCS.h"
 #include <fstream>
 
 CObsConic getCObsPolyhedronV()
@@ -27,7 +27,7 @@ CObsConic getCObsPolyhedronV()
 	Eigen::Matrix<double, 2, 4> v2({{-9.,-7.,-1.,-2.},{-7.,-2.,-3.,-4.}});
 	PolyhedronV* o2 = new PolyhedronV(v2);
 	cObs.addObject(o2);
-	Eigen::Matrix<double, 2, 3> v3({{0.,1.,2.},{-8.,-6.,-8.}});
+	Eigen::Matrix<double, 2, 3> v3({{0.,1.,2.},{-9.,-7.,-9.} });
 	PolyhedronV* o3 = new PolyhedronV(v3);
 	cObs.addObject(o3);
 	Eigen::Matrix<double, 2, 5> v4({{5.,5.,6.,7.,7.},{-7.,-5.,-4.,-5.,-7.}});
@@ -48,7 +48,7 @@ CObsConic getCObsPolyhedronV_15_obstacles()
 	Eigen::Matrix<double, 2, 4> v2({ {-9.,-7.,-1.,-2.},{-7.,-2.,-3.,-4.} });
 	PolyhedronV* o2 = new PolyhedronV(v2);
 	cObs.addObject(o2);
-	Eigen::Matrix<double, 2, 3> v3({ {0.,1.,2.},{-8.,-6.,-8.} });
+	Eigen::Matrix<double, 2, 3> v3({ {0.,1.,2.},{-9.,-7.,-9.} });
 	PolyhedronV* o3 = new PolyhedronV(v3);
 	cObs.addObject(o3);
 	Eigen::Matrix<double, 2, 5> v4({ {5.,5.,6.,7.,7.},{-7.,-5.,-4.,-5.,-7.} });
@@ -103,7 +103,7 @@ CObsConic getCObsPolyhedronV_30_obstacles()
 	Eigen::Matrix<double, 2, 4> v2({ {-9.,-7.,-1.,-2.},{-7.,-2.,-3.,-4.} });
 	PolyhedronV* o2 = new PolyhedronV(v2);
 	cObs.addObject(o2);
-	Eigen::Matrix<double, 2, 3> v3({ {0.,1.,2.},{-8.,-6.,-8.} });
+	Eigen::Matrix<double, 2, 3> v3({ {0.,1.,2.},{-9.,-7.,-9.} });
 	PolyhedronV* o3 = new PolyhedronV(v3);
 	cObs.addObject(o3);
 	Eigen::Matrix<double, 2, 5> v4({ {5.,5.,6.,7.,7.},{-7.,-5.,-4.,-5.,-7.} });
@@ -218,22 +218,21 @@ int AStart_convex_relaxation_test(Eigen::Vector<double, 2>& qstart, Eigen::Vecto
 	}
 	std::cout << "Edge graph of convex sets" << std::endl;
 	irisConic.navGraph.print();
-	ConvexRelaxationMinDistanceSolver solver(irisConic.navGraph,irisConic.qStartNodeNavGraphKey,irisConic.qTargetNodeNavGraphKey);
-	solver.setTask();
-	solver.solve();
+	ConvexRelaxationMinDistanceSPP_GCS solver(&irisConic.navGraph,irisConic.qStartNodeNavGraphKey,irisConic.qTargetNodeNavGraphKey);
+	solver.optimize();
 	std::cout << "Relaxed Solution " << std::endl;
-	std::cout << "x variables " << std::endl;
-	std::cout << solver.relaxedSolution.x << std::endl;
+	//std::cout << "x variables " << std::endl;
+	//std::cout << solver.relaxedSolution.x << std::endl;
 	std::cout << "y variables " << std::endl; 
-	std::cout << solver.relaxedSolution.y << std::endl;
+	std::cout << solver.perspectiveSolution.y << std::endl;
 	std::cout << "z variables " << std::endl;
-	std::cout << solver.relaxedSolution.z << std::endl;
-	std::cout << "p variables " << std::endl;
-	std::cout << solver.relaxedSolution.p << std::endl;
+	std::cout << solver.perspectiveSolution.z << std::endl;
+	//std::cout << "p variables " << std::endl;
+	//std::cout << solver.relaxedSolution.p << std::endl;
 	std::cout << "l variables " << std::endl;
-	std::cout << solver.relaxedSolution.l << std::endl;
+	std::cout << solver.perspectiveSolution.l << std::endl;
 	std::cout << "cost " << std::endl;
-	std::cout << solver.relaxedSolution.cost << std::endl;
+	std::cout << solver.perspectiveSolution.cost << std::endl;
 	std::cout << "Feasible Solution " << std::endl;
 	std::cout << "x variables " << std::endl;
 	std::cout << solver.feasibleSolution.x << std::endl;
@@ -317,22 +316,21 @@ int AStart_expand_convex_relaxation_test(Eigen::Vector<double, 2>& qstart, Eigen
 		}
 	}
 	irisConic.navGraph.print();
-	ConvexRelaxationMinDistanceSolver solver(irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
-	solver.setTask();
-	solver.solve();
+	ConvexRelaxationMinDistanceSPP_GCS solver(&irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
+	solver.optimize();
 	std::cout << "Relaxed Solution " << std::endl;
-	std::cout << "x variables " << std::endl;
-	std::cout << solver.relaxedSolution.x << std::endl;
+	//std::cout << "x variables " << std::endl;
+	//std::cout << solver.relaxedSolution.x << std::endl;
 	std::cout << "y variables " << std::endl;
-	std::cout << solver.relaxedSolution.y << std::endl;
+	std::cout << solver.perspectiveSolution.y << std::endl;
 	std::cout << "z variables " << std::endl;
-	std::cout << solver.relaxedSolution.z << std::endl;
-	std::cout << "p variables " << std::endl;
-	std::cout << solver.relaxedSolution.p << std::endl;
+	std::cout << solver.perspectiveSolution.z << std::endl;
+	//std::cout << "p variables " << std::endl;
+	//std::cout << solver.relaxedSolution.p << std::endl;
 	std::cout << "l variables " << std::endl;
-	std::cout << solver.relaxedSolution.l << std::endl;
+	std::cout << solver.perspectiveSolution.l << std::endl;
 	std::cout << "cost " << std::endl;
-	std::cout << solver.relaxedSolution.cost << std::endl;
+	std::cout << solver.perspectiveSolution.cost << std::endl;
 	std::cout << "Feasible Solution " << std::endl;
 	std::cout << "x variables " << std::endl;
 	std::cout << solver.feasibleSolution.x << std::endl;
@@ -416,22 +414,19 @@ int AStart_expand_convex_MIP_test(Eigen::Vector<double, 2>& qstart, Eigen::Vecto
 		}
 	}
 	irisConic.navGraph.print();
-	MinDistanceSolver solver(irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
-	solver.setTask();
-	solver.solve();
+	MIPMinDistanceSPP_GCS solver(&irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
+	solver.optimize();
 	std::cout << "MIP Solution " << std::endl;
-	std::cout << "x variables " << std::endl;
-	std::cout << solver.MIPSolution.x << std::endl;
 	std::cout << "y variables " << std::endl;
-	std::cout << solver.MIPSolution.y << std::endl;
+	std::cout << solver.perspectiveSolution.y << std::endl;
 	std::cout << "z variables " << std::endl;
-	std::cout << solver.MIPSolution.z << std::endl;
-	std::cout << "p variables " << std::endl;
-	std::cout << solver.MIPSolution.p << std::endl;
+	std::cout << solver.perspectiveSolution.z << std::endl;
+	//std::cout << "p variables " << std::endl;
+	//std::cout << solver.MIPSolution.p << std::endl;
 	std::cout << "l variables " << std::endl;
-	std::cout << solver.MIPSolution.l << std::endl;
+	std::cout << solver.perspectiveSolution.l << std::endl;
 	std::cout << "cost " << std::endl;
-	std::cout << solver.MIPSolution.cost << std::endl;
+	std::cout << solver.perspectiveSolution.cost << std::endl;
 	std::cout << "Feasible Solution " << std::endl;
 	std::cout << "x variables " << std::endl;
 	std::cout << solver.feasibleSolution.x << std::endl;
@@ -462,8 +457,15 @@ int AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>& qstart, Eigen::Vect
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
 	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 200;
+	AStartIRISDebugLevel_t debug_level;
+	debug_level.gcsGraph = true;
+	debug_level.gcsConvexSets = true;
+	debug_level.navGraph = false;
+	debug_level.navGraphConvexSets = false;
+	debug_level.video_frames = false;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
-	std::ofstream fout("AStar_IRIS_relaxed_solver_test_results.m");
+	//std::ofstream fout("AStar_IRIS_relaxed_solver_test_results.m");
+	std::ofstream fout("AStar_IRIS_relaxed_solver_bezier_curve_test_results.m");
 	fout << "close all;" << std::endl;
 	fout << "clear;" << std::endl;
 	fout << "xlim = [" << lb << " " << ub << "];" << std::endl;
@@ -478,7 +480,8 @@ int AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>& qstart, Eigen::Vect
 	double phase1Time = 0.0;
 	t1 = std::chrono::high_resolution_clock::now();
 	irisConic.buildNavGraph(qstart, qtarget);
-	irisConic.do_RelaxedSolver(fout);
+	ConvexRelaxationMinDistanceSPP_GCS solver(&irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
+	irisConic.do_RelaxedSolver(solver,fout,debug_level);
 	t2 = std::chrono::high_resolution_clock::now();
 	std::cout << "Resulting navGraph2 GCS" << std::endl;
 	for (std::map<std::pair<int, int>, int>::iterator it = irisConic.navGraph2gcs.begin(); it != irisConic.navGraph2gcs.end(); it++)
@@ -489,14 +492,18 @@ int AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>& qstart, Eigen::Vect
 	phase1Time = ms_double.count();
 	std::cout << "Performance" << std::endl;
 	std::cout << phase1Time << "ms" << std::endl;
-	fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_test_results.avi');" << std::endl;
-	fout << "writerObj.FrameRate = 10;" << std::endl;
-	fout << "open(writerObj);" << std::endl;
-	fout << "for i=1:length(Frames)" << std::endl;
-	fout << "  frame = Frames(i) ;" << std::endl;
-	fout << "  writeVideo(writerObj, frame);" << std::endl;
-	fout << "end" << std::endl;
-	fout << "close(writerObj);" << std::endl;
+	if (debug_level.video_frames)
+	{
+		//fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_test_results.avi');" << std::endl;
+		fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_bezier_curve_test_results.avi');" << std::endl;
+		fout << "writerObj.FrameRate = 10;" << std::endl;
+		fout << "open(writerObj);" << std::endl;
+		fout << "for i=1:length(Frames)" << std::endl;
+		fout << "  frame = Frames(i) ;" << std::endl;
+		fout << "  writeVideo(writerObj, frame);" << std::endl;
+		fout << "end" << std::endl;
+		fout << "close(writerObj);" << std::endl;
+	}
 	return 0;
 }
 
@@ -512,8 +519,16 @@ int AStar_IRIS_relaxed_solver_test1(Eigen::Vector<double, 2>& qstart, Eigen::Vec
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
 	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 200;
+	AStarIRISParams.ExpandableIRISParams.addStartAndTargetToGCS = true;
+	AStartIRISDebugLevel_t debug_level;
+	debug_level.gcsGraph = true;
+	debug_level.gcsConvexSets = true;
+	debug_level.navGraph = true;
+	debug_level.navGraphConvexSets = true;
+	debug_level.video_frames = false;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
-	std::ofstream fout("AStar_IRIS_relaxed_solver_test1_results.m");
+	std::ofstream fout("AStar_IRIS_relaxed_solver_aligned_test1_results.m");
+	//std::ofstream fout("AStar_IRIS_relaxed_solver_bezier_curve_test1_results.m");
 	fout << "close all;" << std::endl;
 	fout << "clear;" << std::endl;
 	fout << "xlim = [" << lb << " " << ub << "];" << std::endl;
@@ -528,20 +543,35 @@ int AStar_IRIS_relaxed_solver_test1(Eigen::Vector<double, 2>& qstart, Eigen::Vec
 	double phase1Time = 0.0;
 	t1 = std::chrono::high_resolution_clock::now();
 	irisConic.buildNavGraph(qstart, qtarget);
-	irisConic.do_RelaxedSolver(fout);
+	//ConvexRelaxationMinDistanceSolver solver(&irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
+	//int n = qStartNode->point.p.rows();
+	ConvexRelaxationBezierCurveParams_t params = ConvexRelaxationBezierCurveSPP_GCS::getDefaultBezierCurveSolverParams();
+	params.N = 4;
+	params.squaredRootL2NormCost = true;
+	Eigen::MatrixXd CpStart(0, AStarIRISParams.ExpandableIRISParams.IRISParams.n);
+	//CpStart << 1., 0.;
+	Eigen::MatrixXd CpTarget(0, AStarIRISParams.ExpandableIRISParams.IRISParams.n);
+	//CpTarget << 1., 0.;
+	ConvexRelaxationBezierCurveSPP_GCS solver(&irisConic.navGraph, &irisConic.gcs, &irisConic.navGraph2gcs, params, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey, CpStart, CpTarget);
+
+	irisConic.do_RelaxedSolver(solver, fout, debug_level);
 	t2 = std::chrono::high_resolution_clock::now();
 	ms_double = t2 - t1;
 	phase1Time = ms_double.count();
 	std::cout << "Performance" << std::endl;
 	std::cout << phase1Time << "ms" << std::endl;
-	fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_test1_results.avi');" << std::endl;
-	fout << "writerObj.FrameRate = 2;" << std::endl;
-	fout << "open(writerObj);" << std::endl;
-	fout << "for i=1:length(Frames)" << std::endl;
-	fout << "  frame = Frames(i) ;" << std::endl;
-	fout << "  writeVideo(writerObj, frame);" << std::endl;
-	fout << "end" << std::endl;
-	fout << "close(writerObj);" << std::endl;
+	if (debug_level.video_frames)
+	{
+		fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_test1_results.avi');" << std::endl;
+		//fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_bezier_curve_test1_results.avi');" << std::endl;
+		fout << "writerObj.FrameRate = 2;" << std::endl;
+		fout << "open(writerObj);" << std::endl;
+		fout << "for i=1:length(Frames)" << std::endl;
+		fout << "  frame = Frames(i) ;" << std::endl;
+		fout << "  writeVideo(writerObj, frame);" << std::endl;
+		fout << "end" << std::endl;
+		fout << "close(writerObj);" << std::endl;
+	}
 	return 0;
 }
 
@@ -557,8 +587,15 @@ int AStar_IRIS_relaxed_solver_test2(Eigen::Vector<double, 2>& qstart, Eigen::Vec
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
 	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 300;
+	AStartIRISDebugLevel_t debug_level;
+	debug_level.gcsGraph = true;
+	debug_level.gcsConvexSets = true;
+	debug_level.navGraph = false;
+	debug_level.navGraphConvexSets = false;
+	debug_level.video_frames = false;
 	AStarIRISConic irisConic = AStarIRISConic(cObs, AStarIRISParams);
-	std::ofstream fout("AStar_IRIS_relaxed_solver_test2_results.m");
+	//std::ofstream fout("AStar_IRIS_relaxed_solver_test2_results.m");
+	std::ofstream fout("AStar_IRIS_relaxed_solver_bezier_curve_test2_results.m");
 	fout << "close all;" << std::endl;
 	fout << "clear;" << std::endl;
 	fout << "xlim = [" << lb << " " << ub << "];" << std::endl;
@@ -573,20 +610,35 @@ int AStar_IRIS_relaxed_solver_test2(Eigen::Vector<double, 2>& qstart, Eigen::Vec
 	double phase1Time = 0.0;
 	t1 = std::chrono::high_resolution_clock::now();
 	irisConic.buildNavGraph(qstart, qtarget);
-	irisConic.do_RelaxedSolver(fout);
+	//ConvexRelaxationMinDistanceSolver solver(&irisConic.navGraph, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey);
+	//int n = qStartNode->point.p.rows();
+	ConvexRelaxationBezierCurveParams_t params = ConvexRelaxationBezierCurveSPP_GCS::getDefaultBezierCurveSolverParams();
+	params.N = 4;
+	params.squaredRootL2NormCost = true;
+	Eigen::MatrixXd CpStart(0, AStarIRISParams.ExpandableIRISParams.IRISParams.n);
+	//CpStart << 1., 0.;
+	Eigen::MatrixXd CpTarget(0, AStarIRISParams.ExpandableIRISParams.IRISParams.n);
+	//CpTarget << 1., 0.;
+	ConvexRelaxationBezierCurveSPP_GCS solver(&irisConic.navGraph, &irisConic.gcs, &irisConic.navGraph2gcs, params, irisConic.qStartNodeNavGraphKey, irisConic.qTargetNodeNavGraphKey, CpStart, CpTarget);
+	
+	irisConic.do_RelaxedSolver(solver,fout,debug_level);
 	t2 = std::chrono::high_resolution_clock::now();
 	ms_double = t2 - t1;
 	phase1Time = ms_double.count();
 	std::cout << "Performance" << std::endl;
 	std::cout << phase1Time << "ms" << std::endl;
-	fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_test2_results.avi');" << std::endl;
-	fout << "writerObj.FrameRate = 2;" << std::endl;
-	fout << "open(writerObj);" << std::endl;
-	fout << "for i=1:length(Frames)" << std::endl;
-	fout << "  frame = Frames(i) ;" << std::endl;
-	fout << "  writeVideo(writerObj, frame);" << std::endl;
-	fout << "end" << std::endl;
-	fout << "close(writerObj);" << std::endl;
+	if (debug_level.video_frames)
+	{
+		//fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_test2_results.avi');" << std::endl;
+		fout << "writerObj = VideoWriter('AStar_IRIS_relaxed_solver_bezier_curve_test2_results.avi');" << std::endl;
+		fout << "writerObj.FrameRate = 2;" << std::endl;
+		fout << "open(writerObj);" << std::endl;
+		fout << "for i=1:length(Frames)" << std::endl;
+		fout << "  frame = Frames(i) ;" << std::endl;
+		fout << "  writeVideo(writerObj, frame);" << std::endl;
+		fout << "end" << std::endl;
+		fout << "close(writerObj);" << std::endl;
+	}
 	return 0;
 }
 
@@ -698,7 +750,7 @@ int main(int argc, char** argv)
 	//AStart_expand_convex_relaxation_test(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8 }));
 	//AStart_expand_convex_MIP_test(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8 }));
 	//AStar_IRIS_MIP_solver_test(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8 }));
-	AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>({ -5.,-8.}), Eigen::Vector<double, 2>({ 9.,8.}));
-	//AStar_IRIS_relaxed_solver_test1(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8. }));
+	//AStar_IRIS_relaxed_solver_test(Eigen::Vector<double, 2>({ -5.,-8.}), Eigen::Vector<double, 2>({ 9.,8.}));
+	AStar_IRIS_relaxed_solver_test1(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8. }));
 	//AStar_IRIS_relaxed_solver_test2(Eigen::Vector<double, 2>({ -5.,-8. }), Eigen::Vector<double, 2>({ 9.,8. }));
 }

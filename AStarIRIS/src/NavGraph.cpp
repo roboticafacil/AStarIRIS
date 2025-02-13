@@ -89,6 +89,45 @@ void NavGraph::printConvexSet(std::ostream& out, const int& num, const int &node
 	}
 }
 
+void NavGraph::printConvexSet(std::ostream& out, const int& num, const int& nodeKey, const int &agents)
+{
+	Node* node = this->getNode(nodeKey);
+	if (dynamic_cast<PolyhedronNode*>(node) != NULL)
+	{
+		PolyhedronNode* polyNode = (PolyhedronNode*)node;
+		int n = polyNode->polyhedron.n/agents;
+		polyNode->polyhedron.print(out, "A", "b", true);
+		for (int agent = 1; agent <= agents; agent++)
+		{
+			out << "p = PolyHedron.projectCoordinatePlaneStatic(A, b," << ((agent - 1) * n + 1) << ":" << agent * n << ");" << std::endl;
+			out << "ANavGraph" << num << "{" << agent << "} = -p.A; " << std::endl;
+			out << "bNavGraph" << num << "{" << agent << "} =-p.b;" << std::endl;
+		}
+		out << "colNavGraph" << num << "=[0.1 0.9 0.1];" << std::endl;
+	}
+	else if (dynamic_cast<PolyhedronTerminalNode*>(node) != NULL)
+	{
+		PolyhedronNode* polyNode = (PolyhedronNode*)node;
+		polyNode->polyhedron.print(out, "A", "b", true);
+		for (int agent = 1; agent <= agents; agent++)
+		{
+			out << "ANavGraph" << num << "{" << agent << "} = -A; " << std::endl;
+			out << "bNavGraph" << num << "{" << agent << "}=-b;" << std::endl;
+		}
+		out << "colNavGraph" << num << "=[0.1 0.9 0.1];" << std::endl;
+	}
+	else if (dynamic_cast<PointNode*>(node) != NULL)
+	{
+		PointNode* pointNode = (PointNode*)node;
+		for (int agent = 1; agent <= agents; agent++)
+		{
+			out << "ANavGraph" << num << "{" << agent << "} = []; " << std::endl;
+			out << "bNavGraph" << num << "{" << agent << "} =[];" << std::endl;
+		}
+		out << "colNavGraph" << num << " =[0.75 0.25 0.25];" << std::endl;
+	}
+}
+
 void NavGraph::printGraph(std::ostream& out, const int& num,std::vector<double> &weights)
 {
 	int i = 1;

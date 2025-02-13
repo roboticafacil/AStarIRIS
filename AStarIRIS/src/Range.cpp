@@ -1,6 +1,6 @@
 #include "Range.h"
 #include "fusion.h"
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 
 using namespace monty;
 

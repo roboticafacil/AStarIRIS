@@ -7,8 +7,8 @@
 #include "PolyhedronObstacleCircularRobotNode.h"
 #include "CObsConic.h"
 #include "GCS.h"
-#include "ConvexRelaxationMinDistanceSolver.h"
-#include "MinDistanceSolver.h"
+#include "ConvexRelaxationMinDistanceSPP_GCS.h"
+#include "MIPMinDistanceSPP_GCS.h"
 
 
 ExpandableIRISConic::ExpandableIRISConic(CObsConic& cObs, const ExpandableIRISParams_t& params) : IRISConic(cObs, params.IRISParams), params(params)
@@ -34,7 +34,7 @@ ExpandableIRISConic::~ExpandableIRISConic()
 	}
 }
 
-int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
+int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q, const bool& addTerminalNodes)
 {
 	Ellipsoid ellipsoid(Eigen::MatrixXd::Identity(q.rows(), q.rows()), q);
 	Polyhedron convexSet = Polyhedron(q.rows());
@@ -66,36 +66,42 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
 	//Add terminal nodes to EGCS
 	//std::cout << "Ellipsoid" << std::endl;
 	//ellipsoid.print();
-	for (int i = 0; i < convexSet.A.rows(); i++)
+	if (addTerminalNodes)
 	{
-		Eigen::VectorXd ai = -convexSet.A.row(i);
-		double bi = -(convexSet.b(i) - params.IRISParams.tol);
-		//std::cout << "ai=" << std::endl;
-		//std::cout << ai << std::endl;
-		//std::cout << "bi=" << bi << std::endl;
-		//if (!ellipsoid.isInsideSeparatingHyperplane(ai,bi,0.))
-		//	continue;
-		Eigen::MatrixXd facetA(convexSet.A.rows() + 1, convexSet.A.cols());
-		Eigen::VectorXd facetB(convexSet.A.rows() + 1);
-		//Eigen::VectorXd facetB1(convexSet.A.rows() + 1);
-		Eigen::VectorXd b = convexSet.b;
-		b(i) = b(i) + params.IRISParams.tol; //Expand slightly the original polyhedron in the facet direction
-		facetA << convexSet.A, -convexSet.A.row(i);
-		facetB << b, -convexSet.b(i);
-		//facetB1 << convexSet.b, -convexSet.b(i) + params.IRISParams.tol;
-		//std::cout << "Facet A" << std::endl;
-		//std::cout << facetA << std::endl;
-		//std::cout << "facet B" << std::endl;
-		//std::cout << facetB << std::endl;
-		//std::cout << "facet B1" << std::endl;
-		//std::cout << facetB1 << std::endl;
-		int terminalNavGraphKey = this->navGraph.addNode(new PolyhedronTerminalNode(facetA, facetB, i));
-		newTerminalNodeKeys.push_back(terminalNavGraphKey);
-		countTerminal++;
-		terminalNodeKeys.push_back(std::make_pair(nodeKey, terminalNavGraphKey));
-		if (isStartInside)
-			this->navGraph.addEdge(this->qStartNodeNavGraphKey, terminalNavGraphKey);
-		this->navGraph.addEdge(terminalNavGraphKey, this->qTargetNodeNavGraphKey);
+		for (int i = 0; i < convexSet.A.rows(); i++)
+		{
+			Eigen::VectorXd ai = -convexSet.A.row(i);
+			double bi = -(convexSet.b(i) - params.IRISParams.tol);
+			//std::cout << "ai=" << std::endl;
+			//std::cout << ai << std::endl;
+			//std::cout << "bi=" << bi << std::endl;
+			//if (!ellipsoid.isInsideSeparatingHyperplane(ai,bi,0.))
+			//	continue;
+			Eigen::MatrixXd facetA(convexSet.A.rows() + 1, convexSet.A.cols());
+			Eigen::VectorXd facetB(convexSet.A.rows() + 1);
+			//Eigen::VectorXd facetB1(convexSet.A.rows() + 1);
+			Eigen::VectorXd b = convexSet.b;
+			b(i) = b(i) + params.IRISParams.tol; //Expand slightly the original polyhedron in the facet direction
+			facetA << convexSet.A, -convexSet.A.row(i);
+			facetB << b, -convexSet.b(i);
+			//facetB1 << convexSet.b, -convexSet.b(i) + params.IRISParams.tol;
+			//std::cout << "Facet A" << std::endl;
+			//std::cout << facetA << std::endl;
+			//std::cout << "facet B" << std::endl;
+			//std::cout << facetB << std::endl;
+			//std::cout << "facet B1" << std::endl;
+			//std::cout << facetB1 << std::endl;
+			int terminalNavGraphKey = this->navGraph.addNode(new PolyhedronTerminalNode(facetA, facetB, i));
+			newTerminalNodeKeys.push_back(terminalNavGraphKey);
+			countTerminal++;
+			terminalNodeKeys.push_back(std::make_pair(nodeKey, terminalNavGraphKey));
+			if (isStartInside)
+			{
+				this->navGraph.addEdge(this->qStartNodeNavGraphKey, terminalNavGraphKey);
+				this->navGraph2gcs.emplace(std::make_pair(this->qStartNodeNavGraphKey, terminalNavGraphKey), nodeKey);
+			}
+			this->navGraph.addEdge(terminalNavGraphKey, this->qTargetNodeNavGraphKey);
+		}
 	}
 	//Add neighbours to GCS, create navGraph node, set the navGraph to GCS map and set neighbours of navGraph node
 	std::vector<int> neighbourNodeNavGraphKeys;
@@ -117,15 +123,22 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
 		newIntersectionNodeKeys.push_back(nodeIntersectionKey);
 		countIntersection++;
 		neighbourNodeNavGraphKeys.push_back(nodeIntersectionKey);
-		//Set the navGraph to GCS map
-		this->navGraph2gcs.emplace(std::make_pair(nodeKey, neighbourKey), nodeIntersectionKey);
+		
+		//Set the GCS to navGraph map
+		this->gcs2navGraph.emplace(std::make_pair(nodeKey, neighbourKey), nodeIntersectionKey);
 		if (isTargetInside)
+		{
 			this->navGraph.addEdge(nodeIntersectionKey, this->qTargetNodeNavGraphKey);
+			this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, this->qTargetNodeNavGraphKey), nodeKey);
+		}
 		bool isInsideNeighbour = nodeNeighbour->polyhedron.isInside(qTargetNode->point.p);
-		if (isInsideNeighbour)
+		if ((isInsideNeighbour)&& (!isTargetInside))
+		{
 			this->navGraph.addEdge(nodeIntersectionKey, this->qTargetNodeNavGraphKey);
+			this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, this->qTargetNodeNavGraphKey), neighbourKey);
+		}
 		//Set neighbours to navGraph node
-		for (std::map<std::pair<int, int>, int>::iterator itEdgeMap = this->navGraph2gcs.begin(); itEdgeMap != this->navGraph2gcs.end(); itEdgeMap++)
+		for (std::map<std::pair<int, int>, int>::iterator itEdgeMap = this->gcs2navGraph.begin(); itEdgeMap != this->gcs2navGraph.end(); itEdgeMap++)
 		{
 			if ((itEdgeMap->first.first == neighbourKey) || (itEdgeMap->first.second == neighbourKey))
 			{
@@ -133,13 +146,16 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
 				if (foundNavGraphKey != nodeIntersectionKey)
 				{
 					this->navGraph.addEdge(nodeIntersectionKey, foundNavGraphKey);
+					this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, foundNavGraphKey), neighbourKey);
 					this->navGraph.addEdge(foundNavGraphKey, nodeIntersectionKey);
+					this->navGraph2gcs.emplace(std::make_pair(foundNavGraphKey, nodeIntersectionKey), neighbourKey);
 					//We need to add also connections between foundNavGraphKey and their terminal navGraph Keys
 					for (std::vector<std::pair<int, int>>::iterator itTerminal = terminalNodeKeys.begin(); itTerminal != terminalNodeKeys.end(); itTerminal++)
 					{
 						if (itTerminal->first == neighbourKey)
 						{
 							this->navGraph.addEdge(nodeIntersectionKey, itTerminal->second); //One-way connection
+							this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, itTerminal->second), neighbourKey);
 						}
 					}
 				}
@@ -150,7 +166,9 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
 				if (foundNavGraphKey != nodeIntersectionKey)
 				{
 					this->navGraph.addEdge(nodeIntersectionKey, foundNavGraphKey);
+					this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, foundNavGraphKey), nodeKey);
 					this->navGraph.addEdge(foundNavGraphKey, nodeIntersectionKey);
+					this->navGraph2gcs.emplace(std::make_pair(foundNavGraphKey, nodeIntersectionKey), nodeKey);
 				}
 			}
 		}
@@ -159,6 +177,7 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
 		if (isStartInsideNeighbour)
 		{
 			this->navGraph.addEdge(this->qStartNodeNavGraphKey, nodeIntersectionKey);
+			this->navGraph2gcs.emplace(std::make_pair(this->qStartNodeNavGraphKey, nodeIntersectionKey), neighbourKey);
 		}
 
 		//In addition, add one-way connections with recently created EGCS terminal nodes
@@ -167,6 +186,7 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
 			if (itTerminal->first == nodeKey)
 			{
 				this->navGraph.addEdge(nodeIntersectionKey, itTerminal->second); //One-way connection
+				this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, itTerminal->second), nodeKey);
 			}
 		}
 	}
@@ -187,12 +207,12 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q)
 	return nodeKey;
 }
 
-std::vector<int> ExpandableIRISConic::addConvexSets(const Eigen::VectorXd& q)
+std::vector<int> ExpandableIRISConic::addConvexSets(const Eigen::VectorXd& q, const bool& addTerminalNodes)
 {
 	std::vector<int> convexSetNodeKeys;
 	while (true)
 	{
-		int convexSetNodeKey = this->addConvexSet(q);
+		int convexSetNodeKey = this->addConvexSet(q, addTerminalNodes);
 		convexSetNodeKeys.push_back(convexSetNodeKey);
 		PolyhedronNode* node=(PolyhedronNode*)this->gcs.getNode(convexSetNodeKey);
 		//Check if the original seed is inside the generated convex set. If not, repeat
@@ -238,6 +258,7 @@ void ExpandableIRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& con
 		ellipsoid = newEllipsoid;
 		detC = detNewC;
 	}
+	convexSet.deallocateInscribedEllipsoidSolver();
 	convexSet.removeConstraints();
 	neighbourKeys.clear();
 	std::vector<int> nodeKeys = this->gcs.getNodeKeys();
@@ -257,23 +278,13 @@ void ExpandableIRISConic::buildNavGraph(const Eigen::VectorXd& qstart, const Eig
 	//TODO: clear navGraph first
 	this->qStartNode = new PointNode(qstart);
 	this->qTargetNode = new PointNode(qtarget);
+	//if (this->params.addStartAndTargetToGCS)
+	//{
+	//	this->qStartNodeGCSKey = this->gcs.addNode(this->qStartNode);
+	//	this->qTargetNodeGCSKey = this->gcs.addNode(this->qTargetNode);
+	//}
 	this->qStartNodeNavGraphKey = this->navGraph.addNode(this->qStartNode);
 	this->qTargetNodeNavGraphKey = this->navGraph.addNode(this->qTargetNode);
-	/*for (std::vector<std::pair<int, int>>::iterator it = terminalEGCSNodeKeys.begin(); it != terminalEGCSNodeKeys.end(); it++)
-	{
-		if (it->first == qstartKey)
-		{
-			this->navGraph.addEdge(this->qstartNodeNavGraphKey, it->second);
-		}
-		this->navGraph.addEdge(it->second, this->qtargetNodeNavGraphKey);
-	}
-	for (std::map<std::pair<int, int>, int>::iterator itEdgeMap = this->egcs2gcs.begin(); itEdgeMap != this->egcs2gcs.end(); itEdgeMap++)
-	{
-		if ((itEdgeMap->first.first == qstartKey) || (itEdgeMap->first.second == qstartKey))
-		{
-			this->navGraph.addEdge(this->qstartNodeNavGraphKey, itEdgeMap->second);
-		}
-	}*/
 }
 
 void ExpandableIRISConic::terminalCosts(Eigen::VectorXd& hCosts, Eigen::MatrixXd& pClosest)
@@ -401,6 +412,23 @@ void ExpandableIRISConic::removeNode(const int key)
 			this->terminalNodeKeys.erase(it);
 			break;
 		}
+	}
+	for (std::map<std::pair<int, int>, int>::iterator it = this->navGraph2gcs.begin(); it != this->navGraph2gcs.end(); )
+	{
+		//std::cout << it->first.first << " " << it->first.second << " " << it->second << std::endl;
+		if (it->first.second == key)
+		{
+			this->navGraph2gcs.erase(it);
+		}
+		it++;
+	}
+	for (std::map<std::pair<int, int>, int>::iterator it = this->gcs2navGraph.begin(); it != this->gcs2navGraph.end();)
+	{
+		if (it->second == key)
+		{
+			this->gcs2navGraph.erase(it);
+		}
+		it++;
 	}
 	delete(node);
 }

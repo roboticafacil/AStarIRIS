@@ -1,18 +1,18 @@
-#include "ConvexRelaxationSolver.h"
+#include "PerspectiveSPP_GCS.h"
 #include "Graph.h"
 #include "PolyhedronNode.h"
 #include "PointNode.h"
 #include "fusion.h"
 #include <vector>
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 #include <random>
 #include <limits>
 
-ConvexRelaxationSolver::ConvexRelaxationSolver(const Graph& g, const int& startKey, const int& targetKey) : Solver(g,startKey,targetKey)
+PerspectiveSPP_GCS::PerspectiveSPP_GCS(Graph* g, const int &N, const int& startKey, const int& targetKey) : SPP_GCS(g,N,startKey,targetKey), graphSimplified(false), perspectiveSolutionSolved(false)
 {
 }
 
-bool ConvexRelaxationSolver::getMCPath(Path_t & path)
+bool PerspectiveSPP_GCS::getMCPath(Path_t & path)
 {
 	int nextKey = startKey;
 	//Path_t MCPath;
@@ -25,11 +25,11 @@ bool ConvexRelaxationSolver::getMCPath(Path_t & path)
 	while (nextKey != targetKey)
 	{
 		path.nodeKeys.push_back(nextKey);
-		std::vector<int> outEdges = this->g.findOutEdges(nextKey);
+		std::vector<int> outEdges = this->graphSimplified? this->simplifiedGraph.findOutEdges(nextKey) : this->g->findOutEdges(nextKey);
 		std::vector<double> weights;
 		for (std::vector<int>::iterator it = outEdges.begin(); it != outEdges.end(); it++)
 		{
-			weights.push_back(this->relaxedSolution.y(*it));
+			weights.push_back(this->perspectiveSolution.y(*it));
 		}
 		std::discrete_distribution<int> dist(weights.begin(), weights.end());
 
@@ -41,7 +41,7 @@ bool ConvexRelaxationSolver::getMCPath(Path_t & path)
 		//{
 			std::mt19937 rng(rd());
 			selected_edge = outEdges[dist(rng)];
-			nextKey = this->g.getEdge(selected_edge).second;
+			nextKey = this->graphSimplified ? this->simplifiedGraph.getEdge(selected_edge).second : this->g->getEdge(selected_edge).second;
 			std::vector<int>::iterator it=std::find(path.nodeKeys.begin(), path.nodeKeys.end(), nextKey);
 			if (it < path.nodeKeys.end())
 				return false;
@@ -73,7 +73,7 @@ bool ConvexRelaxationSolver::getMCPath(Path_t & path)
 				}
 			}*/
 		//}
-		nextKey = this->g.getEdge(selected_edge).second;
+		nextKey = this->graphSimplified ? this->simplifiedGraph.getEdge(selected_edge).second : this->g->getEdge(selected_edge).second;
 		path.edgeKeys.push_back(selected_edge);
 	}
 	path.nodeKeys.push_back(nextKey);
@@ -82,23 +82,23 @@ bool ConvexRelaxationSolver::getMCPath(Path_t & path)
 	return true;
 }
 
-Path_t ConvexRelaxationSolver::getGreedyPath()
+Path_t PerspectiveSPP_GCS::getGreedyPath()
 {	
 	int nextKey = targetKey;
 	Path_t greedyPath;
 	while (nextKey != startKey)
 	{
 		greedyPath.nodeKeys.insert(greedyPath.nodeKeys.begin(),nextKey);
-		std::vector<int> inEdges = this->g.findInEdges(nextKey);
+		std::vector<int> inEdges = this->g->findInEdges(nextKey);
 		double max_y = 0.;
 		int best_edge = -1;
 		for (std::vector<int>::iterator it = inEdges.begin(); it != inEdges.end(); it++)
 		{
-			double current_y = this->relaxedSolution.y(*it);
+			double current_y = this->perspectiveSolution.y(*it);
 
 			if (current_y > max_y)
 			{
-				int current_key = this->g.getEdge(*it).first;
+				int current_key = this->g->getEdge(*it).first;
 				bool not_found = true;
 				for (std::vector<int>::iterator itNodeKey = greedyPath.nodeKeys.begin(); itNodeKey != greedyPath.nodeKeys.end(); itNodeKey++)
 				{
@@ -115,7 +115,7 @@ Path_t ConvexRelaxationSolver::getGreedyPath()
 				}
 			}
 		}
-		nextKey = this->g.getEdge(best_edge).first;
+		nextKey = this->g->getEdge(best_edge).first;
 		greedyPath.edgeKeys.insert(greedyPath.edgeKeys.begin(),best_edge);
 	}
 	greedyPath.nodeKeys.insert(greedyPath.nodeKeys.begin(),nextKey);
@@ -159,52 +159,51 @@ Path_t ConvexRelaxationSolver::getGreedyPath()
 	return greedyPath;
 }
 
-void ConvexRelaxationSolver::solve()
+void PerspectiveSPP_GCS::simplifyGraph()
 {
-	this->M->solve();
-	this->relaxedSolution.status = this->M->getPrimalSolutionStatus();
-	if (relaxedSolution.status == SolutionStatus::Optimal) {
-		Eigen::VectorXd y=Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(this->M->getVariable("y")->level()->begin(), this->nE));
-		Eigen::VectorXd l=Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(this->M->getVariable("l")->level()->begin(), this->nE));
-		Eigen::VectorXd zvec=Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(this->M->getVariable("z")->level()->begin(), this->n * this->nE));
-		Eigen::VectorXd pvec=Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(this->M->getVariable("p")->level()->begin(), this->n * this->nE));
-		this->relaxedSolution.y = y;
-		this->relaxedSolution.l = l;
-		this->relaxedSolution.z = zvec.reshaped(this->nE, this->n).eval();
-		this->relaxedSolution.p = pvec.reshaped(this->nE, this->n).eval();
-		this->relaxedSolution.x = Eigen::MatrixXd::Zero(this->nN, this->n);
-		std::vector<int> nodeKeys=this->g.getNodeKeys();
-		for (int i = 0; i < this->nN; i++)
+	if (this->perspectiveSolutionSolved)
+	{
+		//Create a copy of g without nodes and edges with very little probability of being selected based on the relaxed solution
+		this->simplifiedGraph = Graph(g);
+		std::vector<Edge> edges = this->g->getEdges();
+		std::vector<double> simplifiedWeights;
+		for (int i = 0; i < this->perspectiveSolution.y.rows(); i++)
 		{
-			std::vector<int> inEdges = this->g.findInEdges(nodeKeys[i]);
-			if (inEdges.size() > 0)
+			if (this->perspectiveSolution.y(i) >= 1e-5)
 			{
-				for (std::vector<int>::iterator it = inEdges.begin(); it != inEdges.end(); it++)
-				{
-					this->relaxedSolution.x.row(i) += this->relaxedSolution.y(*it) * this->relaxedSolution.p.row(*it);
-				}
+				simplifiedWeights.push_back(this->perspectiveSolution.y(i));
 			}
 			else
 			{
-				std::vector<int> outEdges = this->g.findOutEdges(nodeKeys[i]);
-				if (outEdges.size() > 0)
+				this->simplifiedGraph.removeEdge(edges[i].first, edges[i].second);
+			}
+		}
+		std::vector<int> nodeKeys = this->simplifiedGraph.getNodeKeys();
+		std::vector<int> nodeKeysToRemove;
+		for (int i = 0; i < this->simplifiedGraph.numNodes; i++)
+		{
+			if (nodeKeys[i] != targetKey)
+			{
+				std::vector<int> outEdges = this->simplifiedGraph.findOutEdges(nodeKeys[i]);
+				if (outEdges.size() == 0)
 				{
-					for (std::vector<int>::iterator it = outEdges.begin(); it != outEdges.end(); it++)
-					{
-						this->relaxedSolution.x.row(i) += this->relaxedSolution.y(*it) * this->relaxedSolution.z.row(*it);
-					}
+					nodeKeysToRemove.push_back(nodeKeys[i]);
 				}
-				else
+			}
+			else if (nodeKeys[i] != startKey)
+			{
+				std::vector<int> inEdges = this->simplifiedGraph.findInEdges(nodeKeys[i]);
+				if (inEdges.size() == 0)
 				{
-					std::cout << "Node " << i << " has no edges" << std::endl;
+					nodeKeysToRemove.push_back(nodeKeys[i]);
 				}
 			}
 		}
-		this->relaxedSolution.cost = this->M->primalObjValue();
-	}
-	else
-	{
-		std::cout << "Another solution status" << std::endl;
-		std::cout << "Solution status: " << this->M->getPrimalSolutionStatus() << std::endl;
+		for (std::vector<int>::iterator it = nodeKeysToRemove.begin(); it != nodeKeysToRemove.end(); it++)
+		{
+			this->simplifiedGraph.removeNode(*it);
+		}
+		this->graphSimplified = true;
+		this->simplifiedGraph.print();
 	}
 }

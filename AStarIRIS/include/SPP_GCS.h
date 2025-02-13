@@ -1,8 +1,8 @@
-#ifndef SOLVER
-#define SOLVER
+#ifndef SPP_GCS_H
+#define SPP_GCS_H
 #include "Graph.h"
 #include "fusion.h"
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 
 using namespace mosek::fusion;
 using namespace monty;
@@ -20,32 +20,30 @@ typedef struct
 	Eigen::MatrixXd x;
 }FeasibleSol_t;
 
-class Solver
+class SPP_GCS
 {
 public:
 	FeasibleSol_t feasibleSolution;
 	Path_t optimalPath;
 protected:
-	Graph g;
-	Model::t M;
+	Graph* g;
+	//Model::t M;
 	int n;
-	int nE;
-	int nN;
+	//int nE;
+	//int nN;
+	int N;
 	int startKey;
 	int targetKey;
 	std::shared_ptr<ndarray<double, 2>> qstart;
 	std::shared_ptr<ndarray<double, 2>> qtarget;
+	//Eigen::MatrixXi idx;
 
 public:
-	Solver(const Graph& g, const int& startKey, const int& targetKey);
-	~Solver();
-	virtual void setTask() = 0;
-	virtual void solve() = 0;
-	void setGraph(Graph& g);
+	SPP_GCS(Graph* g, const int &N, const int& startKey, const int& targetKey);
+	virtual void optimize() = 0;
+	void setGraph(Graph* g);
 	bool optimalPathContainsTerminalNodes();
-protected:
-	virtual void computeFeasibleSolution(const int &maxIters=1)=0;
-	bool solverAllocated;
+	virtual void computeFeasibleSolution(const int& maxIters = 1, const bool& simplifyGraph = false) = 0;
 };
 
 #endif

@@ -2,7 +2,7 @@
 #include "PolyhedronV.h"
 #include "ConicSet.h"
 #include "PolyhedronObstacleCircularRobot.h"
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 #include "Range.h"
 
 PolyhedronObstacleCircularRobot::PolyhedronObstacleCircularRobot(const Eigen::MatrixXd& v, const double& r) : PolyhedronV(v)//, ConicSet(v.rows())

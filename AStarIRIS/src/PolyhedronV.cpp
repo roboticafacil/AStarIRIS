@@ -4,7 +4,7 @@
 #include "PolyhedronV.h"
 //#include "Range.h"
 #include "fusion.h"
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 #include "Ellipsoid.h"
 #include "Range.h"
 

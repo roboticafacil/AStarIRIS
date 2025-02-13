@@ -41,6 +41,7 @@ public:
 	//void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron, std::vector<IRISNeighbour_t>& neighbours);
 	void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedron);
 	void generateGCS();
+	void generateGCS(std::ostream& out);
 	Eigen::VectorXd generateRandomSeed(int& trials);
 	//void addStartNode(const Eigen::VectorXd& q);
 public:

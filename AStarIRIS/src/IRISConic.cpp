@@ -1,11 +1,55 @@
 #include "IRISConic.h"
 #include "Ellipsoid.h"
 #include "PolyhedronNode.h"
+#include "PointNode.h"
 #include "IRISConic.h"
 
 
 IRISConic::IRISConic(CObsConic& cObs, const IRISParams_t& params): _cObs(&cObs), params(params)
 {	
+}
+
+void IRISConic::generateGCS(std::ostream& out)
+{
+	int trials = 0;
+	out << "Frames=[];" << std::endl;
+	while (trials < params.maxTrials)
+	{
+		//if (gcs->numNodes >= 26)
+		//	std::cout << "Start debugging" << std::endl;
+		Eigen::VectorXd seed = this->generateRandomSeed(trials);
+		//std::cout << "Seed" << std::endl;
+		//std::cout << seed << std::endl;
+		if (trials >= params.maxTrials)
+			break;
+
+		addConvexSets(seed);  //When we call this function, we allocate memory of the generated convexSets. Where we should delete them?
+
+		this->gcs.print(out, trials);
+		if (this->gcs.numEdges>0)
+		{	
+			this->gcs.printGraph(out, trials);
+
+			out << "figure; " << std::endl;
+			out << "fGraph" << trials << "=plot(g" << trials << ");" << std::endl;
+		}
+
+		out << "allA=[AObs AGCS" << trials << "]; " << std::endl;
+		out << "allB=[bObs bGCS" << trials << "];" << std::endl;
+		out << "allColors=[colObs colGCS" << trials << "];" << std::endl;
+		out << "fGCS" << trials << "=figure; " << std::endl;
+		out << "plotregion(allA, allB, [], [], allColors);" << std::endl;
+		out << "hold on;" << std::endl;
+		out << "xlabel('X [m.]');" << std::endl;
+		out << "ylabel('Y [m.]');" << std::endl;
+		out << "for i = 1:length(centroidGCS" << trials << ")" << std::endl;
+		out << "  text(centroidGCS" << trials << "{i}(1), centroidGCS" << trials << "{i}(2),nameGCS" << trials << "{i}, 'FontSize', 12); " << std::endl;
+		out << "end" << std::endl;
+		out << "axis equal;" << std::endl;
+		out << "axis(reshape(Range.range,1,numel(Range.range)));" << std::endl;
+		out << "Frames=[Frames;getframe(gcf)];" << std::endl;
+
+	}
 }
 
 void IRISConic::generateGCS()
@@ -21,7 +65,9 @@ void IRISConic::generateGCS()
 		if (trials >= params.maxTrials)
 			break;
 		
-		addConvexSets(seed);  //When we call this function, we allocate memory of the generated convexSets. Where we should delete them?
+		//addConvexSets(seed);  //When we call this function, we allocate memory of the generated convexSets. Where we should delete them?
+		addConvexSet(seed);
+		std::cout << "Nodes: " << this->gcs.numNodes << " edges: " << this->gcs.numEdges << std::endl;
 	}
 }
 
@@ -57,6 +103,7 @@ int IRISConic::addConvexSet(const Eigen::VectorXd& q)
 	Polyhedron convexSet(q.rows());
 	//std::vector<IRISNeighbour_t> neighbours;
 	std::vector<int> neighbourKeys;
+	//std::cout << q << std::endl;
 	this->computeConvexSet(ellipsoid, convexSet, neighbourKeys);
 	//Add the convexSet to GCS
 	Eigen::VectorXd bShrinked = (1. - params.shrinkFactor) * convexSet.b + params.shrinkFactor * (convexSet.A * ellipsoid.getCentroid());
@@ -134,6 +181,7 @@ void IRISConic::computeConvexSet(Ellipsoid& ellipsoid, Polyhedron& convexSet, st
 			ellipsoid = newEllipsoid;
 			break;
 		}
+		convexSet = newConvexSet;
 		ellipsoid = newEllipsoid;
 		detC = detNewC;
 	}
@@ -175,29 +223,32 @@ void IRISConic::separatingHyperplanes(Ellipsoid& ellipsoid, Polyhedron& polyhedr
 			poly->isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
 		}
 	}
-	int i = 0;
+	//int i = 0;
 	for (std::vector<Node*>::iterator it = nodes.begin(); it != nodes.end(); it++)
 	{
 		Node* node = *it;
 		PolyhedronNode* poly = (PolyhedronNode*)node->getNodeData();
-		Eigen::VectorXd p_out(n);
-		double d;
-		if (poly->useShrinked)
+		//if (dynamic_cast<PointNode*>(node) == NULL) //PointNodes are supposed to be start and target. This can be improved, because it's prone to errors the way it's done!!
 		{
-			d = poly->shrinkedPolyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
-			objects.push_back(&poly->shrinkedPolyhedron);
-			poly->shrinkedPolyhedron.isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
+			Eigen::VectorXd p_out(n);
+			double d;
+			if (poly->useShrinked)
+			{
+				d = poly->shrinkedPolyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
+				objects.push_back(&poly->shrinkedPolyhedron);
+				poly->shrinkedPolyhedron.isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
+			}
+			else
+			{
+				d = poly->polyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
+				objects.push_back(&poly->polyhedron);
+				poly->polyhedron.isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
+			}
+			objectsIdx.push_back(idx++);
+			distances.push_back(d);
+			closestPoints.push_back(p_out);
+			//i++;
 		}
-		else
-		{
-			d = poly->polyhedron.closestPointExpandingEllipsoid(ellipsoid, p_out);
-			objects.push_back(&poly->polyhedron);
-			poly->polyhedron.isInsideSeparatingHyperplanes(Eigen::MatrixXd(0, n), Eigen::VectorXd(0)); //We need to call this to ensure that the cached constraints of the separating hyperplanes are removed
-		}
-		objectsIdx.push_back(idx++);
-		distances.push_back(d);
-		closestPoints.push_back(p_out);
-		i++;
 	}
 	Eigen::MatrixXd A(0, n);
 	Eigen::VectorXd b(0);

@@ -2,7 +2,7 @@
 #include "Ellipsoid.h"
 #include "ConicSet.h"
 #include "Range.h"
-#include "EigenNdArray.h"
+#include "EigenUtils.h"
 
 
 Sphere::Sphere(const int& n): radius(0.), ConicSet(n) //ConicSet(n,false)

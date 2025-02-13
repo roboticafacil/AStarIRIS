@@ -10,9 +10,10 @@ public:
     NavGraph();
     //Copy constructor
     NavGraph(NavGraph* graph);
-    void printConvexSets(std::ostream& out, const int& num = 1);
+    void printConvexSets(std::ostream& out, const int& num);
     void printConvexSet(std::ostream& out, const int& num, const int& nodeKey);
-    void printGraph(std::ostream& out, const int& num = 1, std::vector<double>& weights=std::vector<double>());
+    void printConvexSet(std::ostream& out, const int& num, const int& nodeKey, const int &agents);
+    void printGraph(std::ostream& out, const int& num, std::vector<double>& weights=std::vector<double>());
     //NavGraph& operator=(const NavGraph& other);
     //void buildEdgeGraph(GCS& gcs);
     bool contains(const Eigen::VectorXd& q, const double& tol = 0.);

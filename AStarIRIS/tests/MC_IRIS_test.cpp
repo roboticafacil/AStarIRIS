@@ -10,7 +10,7 @@
 #include "MCIRISConic.h"
 #include "PolyhedronNode.h"
 #include "PointNode.h"
-#include "ConvexRelaxationMinDistanceSolver.h"
+#include "ConvexRelaxationMinDistanceSPP_GCS.h"
 #include <fstream>
 
 CObsConic getCObsPolyhedronV_5_obstacles()
@@ -113,7 +113,7 @@ int MC_IRIS_test(Eigen::Vector<double, 2>& qstart, Eigen::Vector<double, 2>& qta
 	std::cout << qstart << std::endl;
 	irisConic.buildNavGraph(qstart, qtarget);
 	irisConic.do_MCRelaxedSolver();	
-	irisConic.gcs.print(fout);
+	irisConic.gcs.print(fout,1);
 	fout << "allA=[AObs AGCS];" << std::endl;
 	fout << "allB=[bObs bGCS];" << std::endl;
 	fout << "allColors=[colObs colGCS];" << std::endl;
@@ -171,7 +171,7 @@ int MC_IRIS_test1(Eigen::Vector<double, 2>& qstart, Eigen::Vector<double, 2>& qt
 	std::cout << qstart << std::endl;
 	irisConic.buildNavGraph(qstart, qtarget);
 	irisConic.do_MCRelaxedSolver();
-	irisConic.gcs.print(fout);
+	irisConic.gcs.print(fout,1);
 	fout << "allA=[AObs AGCS];" << std::endl;
 	fout << "allB=[bObs bGCS];" << std::endl;
 	fout << "allColors=[colObs colGCS];" << std::endl;
