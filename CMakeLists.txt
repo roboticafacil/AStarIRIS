@@ -3,21 +3,33 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-# Enable Hot Reload for MSVC compilers if supported.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+# Project global configuration
+project(AStarIRIS)
+
+# Use C++ 17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Additional options for GCC/Clang
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    add_compile_options(-Wall -Wextra -Wno-error=unused-parameter)
+    add_compile_options(-Wall -Wextra -Wno-error)
+    add_compile_options(-Wall -Wextra -Werror -Wno-sign-compare -Wno-unused-parameter)
 endif()
-#add_compile_definitions($<$<CONFIG:Debug>:_ITERATOR_DEBUG_LEVEL=0>)
-#SET( EIGEN3_INCLUDE_DIR "$ENV{EIGEN3_INCLUDE_DIR}" )
-#SET( CMAKE_MODULE_PATH "$ENV{EIGEN3_DIR}" )
 
-#set(CMAKE_PREFIX_PATH "C:/Users/34696/source/eigen-3.4.0/cmake")
-#set(Eigen3_DIR "C:/Users/34696/source/eigen-3.4.0/cmake")
-#MESSAGE(${CMAKE_PREFIX_PATH})
-#MESSAGE(${Eigen3_DIR})
+# Windows setup
+if (WIN32)
+    message(STATUS "Setting up for Windows")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+    add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
+endif()
 
-project ("AStarIRIS")
+# Linux/Unix setup
+if (UNIX AND NOT WIN32)
+    message(STATUS "Setting up for Linux/Unix")
+    add_compile_options(-fPIC) # Common options for shared libraries in Linux
+endif()
 
-# Incluya los subproyectos.
-add_subdirectory ("AStarIRIS")
+# Incluye los subproyectos
+add_subdirectory(AStarIRIS)
