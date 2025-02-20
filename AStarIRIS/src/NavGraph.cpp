@@ -142,15 +142,15 @@ void NavGraph::printGraph(std::ostream& out, const int& num,std::vector<double> 
 	out << "}';" << std::endl;
 	out << "g" << num << "=addnode(g" << num << ",names" << num << ");" << std::endl;
 	out << "edges" << num << "=[";
-	for (std::vector<Edge>::iterator it = this->edges.begin(); it != this->edges.end(); it++)
+	for (std::vector<NodePair>::iterator it = this->nodePairs.begin(); it != this->nodePairs.end(); it++)
 	{
-		if (it<(this->edges.end() - 2))
+		if (it<(this->nodePairs.end() - 2))
 			out << nodeMap[it->first] << " " << nodeMap[it->second] << ";" << std::endl;
 		else
 			out << nodeMap[it->first] << " " << nodeMap[it->second] << std::endl;
 	}
 	out << "];" << std::endl;
-	if (weights.size() == this->edges.size())
+	if (weights.size() == this->nodePairs.size())
 	{
 		out << "weights" << num << "=[";
 		for (std::vector<double>::iterator it = weights.begin(); it != weights.end(); it++)
@@ -162,7 +162,7 @@ void NavGraph::printGraph(std::ostream& out, const int& num,std::vector<double> 
 		}
 		out << "];" << std::endl;
 	}
-	if (weights.size() == this->edges.size())
+	if (weights.size() == this->nodePairs.size())
 		out << "g" << num << "=addedge(g" << num << ",table(edges" << num << ",weights"<<num<< ", 'VariableNames', {'EndNodes','Weights'})); " << std::endl;
 	else
 		out << "g" << num << "=addedge(g" << num << ",table(edges" << num << ",'VariableNames',{'EndNodes'}));" << std::endl;

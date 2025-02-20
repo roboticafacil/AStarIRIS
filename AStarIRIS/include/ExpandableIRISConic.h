@@ -14,7 +14,7 @@ typedef struct
 	IRISParams_t IRISParams;
 	int maxTrialsTerminal;
 	int maxItersOptimalPath;
-	bool addStartAndTargetToGCS;
+	bool useGCSAsNavGraph;
 }ExpandableIRISParams_t;
 
 class ExpandableIRISConic : public IRISConic

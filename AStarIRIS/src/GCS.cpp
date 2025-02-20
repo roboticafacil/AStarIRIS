@@ -91,9 +91,9 @@ void GCS::printGraph(std::ostream& out, const int& num)
 	out << "}';" << std::endl;
 	out << "g" << num << "=addnode(g" << num << ",names" << num << ");" << std::endl;
 	out << "edges" << num << "=[";
-	for (std::vector<Edge>::iterator it = this->edges.begin(); it != this->edges.end(); it++)
+	for (std::vector<NodePair>::iterator it = this->nodePairs.begin(); it != this->nodePairs.end(); it++)
 	{
-		if (it < (this->edges.end() - 2))
+		if (it < (this->nodePairs.end() - 2))
 			out << nodeMap[it->first] << " " << nodeMap[it->second] << ";" << std::endl;
 		else
 			out << nodeMap[it->first] << " " << nodeMap[it->second] << std::endl;
@@ -105,7 +105,7 @@ void GCS::printGraph(std::ostream& out, const int& num)
 void GCS::printEdges()
 {
 	std::cout << "Graph edges: " << this->numEdges << std::endl;
-	for (std::vector<Edge>::iterator it = this->edges.begin(); it != this->edges.end(); ++it)
+	for (std::vector<NodePair>::iterator it = this->nodePairs.begin(); it != this->nodePairs.end(); ++it)
 	{
 		//std::cout << "edge: " << std::endl;
 		std::cout << "edge: " << it->first << "<->" << it->second << std::endl;

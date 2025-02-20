@@ -142,8 +142,8 @@ void ConvexRelaxationMinDistanceSPP_GCS::setConstraints(Model::t& M)
 			M->constraint(Expr::sub(expr1, expr2), Domain::equalsTo(0.0));
 		}
 	}
-	std::vector<Edge> edges(this->g->getEdges());
-	std::vector<Edge>::iterator edgeIt = edges.begin();
+	std::vector<NodePair> edges(this->g->getEdgeNodePairs());
+	std::vector<NodePair>::iterator edgeIt = edges.begin();
 
 	for (int i = 0; edgeIt != edges.end(); edgeIt++)
 	{

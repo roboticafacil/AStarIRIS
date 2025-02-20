@@ -66,7 +66,21 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q, const bool& addT
 	//Add terminal nodes to EGCS
 	//std::cout << "Ellipsoid" << std::endl;
 	//ellipsoid.print();
-	if (addTerminalNodes)
+	int nodeNavGraphKey = -1;
+	if (this->params.useGCSAsNavGraph)
+	{
+		if (isStartInside)
+		{
+			nodeNavGraphKey = this->navGraph.addNode(node);
+			this->navGraph.addEdge(this->qStartNodeNavGraphKey, nodeNavGraphKey);
+		}
+		if (isTargetInside)
+		{
+			nodeNavGraphKey = this->navGraph.addNode(node);
+			this->navGraph.addEdge(nodeNavGraphKey, this->qTargetNodeNavGraphKey);
+		}
+	}
+	if (addTerminalNodes&&(!isTargetInside))
 	{
 		for (int i = 0; i < convexSet.A.rows(); i++)
 		{
@@ -92,10 +106,14 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q, const bool& addT
 			//std::cout << "facet B1" << std::endl;
 			//std::cout << facetB1 << std::endl;
 			int terminalNavGraphKey = this->navGraph.addNode(new PolyhedronTerminalNode(facetA, facetB, i));
+			if (this->params.useGCSAsNavGraph)
+			{
+				this->navGraph.addEdge(nodeNavGraphKey, terminalNavGraphKey);
+			}
 			newTerminalNodeKeys.push_back(terminalNavGraphKey);
 			countTerminal++;
 			terminalNodeKeys.push_back(std::make_pair(nodeKey, terminalNavGraphKey));
-			if (isStartInside)
+			if (isStartInside&&(!this->params.useGCSAsNavGraph))
 			{
 				this->navGraph.addEdge(this->qStartNodeNavGraphKey, terminalNavGraphKey);
 				this->navGraph2gcs.emplace(std::make_pair(this->qStartNodeNavGraphKey, terminalNavGraphKey), nodeKey);
@@ -110,83 +128,91 @@ int ExpandableIRISConic::addConvexSet(const Eigen::VectorXd& q, const bool& addT
 		//Add neighbours to GCS
 		int neighbourKey = *it;
 		this->gcs.addEdge(nodeKey, neighbourKey);
-		//this->gcs->addEdge(it->nodeKey,nodeKey);  //Maybe this is not necessary
-		//Create navGraph node
-		PolyhedronNode* nodeNeighbour = (PolyhedronNode*)this->gcs.getNode(neighbourKey);
-		//Vertically concatenate the polyhedra constraints
-		Eigen::MatrixXd bigA(convexSet.A.rows() + nodeNeighbour->polyhedron.A.rows(), convexSet.A.cols());
-		Eigen::VectorXd bigB(convexSet.A.rows() + nodeNeighbour->polyhedron.A.rows());
-		bigA << convexSet.A, nodeNeighbour->polyhedron.A;
-		bigB << convexSet.b, nodeNeighbour->polyhedron.b;
-		PolyhedronNode* edgeNode = new PolyhedronNode(bigA, bigB);
-		int nodeIntersectionKey = this->navGraph.addNode(edgeNode);
-		newIntersectionNodeKeys.push_back(nodeIntersectionKey);
-		countIntersection++;
-		neighbourNodeNavGraphKeys.push_back(nodeIntersectionKey);
-		
-		//Set the GCS to navGraph map
-		this->gcs2navGraph.emplace(std::make_pair(nodeKey, neighbourKey), nodeIntersectionKey);
-		if (isTargetInside)
+		if (this->params.useGCSAsNavGraph)
 		{
-			this->navGraph.addEdge(nodeIntersectionKey, this->qTargetNodeNavGraphKey);
-			this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, this->qTargetNodeNavGraphKey), nodeKey);
+			this->navGraph.addEdge(neighbourKey,nodeKey);
+			//this->navGraph.addEdge(nodeKey,neighbourKey);
 		}
-		bool isInsideNeighbour = nodeNeighbour->polyhedron.isInside(qTargetNode->point.p);
-		if ((isInsideNeighbour)&& (!isTargetInside))
+		else
 		{
-			this->navGraph.addEdge(nodeIntersectionKey, this->qTargetNodeNavGraphKey);
-			this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, this->qTargetNodeNavGraphKey), neighbourKey);
-		}
-		//Set neighbours to navGraph node
-		for (std::map<std::pair<int, int>, int>::iterator itEdgeMap = this->gcs2navGraph.begin(); itEdgeMap != this->gcs2navGraph.end(); itEdgeMap++)
-		{
-			if ((itEdgeMap->first.first == neighbourKey) || (itEdgeMap->first.second == neighbourKey))
+			//this->gcs->addEdge(it->nodeKey,nodeKey);  //Maybe this is not necessary
+			//Create navGraph node
+			PolyhedronNode* nodeNeighbour = (PolyhedronNode*)this->gcs.getNode(neighbourKey);
+			//Vertically concatenate the polyhedra constraints
+			Eigen::MatrixXd bigA(convexSet.A.rows() + nodeNeighbour->polyhedron.A.rows(), convexSet.A.cols());
+			Eigen::VectorXd bigB(convexSet.A.rows() + nodeNeighbour->polyhedron.A.rows());
+			bigA << convexSet.A, nodeNeighbour->polyhedron.A;
+			bigB << convexSet.b, nodeNeighbour->polyhedron.b;
+			PolyhedronNode* edgeNode = new PolyhedronNode(bigA, bigB);
+			int nodeIntersectionKey = this->navGraph.addNode(edgeNode);
+			newIntersectionNodeKeys.push_back(nodeIntersectionKey);
+			countIntersection++;
+			neighbourNodeNavGraphKeys.push_back(nodeIntersectionKey);
+
+			//Set the GCS to navGraph map
+			this->gcs2navGraph.emplace(std::make_pair(nodeKey, neighbourKey), nodeIntersectionKey);
+			if (isTargetInside)
 			{
-				int foundNavGraphKey = itEdgeMap->second;
-				if (foundNavGraphKey != nodeIntersectionKey)
+				this->navGraph.addEdge(nodeIntersectionKey, this->qTargetNodeNavGraphKey);
+				this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, this->qTargetNodeNavGraphKey), nodeKey);
+			}
+			bool isInsideNeighbour = nodeNeighbour->polyhedron.isInside(qTargetNode->point.p);
+			if ((isInsideNeighbour) && (!isTargetInside))
+			{
+				this->navGraph.addEdge(nodeIntersectionKey, this->qTargetNodeNavGraphKey);
+				this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, this->qTargetNodeNavGraphKey), neighbourKey);
+			}
+			//Set neighbours to navGraph node
+			for (std::map<std::pair<int, int>, int>::iterator itEdgeMap = this->gcs2navGraph.begin(); itEdgeMap != this->gcs2navGraph.end(); itEdgeMap++)
+			{
+				if ((itEdgeMap->first.first == neighbourKey) || (itEdgeMap->first.second == neighbourKey))
 				{
-					this->navGraph.addEdge(nodeIntersectionKey, foundNavGraphKey);
-					this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, foundNavGraphKey), neighbourKey);
-					this->navGraph.addEdge(foundNavGraphKey, nodeIntersectionKey);
-					this->navGraph2gcs.emplace(std::make_pair(foundNavGraphKey, nodeIntersectionKey), neighbourKey);
-					//We need to add also connections between foundNavGraphKey and their terminal navGraph Keys
-					for (std::vector<std::pair<int, int>>::iterator itTerminal = terminalNodeKeys.begin(); itTerminal != terminalNodeKeys.end(); itTerminal++)
+					int foundNavGraphKey = itEdgeMap->second;
+					if (foundNavGraphKey != nodeIntersectionKey)
 					{
-						if (itTerminal->first == neighbourKey)
+						this->navGraph.addEdge(nodeIntersectionKey, foundNavGraphKey);
+						this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, foundNavGraphKey), neighbourKey);
+						this->navGraph.addEdge(foundNavGraphKey, nodeIntersectionKey);
+						this->navGraph2gcs.emplace(std::make_pair(foundNavGraphKey, nodeIntersectionKey), neighbourKey);
+						//We need to add also connections between foundNavGraphKey and their terminal navGraph Keys
+						for (std::vector<std::pair<int, int>>::iterator itTerminal = terminalNodeKeys.begin(); itTerminal != terminalNodeKeys.end(); itTerminal++)
 						{
-							this->navGraph.addEdge(nodeIntersectionKey, itTerminal->second); //One-way connection
-							this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, itTerminal->second), neighbourKey);
+							if (itTerminal->first == neighbourKey)
+							{
+								this->navGraph.addEdge(nodeIntersectionKey, itTerminal->second); //One-way connection
+								this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, itTerminal->second), neighbourKey);
+							}
 						}
 					}
 				}
-			}
-			if ((itEdgeMap->first.first == nodeKey) || (itEdgeMap->first.second == nodeKey))
-			{
-				int foundNavGraphKey = itEdgeMap->second;
-				if (foundNavGraphKey != nodeIntersectionKey)
+				if ((itEdgeMap->first.first == nodeKey) || (itEdgeMap->first.second == nodeKey))
 				{
-					this->navGraph.addEdge(nodeIntersectionKey, foundNavGraphKey);
-					this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, foundNavGraphKey), nodeKey);
-					this->navGraph.addEdge(foundNavGraphKey, nodeIntersectionKey);
-					this->navGraph2gcs.emplace(std::make_pair(foundNavGraphKey, nodeIntersectionKey), nodeKey);
+					int foundNavGraphKey = itEdgeMap->second;
+					if (foundNavGraphKey != nodeIntersectionKey)
+					{
+						this->navGraph.addEdge(nodeIntersectionKey, foundNavGraphKey);
+						this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, foundNavGraphKey), nodeKey);
+						this->navGraph.addEdge(foundNavGraphKey, nodeIntersectionKey);
+						this->navGraph2gcs.emplace(std::make_pair(foundNavGraphKey, nodeIntersectionKey), nodeKey);
+					}
 				}
 			}
-		}
-		//Add possible connections to the start node if possible
-		bool isStartInsideNeighbour = nodeNeighbour->polyhedron.isInside(qStartNode->point.p);
-		if (isStartInsideNeighbour)
-		{
-			this->navGraph.addEdge(this->qStartNodeNavGraphKey, nodeIntersectionKey);
-			this->navGraph2gcs.emplace(std::make_pair(this->qStartNodeNavGraphKey, nodeIntersectionKey), neighbourKey);
-		}
-
-		//In addition, add one-way connections with recently created EGCS terminal nodes
-		for (std::vector<std::pair<int, int>>::iterator itTerminal = terminalNodeKeys.begin(); itTerminal != terminalNodeKeys.end(); itTerminal++)
-		{
-			if (itTerminal->first == nodeKey)
+			//Add possible connections to the start node if possible
+			bool isStartInsideNeighbour = nodeNeighbour->polyhedron.isInside(qStartNode->point.p);
+			if (isStartInsideNeighbour)
 			{
-				this->navGraph.addEdge(nodeIntersectionKey, itTerminal->second); //One-way connection
-				this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, itTerminal->second), nodeKey);
+				this->navGraph.addEdge(this->qStartNodeNavGraphKey, nodeIntersectionKey);
+				this->navGraph2gcs.emplace(std::make_pair(this->qStartNodeNavGraphKey, nodeIntersectionKey), neighbourKey);
+			}
+
+			//In addition, add one-way connections with recently created navGraph terminal nodes
+			for (std::vector<std::pair<int, int>>::iterator itTerminal = terminalNodeKeys.begin(); itTerminal != terminalNodeKeys.end(); itTerminal++)
+			{
+				if (itTerminal->first == nodeKey)
+				{
+					this->navGraph.addEdge(nodeIntersectionKey, itTerminal->second); //One-way connection
+					this->navGraph2gcs.emplace(std::make_pair(nodeIntersectionKey, itTerminal->second), nodeKey);
+				}
 			}
 		}
 	}
@@ -278,11 +304,6 @@ void ExpandableIRISConic::buildNavGraph(const Eigen::VectorXd& qstart, const Eig
 	//TODO: clear navGraph first
 	this->qStartNode = new PointNode(qstart);
 	this->qTargetNode = new PointNode(qtarget);
-	//if (this->params.addStartAndTargetToGCS)
-	//{
-	//	this->qStartNodeGCSKey = this->gcs.addNode(this->qStartNode);
-	//	this->qTargetNodeGCSKey = this->gcs.addNode(this->qTargetNode);
-	//}
 	this->qStartNodeNavGraphKey = this->navGraph.addNode(this->qStartNode);
 	this->qTargetNodeNavGraphKey = this->navGraph.addNode(this->qTargetNode);
 }
@@ -374,9 +395,9 @@ NavGraph ExpandableIRISConic::getGraphWithoutTerminalConnections()
 {
 	NavGraph simplifiedNavGraph = this->navGraph;
 	std::vector<int> nodeKeys = simplifiedNavGraph.getNodeKeys();
-	std::vector<Edge> edges = simplifiedNavGraph.getEdges();
-	std::vector<Edge> deletedEdges;
-	for (std::vector<Edge>::iterator it = edges.begin(); it != edges.end(); )
+	std::vector<NodePair> edges = simplifiedNavGraph.getEdgeNodePairs();
+	std::vector<NodePair> deletedEdges;
+	for (std::vector<NodePair>::iterator it = edges.begin(); it != edges.end(); )
 	{
 		if (it->second == qTargetNodeNavGraphKey)
 		{

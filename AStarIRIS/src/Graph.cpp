@@ -12,12 +12,12 @@
     Graph::Graph()
     {
         this->nodes = NodeMap();
-        this->edges = std::vector<Edge>(0);
+        this->nodePairs = std::vector<NodePair>(0);
         this->numEdges = 0;
         this->numNodes = 0;
     };
     //Copy constructor
-    Graph::Graph(Graph* graph) : numEdges(graph->numEdges), numNodes(graph->numNodes), nodes(graph->nodes), edges(graph->edges)
+    Graph::Graph(Graph* graph) : numEdges(graph->numEdges), numNodes(graph->numNodes), nodes(graph->nodes), nodePairs(graph->nodePairs)
     {
     }
 
@@ -32,7 +32,7 @@
             this->nodes[itOther->first] = itOther->second;
         }
         this->nodes = other.nodes;
-        this->edges = other.edges;
+        this->nodePairs = other.nodePairs;
         this->nodeKeys = other.nodeKeys;
         return *this;
     }
@@ -56,12 +56,43 @@
     void Graph::printEdges()
     {
         std::cout << "Graph edges: " << this->numEdges << std::endl;
-        for (std::vector<Edge>::iterator it = this->edges.begin(); it != this->edges.end(); ++it)
+        for (std::vector<NodePair>::iterator it = this->nodePairs.begin(); it != this->nodePairs.end(); ++it)
         {
             //std::cout << "edge: " << std::endl;
             std::cout << "edge: " << it->first << "->" << it->second << std::endl;
         }
     }
+
+    Graph Graph::subGraph(std::vector<int>& keys)
+    {
+        std::vector<Node*> nodes = this->getNodes(keys);
+        Graph _graph;
+        std::vector<int> _nodeKeys;  //No se usa??
+        std::vector<int> outEdges;
+        std::vector<int> inEdges;
+        for (int i = 0; i < keys.size(); i++)
+        {
+            _graph.addNode(keys[i], nodes[i]);
+        }
+        for (int i = 0; i < keys.size(); i++)
+        {
+            std::vector<int> oE = this->findOutEdges(keys[i]);
+            for (int j = 0; j < oE.size(); j++)
+            {
+                NodePair e = this->getEdgeNodePair(oE[j]);
+                _graph.addEdge(e.first, e.second);
+            }
+            /*std::vector<int> iE = this->findInEdges(nodeKeys[i]);
+            for (int j = 0; j < iE.size(); j++)
+            {
+                Edge e = this->getEdge(iE[j]);
+                _graph.addEdge(e.first, e.second);
+            }*/
+        }
+        return _graph;
+    }
+
+
     std::vector<int> Graph::getNodeKeys()
     {
         return nodeKeys;
@@ -69,13 +100,14 @@
 
     Node* Graph::getNode(const int& key)
     {
-        /*NodeMap::iterator it = this->nodes.find(key);
-        if (it != this->nodes.end())
+        if (this->nodes.find(key) == this->nodes.end())
         {
-            return it->second;
+            return NULL;
         }
-        return NULL;*/
-        return this->nodes[key];
+        else
+        {
+            return this->nodes[key];
+        }
     }
 
     std::vector<Node*> Graph::getNodes()
@@ -101,35 +133,6 @@
         return nodes;
     }
 
-    Graph Graph::subGraph(std::vector<int>& keys)
-    {
-        std::vector<Node*> nodes = this->getNodes(keys);
-        Graph _graph;
-        std::vector<int> _nodeKeys;  //No se usa??
-        std::vector<int> outEdges;
-        std::vector<int> inEdges;
-        for (int i=0;i<keys.size();i++)
-        {
-            _graph.addNode(nodes[i], keys[i]);
-        }
-        for (int i = 0; i < keys.size(); i++)
-        {
-            std::vector<int> oE=this->findOutEdges(keys[i]);
-            for (int j = 0; j < oE.size(); j++)
-            {
-                Edge e=this->getEdge(oE[j]);
-                _graph.addEdge(e.first, e.second);
-            }
-            /*std::vector<int> iE = this->findInEdges(nodeKeys[i]);
-            for (int j = 0; j < iE.size(); j++)
-            {
-                Edge e = this->getEdge(iE[j]);
-                _graph.addEdge(e.first, e.second);
-            }*/
-        }
-        return _graph;
-    }
-
     int Graph::addNode(const Node* node)
     {
         //int key = this->nodes.size();
@@ -147,11 +150,16 @@
         return key;
     };
 
-    void Graph::addNode(const Node* node, const int& key)
+    void Graph::addNode(const int& key, const Node* node)
     {
-        this->nodes[key] = (Node*)node;
-        this->nodeKeys.push_back(key);
-        this->numNodes++;
+        if (this->nodes.find(key) == this->nodes.end())
+        {
+            //Key not found
+            this->nodeKeys.push_back(key);
+            this->numNodes++;
+        }
+        if (node!=NULL)
+           this->nodes[key] = (Node*)node;        
     };
 
 
@@ -172,18 +180,18 @@
                 }
             }
             //First removes the edges that contain that node
-            std::vector<Edge>::iterator edgeIt = this->edges.begin();
-            while (edgeIt != this->edges.end())
+            std::vector<NodePair>::iterator edgeIt = this->nodePairs.begin();
+            while (edgeIt != this->nodePairs.end())
             {
                 if (edgeIt->first == key)
                 {
-                    this->edges.erase(edgeIt);
+                    this->nodePairs.erase(edgeIt);
                     this->numEdges--;
                     continue;
                 }
                 if (edgeIt->second == key)
                 {
-                    this->edges.erase(edgeIt);
+                    this->nodePairs.erase(edgeIt);
                     this->numEdges--;
                     continue;
                 }
@@ -196,37 +204,93 @@
         return false;
     }
 
-    bool Graph::addEdge(const int& keyFrom, const int& keyTo)
+    NodePair Graph::addEdge(const int& keyFrom, const int& keyTo, const Edge* edge)
+    {
+        NodeMap::iterator itFrom = this->nodes.find(keyFrom);
+        NodeMap::iterator itTo = this->nodes.find(keyTo);
+        NodePair nodePair = std::make_pair(keyFrom, keyTo);
+        if ((itFrom != this->nodes.end()) && (itTo != this->nodes.end()))
+        {
+            //Avoid adding duplicates
+            for (std::vector<std::pair<int, int>>::iterator it = this->nodePairs.begin(); it != this->nodePairs.end(); it++)
+            {
+                if ((it->first == keyFrom) && (it->second == keyTo))
+                    return nodePair;
+            }
+            this->nodePairs.push_back(nodePair);
+            if (edge != NULL)
+                this->edges[nodePair] = (Edge*)edge;
+            this->numEdges++;
+            return nodePair;
+        }
+        return nodePair;
+    }
+    void Graph::addEdge(const NodePair& nodePair, const Edge* edge)
+    {
+        if (this->edges.find(nodePair) == this->edges.end())
+        {
+            //Pair not found
+            this->nodePairs.push_back(nodePair);
+            if (edge != NULL)
+                this->edges[nodePair] = (Edge*)edge;
+            this->numEdges++;
+        }
+        this->edges[nodePair] = (Edge*)edge;
+    }
+
+    /*bool Graph::addEdge(const int& keyFrom, const int& keyTo)
     {
         NodeMap::iterator itFrom = this->nodes.find(keyFrom);
         NodeMap::iterator itTo = this->nodes.find(keyTo);
         if ((itFrom != this->nodes.end()) && (itTo != this->nodes.end()))
         {
             //Avoid adding duplicates
-            for (std::vector<std::pair<int, int>>::iterator it = this->edges.begin(); it != this->edges.end(); it++)
+            for (std::vector<std::pair<int, int>>::iterator it = this->nodePairs.begin(); it != this->nodePairs.end(); it++)
             {
                 if ((it->first == keyFrom) && (it->second == keyTo))
                     return false;
             }
-            Edge edge = std::make_pair(keyFrom, keyTo);
-            this->edges.push_back(edge);
+            NodePair edge = std::make_pair(keyFrom, keyTo);
+            this->nodePairs.push_back(edge);
             this->numEdges++;
             return true;
         }
         return false;
-    };
+    };*/
 
+    bool Graph::removeEdge(const NodePair& nodePair)
+    {
+        EdgeMap::iterator it;
+        it = this->edges.find(nodePair);
+        if (it != this->edges.end())
+        {
+            //Remove nodePair from nodePairs
+            std::vector<NodePair>::iterator nodePairIt = this->nodePairs.begin();
+            for (; nodePairIt != this->nodePairs.end(); nodePairIt++)
+            {
+                if ((nodePairIt->first == nodePair.first)&& (nodePairIt->second == nodePair.second))
+                {
+                    this->nodePairs.erase(nodePairIt);
+                    break;
+                }
+            }
+            //Now deletes the edge
+            this->edges.erase(it);
+            this->numEdges--;
+        }
+        return false;
+    }
     bool Graph::removeEdge(const int& keyFrom, const int& keyTo)
     {
         NodeMap::iterator itFrom = this->nodes.find(keyFrom);
         NodeMap::iterator itTo = this->nodes.find(keyTo);
         if ((itFrom != this->nodes.end()) && (itTo != this->nodes.end()))
         {
-            for (std::vector<Edge>::iterator edgeIt = this->edges.begin(); edgeIt != this->edges.end(); ++edgeIt)
+            for (std::vector<NodePair>::iterator edgeIt = this->nodePairs.begin(); edgeIt != this->nodePairs.end(); ++edgeIt)
             {
                 if ((edgeIt->first == keyFrom) && (edgeIt->second == keyTo))
                 {
-                    this->edges.erase(edgeIt);
+                    this->nodePairs.erase(edgeIt);
                     this->numEdges--;
                     return true;
                 }
@@ -238,11 +302,11 @@
     std::vector<int> Graph::findOutEdges(const int& key)
     {
         std::vector<int> _edges;
-        for (std::vector<Edge>::iterator edgeIt = this->edges.begin(); edgeIt != this->edges.end(); ++edgeIt)
+        for (std::vector<NodePair>::iterator edgeIt = this->nodePairs.begin(); edgeIt != this->nodePairs.end(); ++edgeIt)
         {
             if (edgeIt->first == key)
             {
-                _edges.push_back(edgeIt- this->edges.begin());
+                _edges.push_back(edgeIt- this->nodePairs.begin());
             }
         }
         return _edges;
@@ -252,35 +316,51 @@
     std::vector<int> Graph::findInEdges(const int& key)
     {
         std::vector<int> _edges;
-        for (std::vector<Edge>::iterator edgeIt = this->edges.begin(); edgeIt != this->edges.end(); ++edgeIt)
+        for (std::vector<NodePair>::iterator edgeIt = this->nodePairs.begin(); edgeIt != this->nodePairs.end(); ++edgeIt)
         {
             if (edgeIt->second == key)
             {
-                _edges.push_back(edgeIt- this->edges.begin());
+                _edges.push_back(edgeIt- this->nodePairs.begin());
             }
         }
         return _edges;
     }
 
-    std::vector<Edge> Graph::getEdges()
+    std::vector<NodePair> Graph::getEdgeNodePairs()
     {
-        return this->edges;
+        return this->nodePairs;
     }
 
-    Edge Graph::getEdge(const int& edgeIdx)
+    Edge* Graph::getEdge(const NodePair& nodePair)
     {
-        if (edgeIdx < this->edges.size() && edgeIdx >= 0)
-        {
-            return this->edges[edgeIdx];
+        if (this->edges.find(nodePair) == this->edges.end()) {
+            return NULL;
         }
-        else
-            return Edge(-1,1);
+        else {
+            return this->edges[nodePair];
+        }
     }
 
-    void Graph::setEdges(const std::vector<Edge>& edges)
+    NodePair Graph::getEdgeNodePair(const int& edgeIdx)
     {
-        this->edges = edges;
-        this->numEdges = this->edges.size();
+        if (edgeIdx < this->nodePairs.size() && edgeIdx >= 0)
+        {
+            std::vector<NodePair>::iterator it = this->nodePairs.begin();
+            return *(it + edgeIdx);
+        }
+        return std::make_pair<int, int>(-1, -1);
+    }
+
+    Edge* Graph::getEdge(const int& edgeIdx)
+    {
+        NodePair nodePair=getEdgeNodePair(edgeIdx);
+        return this->getEdge(nodePair);
+    }
+
+    void Graph::setEdges(const std::vector<NodePair>& edges)
+    {
+        this->nodePairs = edges;
+        this->numEdges = this->nodePairs.size();
     }
 
     std::vector<Node*> Graph::getOutNeighbours(const int& key)
@@ -289,7 +369,7 @@
         std::vector<int> _edges = this->findOutEdges(key);
         for (std::vector<int>::iterator edgeIt = _edges.begin(); edgeIt != _edges.end(); ++edgeIt)
         {
-            _nodes.push_back(this->getNode(this->edges[*edgeIt].second));
+            _nodes.push_back(this->getNode(this->nodePairs[*edgeIt].second));
         }
         return _nodes;
     }
@@ -300,7 +380,7 @@
         std::vector<int> _edges = this->findInEdges(key);
         for (std::vector<int>::iterator edgeIt = _edges.begin(); edgeIt != _edges.end(); ++edgeIt)
         {
-            _nodes.push_back(this->getNode(this->edges[*edgeIt].first));
+            _nodes.push_back(this->getNode(this->nodePairs[*edgeIt].first));
         }
         return _nodes;
     }
@@ -312,11 +392,11 @@
         std::vector<int> _edgesOut = this->findOutEdges(key);
         for (std::vector<int>::iterator edgeIt = _edgesIn.begin(); edgeIt != _edgesIn.end(); ++edgeIt)
         {
-            _nodes.push_back(this->getNode(this->edges[*edgeIt].first));
+            _nodes.push_back(this->getNode(this->nodePairs[*edgeIt].first));
         }
         for (std::vector<int>::iterator edgeIt = _edgesOut.begin(); edgeIt != _edgesOut.end(); ++edgeIt)
         {
-            _nodes.push_back(this->getNode(this->edges[*edgeIt].second));
+            _nodes.push_back(this->getNode(this->nodePairs[*edgeIt].second));
         }
         return _nodes;
     }
@@ -327,7 +407,7 @@
         std::vector<int> _edges = this->findOutEdges(key);
         for (std::vector<int>::iterator edgeIt = _edges.begin(); edgeIt != _edges.end(); ++edgeIt)
         {
-            _keys.push_back(this->edges[*edgeIt].second);
+            _keys.push_back(this->nodePairs[*edgeIt].second);
         }
         return _keys;
     }
@@ -338,7 +418,7 @@
         std::vector<int> _edges = this->findInEdges(key);
         for (std::vector<int>::iterator edgeIt = _edges.begin(); edgeIt != _edges.end(); ++edgeIt)
         {
-            _keys.push_back(this->edges[*edgeIt].first);
+            _keys.push_back(this->nodePairs[*edgeIt].first);
         }
         return _keys;
     }
@@ -350,11 +430,11 @@
         std::vector<int> _edgesOut = this->findOutEdges(key);
         for (std::vector<int>::iterator edgeIt = _edgesIn.begin(); edgeIt != _edgesIn.end(); ++edgeIt)
         {
-            _keys.push_back(this->edges[*edgeIt].first);
+            _keys.push_back(this->nodePairs[*edgeIt].first);
         }
         for (std::vector<int>::iterator edgeIt = _edgesOut.begin(); edgeIt != _edgesOut.end(); ++edgeIt)
         {
-            _keys.push_back(this->edges[*edgeIt].second);
+            _keys.push_back(this->nodePairs[*edgeIt].second);
         }
         return _keys;
     }

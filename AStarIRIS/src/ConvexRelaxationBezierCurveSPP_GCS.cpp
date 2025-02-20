@@ -219,7 +219,7 @@ void ConvexRelaxationBezierCurveSPP_GCS::computeFeasibleSolution(const int& maxI
 		int i = 0;
 		for (std::vector<int>::iterator edgeIt = path.edgeKeys.begin(); edgeIt != path.edgeKeys.end(); edgeIt++)
 		{
-			Edge edge=this->g->getEdge(*edgeIt);
+			NodePair edge=this->g->getEdgeNodePair(*edgeIt);
 			int u = edge.first;
 			int v = edge.second;
 
@@ -603,9 +603,9 @@ void ConvexRelaxationBezierCurveSPP_GCS::setConstraints(Model::t& M)
 			}
 		}
 	}
-	std::vector<Edge> edges(this->g->getEdges());
+	std::vector<NodePair> edges(this->g->getEdgeNodePairs());
 	int i = 0;
-	for (std::vector<Edge>::iterator edgeIt = edges.begin(); edgeIt != edges.end(); edgeIt++)
+	for (std::vector<NodePair>::iterator edgeIt = edges.begin(); edgeIt != edges.end(); edgeIt++)
 	{
 		int u = edgeIt->first;
 		int v = edgeIt->second;

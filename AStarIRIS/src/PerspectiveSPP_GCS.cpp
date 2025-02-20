@@ -41,7 +41,7 @@ bool PerspectiveSPP_GCS::getMCPath(Path_t & path)
 		//{
 			std::mt19937 rng(rd());
 			selected_edge = outEdges[dist(rng)];
-			nextKey = this->graphSimplified ? this->simplifiedGraph.getEdge(selected_edge).second : this->g->getEdge(selected_edge).second;
+			nextKey = this->graphSimplified ? this->simplifiedGraph.getEdgeNodePair(selected_edge).second : this->g->getEdgeNodePair(selected_edge).second;
 			std::vector<int>::iterator it=std::find(path.nodeKeys.begin(), path.nodeKeys.end(), nextKey);
 			if (it < path.nodeKeys.end())
 				return false;
@@ -73,7 +73,7 @@ bool PerspectiveSPP_GCS::getMCPath(Path_t & path)
 				}
 			}*/
 		//}
-		nextKey = this->graphSimplified ? this->simplifiedGraph.getEdge(selected_edge).second : this->g->getEdge(selected_edge).second;
+		nextKey = this->graphSimplified ? this->simplifiedGraph.getEdgeNodePair(selected_edge).second : this->g->getEdgeNodePair(selected_edge).second;
 		path.edgeKeys.push_back(selected_edge);
 	}
 	path.nodeKeys.push_back(nextKey);
@@ -98,7 +98,7 @@ Path_t PerspectiveSPP_GCS::getGreedyPath()
 
 			if (current_y > max_y)
 			{
-				int current_key = this->g->getEdge(*it).first;
+				int current_key = this->g->getEdgeNodePair(*it).first;
 				bool not_found = true;
 				for (std::vector<int>::iterator itNodeKey = greedyPath.nodeKeys.begin(); itNodeKey != greedyPath.nodeKeys.end(); itNodeKey++)
 				{
@@ -115,7 +115,7 @@ Path_t PerspectiveSPP_GCS::getGreedyPath()
 				}
 			}
 		}
-		nextKey = this->g->getEdge(best_edge).first;
+		nextKey = this->g->getEdgeNodePair(best_edge).first;
 		greedyPath.edgeKeys.insert(greedyPath.edgeKeys.begin(),best_edge);
 	}
 	greedyPath.nodeKeys.insert(greedyPath.nodeKeys.begin(),nextKey);
@@ -165,7 +165,7 @@ void PerspectiveSPP_GCS::simplifyGraph()
 	{
 		//Create a copy of g without nodes and edges with very little probability of being selected based on the relaxed solution
 		this->simplifiedGraph = Graph(g);
-		std::vector<Edge> edges = this->g->getEdges();
+		std::vector<NodePair> edges = this->g->getEdgeNodePairs();
 		std::vector<double> simplifiedWeights;
 		for (int i = 0; i < this->perspectiveSolution.y.rows(); i++)
 		{

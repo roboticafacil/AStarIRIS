@@ -519,7 +519,7 @@ int AStar_IRIS_relaxed_solver_test1(Eigen::Vector<double, 2>& qstart, Eigen::Vec
 	AStarIRISParams.ExpandableIRISParams.IRISParams.n = 2;
 	AStarIRISParams.ExpandableIRISParams.IRISParams.seperatingHyperplaneAligned = true;
 	AStarIRISParams.ExpandableIRISParams.maxItersOptimalPath = 200;
-	AStarIRISParams.ExpandableIRISParams.addStartAndTargetToGCS = true;
+	AStarIRISParams.ExpandableIRISParams.useGCSAsNavGraph = false;
 	AStartIRISDebugLevel_t debug_level;
 	debug_level.gcsGraph = true;
 	debug_level.gcsConvexSets = true;
